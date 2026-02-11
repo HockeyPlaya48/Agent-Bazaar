@@ -10,7 +10,10 @@ build/
 dist/
 
 # Environment
-.env*
+.env
+.env.local
+.env.production
+!.env.example
 
 # OS
 .DS_Store

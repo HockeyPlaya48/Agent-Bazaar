@@ -1,0 +1,353 @@
+"""
+Seed script for Agent Bazaar Supabase database.
+
+Usage:
+    python seed.py
+
+Requires SUPABASE_URL and SUPABASE_KEY in .env file.
+"""
+
+from config import supabase
+
+AGENTS = [
+    {
+        "id": "1",
+        "name": "Email Outreach Agent",
+        "slug": "email-outreach-agent",
+        "description": "Automate cold email campaigns with personalized follow-ups. Connects to any SMTP or Gmail.",
+        "long_description": "The Email Outreach Agent handles your entire cold email workflow...",
+        "category": "marketing",
+        "price": 79,
+        "price_type": "lifetime",
+        "original_price": 199,
+        "icon": "📧",
+        "screenshots": [],
+        "demo_url": "https://t.me/EmailOutreachDemoBot",
+        "install_type": "api",
+        "atlas_compatible": True,
+        "developer_name": "IndieMailCo",
+        "rating": 4.7,
+        "review_count": 234,
+        "sales_count": 1842,
+        "featured": True,
+        "tags": ["email", "outreach", "cold-email", "automation"],
+    },
+    {
+        "id": "2",
+        "name": "Calendar Optimizer",
+        "slug": "calendar-optimizer",
+        "description": "AI-powered calendar management. Auto-schedules, blocks focus time, and handles rescheduling.",
+        "long_description": "Never manually manage your calendar again...",
+        "category": "productivity",
+        "price": 49,
+        "price_type": "lifetime",
+        "original_price": 129,
+        "icon": "📅",
+        "screenshots": [],
+        "demo_url": "https://t.me/CalendarOptDemoBot",
+        "install_type": "nocode",
+        "atlas_compatible": True,
+        "developer_name": "TimeCraft",
+        "rating": 4.5,
+        "review_count": 167,
+        "sales_count": 1203,
+        "featured": True,
+        "tags": ["calendar", "scheduling", "productivity", "time-management"],
+    },
+    {
+        "id": "3",
+        "name": "SEO Content Writer",
+        "slug": "seo-content-writer",
+        "description": "Generate SEO-optimized blog posts, meta descriptions, and keyword clusters automatically.",
+        "long_description": "Feed it a keyword, get a fully optimized article...",
+        "category": "marketing",
+        "price": 59,
+        "price_type": "lifetime",
+        "original_price": 149,
+        "icon": "✍️",
+        "screenshots": [],
+        "demo_url": "https://t.me/SEOWriterDemoBot",
+        "install_type": "api",
+        "atlas_compatible": True,
+        "developer_name": "ContentForge",
+        "rating": 4.8,
+        "review_count": 312,
+        "sales_count": 2156,
+        "featured": True,
+        "tags": ["seo", "content", "writing", "blog"],
+    },
+    {
+        "id": "4",
+        "name": "Expense Tracker Agent",
+        "slug": "expense-tracker-agent",
+        "description": "Scan receipts, categorize expenses, and generate monthly spending reports via Telegram.",
+        "long_description": "Just forward receipts to the bot...",
+        "category": "finance",
+        "price": 39,
+        "price_type": "lifetime",
+        "original_price": 99,
+        "icon": "💳",
+        "screenshots": [],
+        "demo_url": "https://t.me/ExpenseTrackerDemoBot",
+        "install_type": "telegram",
+        "atlas_compatible": True,
+        "developer_name": "FinBot Labs",
+        "rating": 4.6,
+        "review_count": 189,
+        "sales_count": 987,
+        "featured": False,
+        "tags": ["finance", "expenses", "receipts", "budgeting"],
+    },
+    {
+        "id": "5",
+        "name": "Social Media Scheduler",
+        "slug": "social-media-scheduler",
+        "description": "Auto-post to Twitter, LinkedIn, and Instagram. AI generates captions and hashtags.",
+        "long_description": "Schedule a week of content in minutes...",
+        "category": "marketing",
+        "price": 69,
+        "price_type": "lifetime",
+        "original_price": 179,
+        "icon": "📱",
+        "screenshots": [],
+        "demo_url": "https://t.me/SocialSchedulerDemoBot",
+        "install_type": "api",
+        "atlas_compatible": False,
+        "developer_name": "PostPilot",
+        "rating": 4.4,
+        "review_count": 145,
+        "sales_count": 876,
+        "featured": False,
+        "tags": ["social-media", "scheduling", "twitter", "linkedin"],
+    },
+    {
+        "id": "6",
+        "name": "Customer Support Bot",
+        "slug": "customer-support-bot",
+        "description": "Handle customer inquiries 24/7. Learns from your docs and escalates when needed.",
+        "long_description": "Train it on your knowledge base in 5 minutes...",
+        "category": "ecommerce",
+        "price": 89,
+        "price_type": "lifetime",
+        "original_price": 249,
+        "icon": "🤖",
+        "screenshots": [],
+        "demo_url": "https://t.me/SupportBotDemoBot",
+        "install_type": "api",
+        "atlas_compatible": True,
+        "developer_name": "HelpDeskAI",
+        "rating": 4.3,
+        "review_count": 98,
+        "sales_count": 654,
+        "featured": False,
+        "tags": ["support", "customer-service", "chatbot", "ecommerce"],
+    },
+    {
+        "id": "7",
+        "name": "Code Review Agent",
+        "slug": "code-review-agent",
+        "description": "Automated code reviews on every PR. Catches bugs, security issues, and style violations.",
+        "long_description": "Connect to GitHub and get instant code reviews...",
+        "category": "dev-tools",
+        "price": 0,
+        "price_type": "free",
+        "original_price": 0,
+        "icon": "🔍",
+        "screenshots": [],
+        "demo_url": "https://t.me/CodeReviewDemoBot",
+        "install_type": "api",
+        "atlas_compatible": True,
+        "developer_name": "DevForge",
+        "rating": 4.9,
+        "review_count": 456,
+        "sales_count": 3421,
+        "featured": True,
+        "tags": ["code-review", "github", "security", "developer"],
+    },
+    {
+        "id": "8",
+        "name": "Workout Planner",
+        "slug": "workout-planner",
+        "description": "Personalized workout plans delivered daily. Adjusts based on your progress and feedback.",
+        "long_description": "Tell it your goals and equipment, get daily workouts...",
+        "category": "personal",
+        "price": 29,
+        "price_type": "lifetime",
+        "original_price": 79,
+        "icon": "💪",
+        "screenshots": [],
+        "demo_url": "https://t.me/WorkoutPlannerDemoBot",
+        "install_type": "telegram",
+        "atlas_compatible": True,
+        "developer_name": "FitBot Studio",
+        "rating": 4.7,
+        "review_count": 278,
+        "sales_count": 1567,
+        "featured": False,
+        "tags": ["fitness", "workout", "health", "personal"],
+    },
+    {
+        "id": "9",
+        "name": "Invoice Generator",
+        "slug": "invoice-generator",
+        "description": "Create and send professional invoices. Auto-tracks payments and sends reminders.",
+        "long_description": "Generate invoices from a simple Telegram command...",
+        "category": "finance",
+        "price": 49,
+        "price_type": "lifetime",
+        "original_price": 129,
+        "icon": "📄",
+        "screenshots": [],
+        "demo_url": "https://t.me/InvoiceDemoBot",
+        "install_type": "telegram",
+        "atlas_compatible": False,
+        "developer_name": "BillBot",
+        "rating": 4.2,
+        "review_count": 87,
+        "sales_count": 543,
+        "featured": False,
+        "tags": ["invoicing", "payments", "freelancer", "finance"],
+    },
+    {
+        "id": "10",
+        "name": "Lead Scraper Pro",
+        "slug": "lead-scraper-pro",
+        "description": "Find and enrich leads from LinkedIn, Twitter, and company websites. GDPR compliant.",
+        "long_description": "Build targeted lead lists in minutes...",
+        "category": "marketing",
+        "price": 99,
+        "price_type": "lifetime",
+        "original_price": 299,
+        "icon": "🎯",
+        "screenshots": [],
+        "demo_url": "https://t.me/LeadScraperDemoBot",
+        "install_type": "api",
+        "atlas_compatible": True,
+        "developer_name": "LeadLab",
+        "rating": 4.6,
+        "review_count": 201,
+        "sales_count": 1123,
+        "featured": True,
+        "tags": ["leads", "scraping", "linkedin", "sales"],
+    },
+]
+
+BUNDLES = [
+    {
+        "id": "b1",
+        "name": "Productivity Pack",
+        "slug": "productivity-pack",
+        "description": "Email + Calendar + Support agents — everything you need to run your business on autopilot.",
+        "price": 149,
+        "original_price": 577,
+        "category": "productivity",
+        "atlas_hint": "Perfect for an Atlas Productivity Team — run all 3 agents autonomously 24/7",
+        "featured": True,
+    },
+    {
+        "id": "b2",
+        "name": "Marketing Machine",
+        "slug": "marketing-machine",
+        "description": "SEO Writer + Social Scheduler + Lead Scraper — your complete marketing engine.",
+        "price": 159,
+        "original_price": 627,
+        "category": "marketing",
+        "atlas_hint": "Atlas can orchestrate these agents into automated marketing campaigns",
+        "featured": True,
+    },
+    {
+        "id": "b3",
+        "name": "Solopreneur Starter",
+        "slug": "solopreneur-starter",
+        "description": "Workout Planner + Expense Tracker + Calendar — take care of yourself while building.",
+        "price": 79,
+        "original_price": 307,
+        "category": "personal",
+        "atlas_hint": "Let Atlas manage your health, finances, and schedule — all proactively",
+        "featured": False,
+    },
+]
+
+# Bundle-to-agent mappings (bundle_id -> list of agent_ids)
+BUNDLE_AGENTS = [
+    {"bundle_id": "b1", "agent_id": "1"},
+    {"bundle_id": "b1", "agent_id": "2"},
+    {"bundle_id": "b1", "agent_id": "6"},
+    {"bundle_id": "b2", "agent_id": "3"},
+    {"bundle_id": "b2", "agent_id": "5"},
+    {"bundle_id": "b2", "agent_id": "10"},
+    {"bundle_id": "b3", "agent_id": "8"},
+    {"bundle_id": "b3", "agent_id": "4"},
+    {"bundle_id": "b3", "agent_id": "2"},
+]
+
+REVIEWS = [
+    {
+        "id": "r1",
+        "agent_id": "1",
+        "user_name": "Sarah M.",
+        "rating": 5,
+        "comment": "Saved me 10+ hours per week on outreach. The follow-up sequences are incredible.",
+        "date": "2026-01-15",
+    },
+    {
+        "id": "r2",
+        "agent_id": "1",
+        "user_name": "James K.",
+        "rating": 4,
+        "comment": "Great agent but needs more email templates. Otherwise solid.",
+        "date": "2026-01-22",
+    },
+    {
+        "id": "r3",
+        "agent_id": "7",
+        "user_name": "DevAlex",
+        "rating": 5,
+        "comment": "Best free code review tool I've ever used. Catches bugs my team misses.",
+        "date": "2026-02-01",
+    },
+    {
+        "id": "r4",
+        "agent_id": "3",
+        "user_name": "ContentKing",
+        "rating": 5,
+        "comment": "Generated 30 blog posts last month. All ranked on page 1. Insane ROI.",
+        "date": "2026-01-28",
+    },
+    {
+        "id": "r5",
+        "agent_id": "8",
+        "user_name": "FitTyler",
+        "rating": 5,
+        "comment": "Like having a personal trainer in my pocket. Adjusts workouts based on my feedback.",
+        "date": "2026-02-05",
+    },
+]
+
+
+def seed():
+    print("Seeding agent_listings...")
+    for agent in AGENTS:
+        supabase.table("agent_listings").upsert(agent).execute()
+    print(f"  Inserted {len(AGENTS)} agents.")
+
+    print("Seeding bundles...")
+    for bundle in BUNDLES:
+        supabase.table("bundles").upsert(bundle).execute()
+    print(f"  Inserted {len(BUNDLES)} bundles.")
+
+    print("Seeding bundle_agents...")
+    for ba in BUNDLE_AGENTS:
+        supabase.table("bundle_agents").upsert(ba).execute()
+    print(f"  Inserted {len(BUNDLE_AGENTS)} bundle-agent mappings.")
+
+    print("Seeding reviews...")
+    for review in REVIEWS:
+        supabase.table("reviews").upsert(review).execute()
+    print(f"  Inserted {len(REVIEWS)} reviews.")
+
+    print("Seed complete!")
+
+
+if __name__ == "__main__":
+    seed()
