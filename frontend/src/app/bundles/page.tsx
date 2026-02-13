@@ -1,9 +1,43 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BUNDLES } from "@/lib/data";
+import { getBundles, purchaseBundle, type BundleAPI } from "@/lib/api";
 
 export default function BundlesPage() {
+  const [bundles, setBundles] = useState<BundleAPI[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [purchasingId, setPurchasingId] = useState<string | null>(null);
+  const [purchasedIds, setPurchasedIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    getBundles()
+      .then(setBundles)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function handleBuyBundle(bundleId: string) {
+    setPurchasingId(bundleId);
+    try {
+      await purchaseBundle(bundleId);
+      setPurchasedIds((prev) => new Set(prev).add(bundleId));
+    } catch (err) {
+      console.error(err);
+      alert("Purchase failed. Please try again.");
+    } finally {
+      setPurchasingId(null);
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-zinc-500 animate-pulse">Loading bundles...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950">
       <nav className="border-b border-zinc-800">
@@ -21,15 +55,12 @@ export default function BundlesPage() {
         </p>
 
         <div className="mt-8 space-y-6">
-          {BUNDLES.map((bundle) => {
+          {bundles.map((bundle) => {
             const discount = Math.round(
-              (1 - bundle.price / bundle.originalPrice) * 100
+              (1 - bundle.price / bundle.original_price) * 100
             );
             return (
-              <div
-                key={bundle.id}
-                className="rounded-2xl border border-orange-500/20 bg-zinc-900 p-8"
-              >
+              <div key={bundle.id} className="rounded-2xl border border-orange-500/20 bg-zinc-900 p-8">
                 <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
@@ -41,9 +72,7 @@ export default function BundlesPage() {
                     <p className="mt-2 text-zinc-400">{bundle.description}</p>
 
                     <div className="mt-4 space-y-2">
-                      <p className="text-xs font-medium text-zinc-500 uppercase">
-                        Includes:
-                      </p>
+                      <p className="text-xs font-medium text-zinc-500 uppercase">Includes:</p>
                       {bundle.agents.map((agent) => (
                         <Link
                           key={agent.id}
@@ -52,40 +81,38 @@ export default function BundlesPage() {
                         >
                           <span>{agent.icon}</span>
                           <span>{agent.name}</span>
-                          <span className="text-zinc-600">
-                            (${agent.originalPrice} value)
-                          </span>
+                          <span className="text-zinc-600">(${agent.original_price} value)</span>
                         </Link>
                       ))}
                     </div>
 
                     <div className="mt-4 rounded-lg border border-blue-500/20 bg-blue-500/5 px-4 py-3">
-                      <p className="text-xs text-blue-400">
-                        {bundle.atlasHint}
-                      </p>
+                      <p className="text-xs text-blue-400">{bundle.atlas_hint}</p>
                     </div>
                   </div>
 
                   <div className="flex flex-col items-end gap-3">
                     <div className="text-right">
                       <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold">
-                          ${bundle.price}
-                        </span>
-                        <span className="text-lg text-zinc-500 line-through">
-                          ${bundle.originalPrice}
-                        </span>
+                        <span className="text-3xl font-bold">${bundle.price}</span>
+                        <span className="text-lg text-zinc-500 line-through">${bundle.original_price}</span>
                       </div>
-                      <span className="text-sm font-medium text-green-400">
-                        Save {discount}%
-                      </span>
+                      <span className="text-sm font-medium text-green-400">Save {discount}%</span>
                     </div>
-                    <button className="rounded-full bg-orange-500 px-8 py-3 font-medium text-white hover:bg-orange-400 transition-colors">
-                      Buy Bundle
-                    </button>
-                    <p className="text-xs text-zinc-500">
-                      One-time payment. Lifetime access.
-                    </p>
+                    {purchasedIds.has(bundle.id) ? (
+                      <div className="rounded-full bg-green-500/20 px-8 py-3 font-medium text-green-400">
+                        Purchased!
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => handleBuyBundle(bundle.id)}
+                        disabled={purchasingId === bundle.id}
+                        className="rounded-full bg-orange-500 px-8 py-3 font-medium text-white hover:bg-orange-400 transition-colors disabled:opacity-50"
+                      >
+                        {purchasingId === bundle.id ? "Processing..." : "Buy Bundle"}
+                      </button>
+                    )}
+                    <p className="text-xs text-zinc-500">One-time payment. Lifetime access.</p>
                   </div>
                 </div>
               </div>

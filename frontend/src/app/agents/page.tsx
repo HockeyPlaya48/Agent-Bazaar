@@ -1,23 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { AGENTS, CATEGORIES } from "@/lib/data";
+import { getAgents, type AgentListingAPI } from "@/lib/api";
+import { CATEGORIES } from "@/lib/data";
 
 export default function BrowseAgents() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<"popular" | "price-low" | "price-high" | "rating">("popular");
+  const [sortBy, setSortBy] = useState<string>("popular");
+  const [agents, setAgents] = useState<AgentListingAPI[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filtered = AGENTS
-    .filter((a) => !selectedCategory || a.category === selectedCategory)
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "price-low": return a.price - b.price;
-        case "price-high": return b.price - a.price;
-        case "rating": return b.rating - a.rating;
-        default: return b.salesCount - a.salesCount;
-      }
-    });
+  useEffect(() => {
+    setLoading(true);
+    getAgents({
+      category: selectedCategory || undefined,
+      sort: sortBy === "rating" ? "highest-rated" : sortBy === "price-low" ? "price-low" : sortBy === "price-high" ? "price-high" : "popular",
+    })
+      .then(setAgents)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [selectedCategory, sortBy]);
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -55,7 +58,7 @@ export default function BrowseAgents() {
           </div>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+            onChange={(e) => setSortBy(e.target.value)}
             className="ml-auto rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-xs focus:outline-none"
           >
             <option value="popular">Most Popular</option>
@@ -66,9 +69,11 @@ export default function BrowseAgents() {
         </div>
 
         {/* Results */}
-        <p className="mt-6 text-sm text-zinc-500">{filtered.length} agents found</p>
+        <p className="mt-6 text-sm text-zinc-500">
+          {loading ? "Loading..." : `${agents.length} agents found`}
+        </p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((agent) => (
+          {agents.map((agent) => (
             <Link
               key={agent.id}
               href={`/agents/${agent.slug}`}
@@ -76,7 +81,7 @@ export default function BrowseAgents() {
             >
               <div className="flex items-start justify-between">
                 <span className="text-3xl">{agent.icon}</span>
-                {agent.atlasCompatible && (
+                {agent.atlas_compatible && (
                   <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-400">
                     Atlas
                   </span>
@@ -88,16 +93,16 @@ export default function BrowseAgents() {
               <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{agent.description}</p>
               <div className="mt-3 flex items-center gap-2">
                 <span className="text-yellow-400 text-xs">{"★".repeat(Math.floor(agent.rating))}</span>
-                <span className="text-xs text-zinc-600">({agent.reviewCount})</span>
+                <span className="text-xs text-zinc-600">({agent.review_count})</span>
               </div>
               <div className="mt-2 flex items-baseline gap-2">
                 <span className="font-bold">{agent.price === 0 ? "Free" : `$${agent.price}`}</span>
-                {agent.originalPrice > 0 && agent.price > 0 && (
-                  <span className="text-xs text-zinc-500 line-through">${agent.originalPrice}</span>
+                {agent.original_price > 0 && agent.price > 0 && (
+                  <span className="text-xs text-zinc-500 line-through">${agent.original_price}</span>
                 )}
               </div>
               <p className="mt-1 text-[10px] text-zinc-600">
-                by {agent.developerName} · {agent.salesCount.toLocaleString()} sales
+                by {agent.developer_name} · {agent.sales_count.toLocaleString()} sales
               </p>
             </Link>
           ))}

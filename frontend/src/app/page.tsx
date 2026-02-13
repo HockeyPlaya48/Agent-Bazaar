@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { AGENTS, BUNDLES, CATEGORIES } from "@/lib/data";
+import { getAgents, getBundles, type AgentListingAPI, type BundleAPI } from "@/lib/api";
+import { CATEGORIES } from "@/lib/data";
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -16,8 +17,21 @@ function StarRating({ rating }: { rating: number }) {
 export default function HomePage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [agents, setAgents] = useState<AgentListingAPI[]>([]);
+  const [bundles, setBundles] = useState<BundleAPI[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredAgents = AGENTS.filter((agent) => {
+  useEffect(() => {
+    Promise.all([getAgents(), getBundles()])
+      .then(([agentsData, bundlesData]) => {
+        setAgents(agentsData);
+        setBundles(bundlesData);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filteredAgents = agents.filter((agent) => {
     const matchesSearch =
       !search ||
       agent.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -27,7 +41,15 @@ export default function HomePage() {
     return matchesSearch && matchesCategory;
   });
 
-  const featuredAgents = AGENTS.filter((a) => a.featured);
+  const featuredAgents = agents.filter((a) => a.featured);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-zinc-500 animate-pulse">Loading Agent Bazaar...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -139,7 +161,7 @@ export default function HomePage() {
                 >
                   <div className="flex items-start justify-between">
                     <span className="text-3xl">{agent.icon}</span>
-                    {agent.atlasCompatible && (
+                    {agent.atlas_compatible && (
                       <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-400">
                         Atlas
                       </span>
@@ -154,19 +176,19 @@ export default function HomePage() {
                   <div className="mt-3 flex items-center gap-2">
                     <StarRating rating={agent.rating} />
                     <span className="text-xs text-zinc-600">
-                      ({agent.reviewCount})
+                      ({agent.review_count})
                     </span>
                   </div>
                   <div className="mt-3 flex items-center gap-2">
                     <span className="text-lg font-bold">
                       {agent.price === 0 ? "Free" : `$${agent.price}`}
                     </span>
-                    {agent.originalPrice > 0 && agent.price > 0 && (
+                    {agent.original_price > 0 && agent.price > 0 && (
                       <span className="text-sm text-zinc-500 line-through">
-                        ${agent.originalPrice}
+                        ${agent.original_price}
                       </span>
                     )}
-                    {agent.priceType === "lifetime" && agent.price > 0 && (
+                    {agent.price_type === "lifetime" && agent.price > 0 && (
                       <span className="text-xs text-green-400">lifetime</span>
                     )}
                   </div>
@@ -183,7 +205,7 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl">
             <h2 className="mb-6 text-2xl font-bold">Bundles — Save Big</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {BUNDLES.map((bundle) => (
+              {bundles.map((bundle) => (
                 <Link
                   key={bundle.id}
                   href={`/bundles`}
@@ -203,17 +225,17 @@ export default function HomePage() {
                   <div className="mt-4 flex items-center gap-2">
                     <span className="text-2xl font-bold">${bundle.price}</span>
                     <span className="text-sm text-zinc-500 line-through">
-                      ${bundle.originalPrice}
+                      ${bundle.original_price}
                     </span>
                     <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-400">
                       {Math.round(
-                        (1 - bundle.price / bundle.originalPrice) * 100
+                        (1 - bundle.price / bundle.original_price) * 100
                       )}
                       % off
                     </span>
                   </div>
                   <p className="mt-3 text-xs text-blue-400">
-                    {bundle.atlasHint}
+                    {bundle.atlas_hint}
                   </p>
                 </Link>
               ))}
@@ -242,7 +264,7 @@ export default function HomePage() {
                 <div className="flex items-start justify-between">
                   <span className="text-3xl">{agent.icon}</span>
                   <div className="flex gap-1">
-                    {agent.atlasCompatible && (
+                    {agent.atlas_compatible && (
                       <span className="rounded-full bg-blue-500/10 px-2 py-0.5 text-[10px] font-medium text-blue-400">
                         Atlas
                       </span>
@@ -258,21 +280,21 @@ export default function HomePage() {
                 <div className="mt-3 flex items-center gap-2">
                   <StarRating rating={agent.rating} />
                   <span className="text-xs text-zinc-600">
-                    ({agent.reviewCount})
+                    ({agent.review_count})
                   </span>
                 </div>
                 <div className="mt-2 flex items-baseline gap-2">
                   <span className="font-bold">
                     {agent.price === 0 ? "Free" : `$${agent.price}`}
                   </span>
-                  {agent.originalPrice > 0 && agent.price > 0 && (
+                  {agent.original_price > 0 && agent.price > 0 && (
                     <span className="text-xs text-zinc-500 line-through">
-                      ${agent.originalPrice}
+                      ${agent.original_price}
                     </span>
                   )}
                 </div>
                 <p className="mt-1 text-[10px] text-zinc-600">
-                  by {agent.developerName} · {agent.salesCount.toLocaleString()}{" "}
+                  by {agent.developer_name} · {agent.sales_count.toLocaleString()}{" "}
                   sales
                 </p>
               </Link>

@@ -1,11 +1,28 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { AGENTS } from "@/lib/data";
+import { getUserAgents, type AgentListingAPI } from "@/lib/api";
 
 export default function UserDashboard() {
-  // Demo: user has purchased first 3 agents
-  const purchasedAgents = AGENTS.slice(0, 3);
+  const [agents, setAgents] = useState<AgentListingAPI[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Demo user ID — in production this would come from auth
+    getUserAgents("demo-user")
+      .then(setAgents)
+      .catch(() => setAgents([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-zinc-500 animate-pulse">Loading your agents...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -20,7 +37,7 @@ export default function UserDashboard() {
             href="/dev"
             className="text-sm text-zinc-400 hover:text-white transition-colors"
           >
-            Developer Portal →
+            Developer Portal &rarr;
           </Link>
         </div>
       </nav>
@@ -28,12 +45,12 @@ export default function UserDashboard() {
       <div className="mx-auto max-w-6xl px-6 py-8">
         <h1 className="text-2xl font-bold">My Agents</h1>
         <p className="mt-1 text-zinc-400">
-          {purchasedAgents.length} agents purchased
+          {agents.length} agents purchased
         </p>
 
         {/* Purchased Agents */}
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {purchasedAgents.map((agent) => (
+          {agents.map((agent) => (
             <div
               key={agent.id}
               className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6"
@@ -54,7 +71,7 @@ export default function UserDashboard() {
                   API Keys
                 </button>
               </div>
-              {agent.atlasCompatible && (
+              {agent.atlas_compatible && (
                 <p className="mt-3 text-[10px] text-blue-400">
                   Atlas-Compatible — upgrade to run autonomously
                 </p>
@@ -78,7 +95,7 @@ export default function UserDashboard() {
             <div>
               <h2 className="text-xl font-bold">Upgrade to Atlas</h2>
               <p className="mt-2 text-zinc-400">
-                Run all {purchasedAgents.length} of your agents autonomously
+                Run all {agents.length} of your agents autonomously
                 24/7. They&apos;ll proactively deliver results — no prompts
                 needed.
               </p>
@@ -95,29 +112,38 @@ export default function UserDashboard() {
         {/* Purchase History */}
         <div className="mt-12">
           <h2 className="mb-4 text-lg font-semibold">Purchase History</h2>
-          <div className="space-y-2">
-            {purchasedAgents.map((agent) => (
-              <div
-                key={agent.id}
-                className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/50 p-4"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">{agent.icon}</span>
-                  <div>
-                    <p className="text-sm font-medium">{agent.name}</p>
-                    <p className="text-xs text-zinc-500">
-                      {agent.priceType === "lifetime"
-                        ? "Lifetime access"
-                        : "Free"}
-                    </p>
+          {agents.length > 0 ? (
+            <div className="space-y-2">
+              {agents.map((agent) => (
+                <div
+                  key={agent.id}
+                  className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900/50 p-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-xl">{agent.icon}</span>
+                    <div>
+                      <p className="text-sm font-medium">{agent.name}</p>
+                      <p className="text-xs text-zinc-500">
+                        {agent.price_type === "lifetime"
+                          ? "Lifetime access"
+                          : "Free"}
+                      </p>
+                    </div>
                   </div>
+                  <span className="text-sm font-medium">
+                    {agent.price === 0 ? "Free" : `$${agent.price}`}
+                  </span>
                 </div>
-                <span className="text-sm font-medium">
-                  {agent.price === 0 ? "Free" : `$${agent.price}`}
-                </span>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
+              <p className="text-zinc-500">No purchases yet.</p>
+              <Link href="/" className="mt-2 inline-block text-sm text-orange-400 hover:text-orange-300 transition-colors">
+                Browse Agent Bazaar &rarr;
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

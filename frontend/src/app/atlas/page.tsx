@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { joinWaitlist } from "@/lib/api";
 
 export default function AtlasWaitlist() {
   const [email, setEmail] = useState("");
   const [goals, setGoals] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   function toggleGoal(goal: string) {
     setGoals((prev) =>
@@ -14,31 +17,36 @@ export default function AtlasWaitlist() {
     );
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: Save to Supabase with goals for segmentation
-    setSubmitted(true);
+    setSubmitting(true);
+    setError("");
+    try {
+      await joinWaitlist(email, goals);
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const LIFE_GOALS = [
-    { label: "Get fit & healthy", icon: "💪", value: "fitness" },
-    { label: "Grow my business", icon: "🚀", value: "business" },
-    { label: "Create content", icon: "✍️", value: "content" },
-    { label: "Save money", icon: "💰", value: "finance" },
-    { label: "Generate leads", icon: "🎯", value: "leads" },
-    { label: "Learn faster", icon: "🧠", value: "learning" },
-    { label: "Build products", icon: "⚡", value: "building" },
-    { label: "Stay organized", icon: "📋", value: "productivity" },
+    { label: "Get fit & healthy", icon: "\u{1F4AA}", value: "fitness" },
+    { label: "Grow my business", icon: "\u{1F680}", value: "business" },
+    { label: "Create content", icon: "\u270D\uFE0F", value: "content" },
+    { label: "Save money", icon: "\u{1F4B0}", value: "finance" },
+    { label: "Generate leads", icon: "\u{1F3AF}", value: "leads" },
+    { label: "Learn faster", icon: "\u{1F9E0}", value: "learning" },
+    { label: "Build products", icon: "\u26A1", value: "building" },
+    { label: "Stay organized", icon: "\u{1F4CB}", value: "productivity" },
   ];
 
   return (
     <div className="min-h-screen bg-zinc-950">
       <nav className="border-b border-zinc-800">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-4">
-          <Link
-            href="/"
-            className="text-sm text-zinc-500 hover:text-white transition-colors"
-          >
+          <Link href="/" className="text-sm text-zinc-500 hover:text-white transition-colors">
             &larr; Agent Bazaar
           </Link>
         </div>
@@ -62,7 +70,6 @@ export default function AtlasWaitlist() {
           </div>
         ) : (
           <>
-            {/* Hero */}
             <div className="mb-8 inline-block rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-1.5 text-sm text-blue-400">
               Coming Soon
             </div>
@@ -79,34 +86,14 @@ export default function AtlasWaitlist() {
               Telegram or dashboard — no prompts needed.
             </p>
 
-            {/* Features */}
             <div className="mt-12 grid gap-4 text-left sm:grid-cols-2">
               {[
-                {
-                  icon: "⚡",
-                  title: "Proactive Agents",
-                  desc: "Your agents reach out to YOU with completed work",
-                },
-                {
-                  icon: "🤝",
-                  title: "Agent Collaboration",
-                  desc: "Your content and lead agents coordinate automatically",
-                },
-                {
-                  icon: "🌐",
-                  title: "Life-Wide Coverage",
-                  desc: "Fitness, finances, content, sales — all handled",
-                },
-                {
-                  icon: "🏢",
-                  title: "Virtual Office",
-                  desc: "Watch your agents work in a gamified dashboard",
-                },
+                { icon: "\u26A1", title: "Proactive Agents", desc: "Your agents reach out to YOU with completed work" },
+                { icon: "\u{1F91D}", title: "Agent Collaboration", desc: "Your content and lead agents coordinate automatically" },
+                { icon: "\u{1F310}", title: "Life-Wide Coverage", desc: "Fitness, finances, content, sales — all handled" },
+                { icon: "\u{1F3E2}", title: "Virtual Office", desc: "Watch your agents work in a gamified dashboard" },
               ].map((feature) => (
-                <div
-                  key={feature.title}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5"
-                >
+                <div key={feature.title} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-5">
                   <span className="text-2xl">{feature.icon}</span>
                   <h3 className="mt-2 font-semibold">{feature.title}</h3>
                   <p className="mt-1 text-sm text-zinc-500">{feature.desc}</p>
@@ -114,19 +101,14 @@ export default function AtlasWaitlist() {
               ))}
             </div>
 
-            {/* Waitlist Form */}
             <div className="mt-12 rounded-2xl border border-blue-500/20 bg-zinc-900 p-8">
               <h2 className="text-xl font-bold">Join the Atlas Beta</h2>
               <p className="mt-2 text-sm text-zinc-400">
-                Tell us your goals and we&apos;ll match you with the right
-                agents.
+                Tell us your goals and we&apos;ll match you with the right agents.
               </p>
 
-              {/* Life Goals */}
               <div className="mt-6">
-                <p className="mb-3 text-sm text-zinc-400">
-                  What do you want your agents to help with?
-                </p>
+                <p className="mb-3 text-sm text-zinc-400">What do you want your agents to help with?</p>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {LIFE_GOALS.map((goal) => (
                     <button
@@ -156,27 +138,21 @@ export default function AtlasWaitlist() {
                 />
                 <button
                   type="submit"
-                  className="rounded-full bg-blue-500 px-6 py-3 text-sm font-medium text-white hover:bg-blue-400 transition-colors"
+                  disabled={submitting}
+                  className="rounded-full bg-blue-500 px-6 py-3 text-sm font-medium text-white hover:bg-blue-400 transition-colors disabled:opacity-50"
                 >
-                  Join Waitlist
+                  {submitting ? "Joining..." : "Join Waitlist"}
                 </button>
               </form>
-
-              <p className="mt-4 text-xs text-zinc-600">
-                2,340 people already on the waitlist
-              </p>
+              {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
             </div>
 
-            {/* Bazaar Connection */}
             <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
               <p className="text-sm text-zinc-400">
                 Already have Agent Bazaar agents? They&apos;ll automatically
                 import into your Atlas workspace when you join.
               </p>
-              <Link
-                href="/"
-                className="mt-3 inline-block text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors"
-              >
+              <Link href="/" className="mt-3 inline-block text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors">
                 Browse Agent Bazaar →
               </Link>
             </div>
