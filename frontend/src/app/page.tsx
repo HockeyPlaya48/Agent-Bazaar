@@ -87,7 +87,7 @@ export default function HomePage() {
       <section className="px-6 pt-32 pb-16">
         <div className="mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-block rounded-full border border-orange-500/20 bg-orange-500/10 px-4 py-1.5 text-sm text-orange-400">
-            Like AppSumo, but for AI Agents
+            Deal Marketplace for AI Agents
           </div>
           <h1 className="mb-6 text-4xl font-bold leading-tight sm:text-6xl">
             Discover AI Agents.
