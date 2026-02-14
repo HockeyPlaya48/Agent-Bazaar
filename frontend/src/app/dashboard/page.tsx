@@ -100,7 +100,7 @@ export default function UserDashboard() {
                   <div>
                     <p className="text-sm font-medium">{agent.name}</p>
                     <p className="text-xs text-zinc-500">
-                      {agent.price_type === "lifetime" ? "Lifetime access" : "Free"}
+                      {agent.price_type === "lifetime" ? "Monthly subscription" : "Free"}
                     </p>
                   </div>
                 </div>

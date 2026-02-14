@@ -82,14 +82,14 @@ export default function HomePage() {
             <h1 className="mt-6 text-5xl font-bold leading-tight sm:text-7xl">
               Discover AI Agents.
               <br />
-              <span className="gradient-text-orange">Lifetime Deals.</span>
+              <span className="gradient-text-orange">Monthly Plans.</span>
             </h1>
           </FadeInUp>
 
           <FadeInUp delay={0.2}>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
               Browse pre-built AI agents for productivity, marketing, finance, and
-              more. One-time purchase. No code. Deploy in minutes.
+              more. Affordable monthly plans. No code. Deploy in minutes.
             </p>
           </FadeInUp>
 

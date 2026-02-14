@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Agent Bazaar — Discover & Buy AI Agents",
   description:
-    "The deal marketplace for AI agents. Lifetime deals, bundles, and one-click deploys. No code required.",
+    "The deal marketplace for AI agents. Monthly plans, bundles, and one-click deploys. No code required.",
 };
 
 export default function RootLayout({

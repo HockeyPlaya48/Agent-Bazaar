@@ -22,7 +22,7 @@ export function Footer() {
               Agent Bazaar
             </Link>
             <p className="mt-2 max-w-sm text-sm text-zinc-500">
-              The deal marketplace for AI agents. Lifetime deals, bundles, and
+              The deal marketplace for AI agents. Monthly plans, bundles, and
               one-click deploys. No code required.
             </p>
           </div>

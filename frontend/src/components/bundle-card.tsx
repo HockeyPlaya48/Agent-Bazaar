@@ -87,7 +87,7 @@ export function BundleCard({
               Buy Bundle
             </Button>
           )}
-          <p className="text-xs text-zinc-500">One-time payment. Lifetime access.</p>
+          <p className="text-xs text-zinc-500">Monthly subscription. Cancel anytime.</p>
         </div>
       )}
     </>

@@ -254,7 +254,7 @@ export default function DevPortal() {
                   value={form.price_type}
                   onChange={(e) => setForm({ ...form, price_type: e.target.value })}
                   options={[
-                    { value: "lifetime", label: "Lifetime Deal" },
+                    { value: "lifetime", label: "Monthly Plan" },
                     { value: "monthly", label: "Monthly" },
                     { value: "free", label: "Free" },
                   ]}

@@ -38,7 +38,7 @@ export function AgentCard({ agent }: AgentCardProps) {
           </span>
         )}
         {agent.price_type === "lifetime" && agent.price > 0 && (
-          <Badge variant="success">lifetime</Badge>
+          <Badge variant="success">/mo</Badge>
         )}
       </div>
       <p className="mt-1.5 text-[10px] text-zinc-600">

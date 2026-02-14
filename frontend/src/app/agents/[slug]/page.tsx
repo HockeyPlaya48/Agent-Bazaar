@@ -210,7 +210,7 @@ export default function AgentDetailPage() {
               {agent.price_type === "lifetime" && agent.price > 0 && (
                 <p className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
                   <Zap size={12} />
-                  One-time payment. Lifetime access.
+                  Monthly subscription. Cancel anytime.
                 </p>
               )}
 
