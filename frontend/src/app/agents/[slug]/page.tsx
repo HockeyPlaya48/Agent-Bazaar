@@ -3,7 +3,15 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { ChevronRight, ExternalLink, Check, MessageSquare, Zap } from "lucide-react";
 import { getAgentBySlug, getReviews, purchaseAgent, type AgentListingAPI, type ReviewAPI } from "@/lib/api";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { StarRating } from "@/components/ui/star-rating";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AtlasCta } from "@/components/atlas-cta";
+import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 
 export default function AgentDetailPage() {
   const params = useParams();
@@ -42,15 +50,23 @@ export default function AgentDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-zinc-500 animate-pulse">Loading agent...</p>
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <Skeleton className="h-4 w-48" />
+        <div className="mt-8 grid gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-2 space-y-6">
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-48 w-full" />
+          </div>
+          <Skeleton className="h-64" />
+        </div>
       </div>
     );
   }
 
   if (!agent) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-[60vh] items-center justify-center">
         <p className="text-zinc-500">Agent not found.</p>
       </div>
     );
@@ -61,52 +77,61 @@ export default function AgentDetailPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <nav className="border-b border-zinc-800">
-        <div className="mx-auto flex max-w-5xl items-center gap-4 px-6 py-4">
-          <Link href="/" className="text-sm text-zinc-500 hover:text-white transition-colors">
-            &larr; Agent Bazaar
+    <div className="mx-auto max-w-5xl px-6 py-8">
+      {/* Breadcrumb */}
+      <FadeIn>
+        <nav className="flex items-center gap-2 text-sm text-zinc-500">
+          <Link href="/" className="transition-colors hover:text-white">
+            Agent Bazaar
           </Link>
-          <span className="text-zinc-700">/</span>
-          <span className="text-sm">{agent.name}</span>
-        </div>
-      </nav>
+          <ChevronRight size={14} />
+          <Link href="/agents" className="transition-colors hover:text-white">
+            Browse
+          </Link>
+          <ChevronRight size={14} />
+          <span className="text-zinc-300">{agent.name}</span>
+        </nav>
+      </FadeIn>
 
-      <div className="mx-auto max-w-5xl px-6 py-8">
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
+      <div className="mt-8 grid gap-8 lg:grid-cols-3">
+        {/* Main Content */}
+        <div className="lg:col-span-2">
+          <FadeInUp>
             <div className="flex items-start gap-4">
-              <span className="text-5xl">{agent.icon}</span>
+              <div className="rounded-2xl bg-zinc-800/50 p-4">
+                <span className="text-5xl">{agent.icon}</span>
+              </div>
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-2xl font-bold">{agent.name}</h1>
-                  {agent.atlas_compatible && (
-                    <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-medium text-blue-400">
-                      Atlas-Compatible
-                    </span>
-                  )}
+                  {agent.atlas_compatible && <Badge variant="atlas">Atlas-Compatible</Badge>}
                 </div>
                 <p className="mt-1 text-sm text-zinc-400">by {agent.developer_name}</p>
-                <div className="mt-2 flex items-center gap-3">
-                  <span className="text-yellow-400">{"★".repeat(Math.floor(agent.rating))}</span>
-                  <span className="text-sm text-zinc-400">
-                    {agent.rating} ({agent.review_count} reviews)
-                  </span>
-                  <span className="text-sm text-zinc-600">
-                    {agent.sales_count.toLocaleString()} sales
-                  </span>
+                <div className="mt-2">
+                  <StarRating
+                    rating={agent.rating}
+                    showValue
+                    count={agent.review_count}
+                    size="md"
+                  />
                 </div>
+                <p className="mt-1 text-xs text-zinc-600">
+                  {agent.sales_count.toLocaleString()} sales
+                </p>
               </div>
             </div>
+          </FadeInUp>
 
+          <FadeInUp delay={0.1}>
             <div className="mt-8">
               <h2 className="text-lg font-semibold">What it does</h2>
-              <p className="mt-2 text-zinc-400 leading-relaxed">
+              <p className="mt-2 leading-relaxed text-zinc-400">
                 {agent.long_description || agent.description}
               </p>
             </div>
+          </FadeInUp>
 
+          <FadeInUp delay={0.15}>
             <div className="mt-8">
               <h2 className="text-lg font-semibold">Setup</h2>
               <div className="mt-3 space-y-3">
@@ -117,99 +142,113 @@ export default function AgentDetailPage() {
                   "Agent starts working immediately after connection",
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold text-zinc-400">
-                      {i + 1}
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-400">
+                      <Check size={14} />
                     </div>
                     <p className="text-sm text-zinc-400">{step}</p>
                   </div>
                 ))}
               </div>
             </div>
+          </FadeInUp>
 
+          <FadeInUp delay={0.2}>
             <div className="mt-8">
-              <h2 className="text-lg font-semibold">Reviews ({reviews.length})</h2>
+              <div className="flex items-center gap-2">
+                <MessageSquare size={18} className="text-zinc-500" />
+                <h2 className="text-lg font-semibold">Reviews ({reviews.length})</h2>
+              </div>
               {reviews.length > 0 ? (
-                <div className="mt-3 space-y-3">
+                <StaggerContainer className="mt-3 space-y-3">
                   {reviews.map((review) => (
-                    <div key={review.id} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="text-yellow-400 text-sm">{"★".repeat(review.rating)}</span>
-                          <span className="text-sm font-medium">{review.user_name}</span>
+                    <StaggerItem key={review.id}>
+                      <Card>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <StarRating rating={review.rating} />
+                            <span className="text-sm font-medium">{review.user_name}</span>
+                          </div>
+                          <span className="text-xs text-zinc-600">{review.date}</span>
                         </div>
-                        <span className="text-xs text-zinc-600">{review.date}</span>
-                      </div>
-                      <p className="mt-2 text-sm text-zinc-400">{review.comment}</p>
-                    </div>
+                        <p className="mt-2 text-sm text-zinc-400">{review.comment}</p>
+                      </Card>
+                    </StaggerItem>
                   ))}
-                </div>
+                </StaggerContainer>
               ) : (
                 <p className="mt-3 text-sm text-zinc-500">No reviews yet. Be the first!</p>
               )}
             </div>
+          </FadeInUp>
 
-            {agent.atlas_compatible && (
-              <div className="mt-8 rounded-xl border border-blue-500/20 bg-blue-500/5 p-6">
-                <h3 className="font-semibold text-blue-400">This agent works with Atlas</h3>
-                <p className="mt-2 text-sm text-zinc-400">
-                  Purchase this agent and upgrade to Atlas to have it run autonomously 24/7 — no prompts needed.
-                </p>
-                <Link href="/atlas" className="mt-3 inline-block text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors">
-                  Learn about Atlas →
-                </Link>
+          {agent.atlas_compatible && (
+            <FadeInUp delay={0.25}>
+              <div className="mt-8">
+                <AtlasCta variant="inline" />
               </div>
-            )}
-          </div>
+            </FadeInUp>
+          )}
+        </div>
 
-          {/* Sidebar — Purchase Card */}
-          <div>
-            <div className="sticky top-24 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+        {/* Sidebar */}
+        <div>
+          <FadeIn className="sticky top-24">
+            <Card className="p-6">
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold">
                   {agent.price === 0 ? "Free" : `$${agent.price}`}
                 </span>
                 {agent.original_price > 0 && agent.price > 0 && (
                   <>
-                    <span className="text-lg text-zinc-500 line-through">${agent.original_price}</span>
-                    <span className="rounded-full bg-green-500/10 px-2 py-0.5 text-xs font-medium text-green-400">
-                      {discount}% off
+                    <span className="text-lg text-zinc-500 line-through">
+                      ${agent.original_price}
                     </span>
+                    <Badge variant="success">{discount}% off</Badge>
                   </>
                 )}
               </div>
               {agent.price_type === "lifetime" && agent.price > 0 && (
-                <p className="mt-1 text-xs text-zinc-500">One-time payment. Lifetime access.</p>
+                <p className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
+                  <Zap size={12} />
+                  One-time payment. Lifetime access.
+                </p>
               )}
 
-              {purchased ? (
-                <div className="mt-4 w-full rounded-full bg-green-500/20 py-3 text-center font-medium text-green-400">
-                  Purchased!
-                </div>
-              ) : (
-                <button
-                  onClick={handleBuy}
-                  disabled={purchasing}
-                  className="mt-4 w-full rounded-full bg-orange-500 py-3 font-medium text-white hover:bg-orange-400 transition-colors disabled:opacity-50"
-                >
-                  {purchasing ? "Processing..." : agent.price === 0 ? "Get for Free" : "Buy Now"}
-                </button>
-              )}
+              <div className="mt-4">
+                {purchased ? (
+                  <div className="w-full rounded-full bg-green-500/20 py-3 text-center font-medium text-green-400">
+                    Purchased!
+                  </div>
+                ) : (
+                  <Button
+                    variant="primary"
+                    size="lg"
+                    loading={purchasing}
+                    onClick={handleBuy}
+                    className="w-full"
+                  >
+                    {agent.price === 0 ? "Get for Free" : "Buy Now"}
+                  </Button>
+                )}
+              </div>
 
               {agent.demo_url && (
                 <a
                   href={agent.demo_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 block w-full rounded-full border border-zinc-700 py-3 text-center text-sm font-medium hover:bg-zinc-800 transition-colors"
                 >
-                  Try Demo on Telegram
+                  <Button variant="secondary" size="lg" className="mt-3 w-full">
+                    Try Demo
+                    <ExternalLink size={14} />
+                  </Button>
                 </a>
               )}
 
-              <div className="mt-6 space-y-3 border-t border-zinc-800 pt-4">
+              <div className="mt-6 space-y-3 border-t border-zinc-800/50 pt-4">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-500">Install type</span>
-                  <span className="uppercase text-xs">{agent.install_type}</span>
+                  <span className="text-xs uppercase">{agent.install_type}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-500">Category</span>
@@ -223,13 +262,11 @@ export default function AgentDetailPage() {
 
               <div className="mt-4 flex flex-wrap gap-1">
                 {agent.tags.map((tag) => (
-                  <span key={tag} className="rounded-full bg-zinc-800 px-2.5 py-0.5 text-[10px] text-zinc-400">
-                    {tag}
-                  </span>
+                  <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>
-            </div>
-          </div>
+            </Card>
+          </FadeIn>
         </div>
       </div>
     </div>
