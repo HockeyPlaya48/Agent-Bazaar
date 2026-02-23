@@ -2,35 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { ArrowUpDown } from "lucide-react";
-import { type AgentListingAPI } from "@/lib/api";
 import { AGENTS, CATEGORIES } from "@/lib/data";
 import { AgentCard } from "@/components/agent-card";
 import { CategoryFilter } from "@/components/category-filter";
 import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
-
-// Convert local data to API shape once at module level — no API call needed
-const ALL_AGENTS: AgentListingAPI[] = AGENTS.map((a) => ({
-  id: a.id,
-  name: a.name,
-  slug: a.slug,
-  description: a.description,
-  long_description: a.longDescription,
-  category: a.category,
-  price: a.price,
-  price_type: a.priceType,
-  original_price: a.originalPrice,
-  icon: a.icon,
-  screenshots: a.screenshots,
-  demo_url: a.demoUrl,
-  install_type: a.installType,
-  atlas_compatible: a.atlasCompatible,
-  developer_name: a.developerName,
-  rating: a.rating,
-  review_count: a.reviewCount,
-  sales_count: a.salesCount,
-  featured: a.featured,
-  tags: a.tags,
-}));
 
 export default function BrowseAgents() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -38,13 +13,13 @@ export default function BrowseAgents() {
 
   const agents = useMemo(() => {
     let filtered = selectedCategory
-      ? ALL_AGENTS.filter((a) => a.category === selectedCategory)
-      : ALL_AGENTS;
+      ? AGENTS.filter((a) => a.category === selectedCategory)
+      : [...AGENTS];
 
-    if (sortBy === "rating") filtered = [...filtered].sort((a, b) => b.rating - a.rating);
-    else if (sortBy === "price-low") filtered = [...filtered].sort((a, b) => a.price - b.price);
-    else if (sortBy === "price-high") filtered = [...filtered].sort((a, b) => b.price - a.price);
-    else filtered = [...filtered].sort((a, b) => b.sales_count - a.sales_count);
+    if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
+    else if (sortBy === "price-low") filtered.sort((a, b) => a.price - b.price);
+    else if (sortBy === "price-high") filtered.sort((a, b) => b.price - a.price);
+    else filtered.sort((a, b) => b.salesCount - a.salesCount);
 
     return filtered;
   }, [selectedCategory, sortBy]);

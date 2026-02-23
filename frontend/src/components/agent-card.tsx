@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { type AgentListingAPI } from "@/lib/api";
+import { type AgentListing } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/star-rating";
 
 interface AgentCardProps {
-  agent: AgentListingAPI;
+  agent: AgentListing;
 }
 
 export function AgentCard({ agent }: AgentCardProps) {
@@ -16,7 +16,7 @@ export function AgentCard({ agent }: AgentCardProps) {
       <div className="flex items-start justify-between">
         <span className="text-3xl">{agent.icon}</span>
         <div className="flex gap-1.5">
-          {agent.atlas_compatible && <Badge variant="atlas">Atlas</Badge>}
+          {agent.atlasCompatible && <Badge variant="atlas">Atlas</Badge>}
         </div>
       </div>
       <h3 className="mt-3 font-semibold transition-colors group-hover:text-orange-400">
@@ -26,24 +26,24 @@ export function AgentCard({ agent }: AgentCardProps) {
         {agent.description}
       </p>
       <div className="mt-3">
-        <StarRating rating={agent.rating} count={agent.review_count} />
+        <StarRating rating={agent.rating} count={agent.reviewCount} />
       </div>
       <div className="mt-2 flex items-baseline gap-2">
         <span className="font-bold">
           {agent.price === 0 ? "Free" : `$${agent.price}`}
         </span>
-        {agent.original_price > 0 && agent.price > 0 && (
+        {agent.originalPrice > 0 && agent.price > 0 && (
           <span className="text-xs text-zinc-500 line-through">
-            ${agent.original_price}
+            ${agent.originalPrice}
           </span>
         )}
-        {agent.price_type === "lifetime" && agent.price > 0 && (
+        {agent.priceType === "lifetime" && agent.price > 0 && (
           <Badge variant="success">/mo</Badge>
         )}
       </div>
       <p className="mt-1.5 text-[10px] text-zinc-600">
-        by {agent.developer_name} &middot;{" "}
-        {agent.sales_count.toLocaleString()} sales
+        by {agent.developerName} &middot;{" "}
+        {agent.salesCount.toLocaleString()} sales
       </p>
     </Link>
   );

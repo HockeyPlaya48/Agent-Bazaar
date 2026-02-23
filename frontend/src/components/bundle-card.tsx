@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { type BundleAPI } from "@/lib/api";
+import { type Bundle } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 interface BundleCardProps {
-  bundle: BundleAPI;
+  bundle: Bundle;
   compact?: boolean;
   onBuy?: (bundleId: string) => void;
   purchasing?: boolean;
@@ -21,7 +21,7 @@ export function BundleCard({
   purchased = false,
 }: BundleCardProps) {
   const discount = Math.round(
-    (1 - bundle.price / bundle.original_price) * 100
+    (1 - bundle.price / bundle.originalPrice) * 100
   );
 
   const content = (
@@ -42,7 +42,7 @@ export function BundleCard({
           ${bundle.price}
         </span>
         <span className="text-sm text-zinc-500 line-through">
-          ${bundle.original_price}
+          ${bundle.originalPrice}
         </span>
         <Badge variant="success">{discount}% off</Badge>
       </div>
@@ -58,14 +58,14 @@ export function BundleCard({
             >
               <span>{agent.icon}</span>
               <span>{agent.name}</span>
-              <span className="text-zinc-600">(${agent.original_price} value)</span>
+              <span className="text-zinc-600">(${agent.originalPrice} value)</span>
             </Link>
           ))}
         </div>
       )}
 
-      {bundle.atlas_hint && (
-        <p className="mt-3 text-xs text-blue-400">{bundle.atlas_hint}</p>
+      {bundle.atlasHint && (
+        <p className="mt-3 text-xs text-blue-400">{bundle.atlasHint}</p>
       )}
 
       {!compact && onBuy && (

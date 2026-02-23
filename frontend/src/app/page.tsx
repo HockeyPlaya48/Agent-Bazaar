@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Search, Rocket, Zap } from "lucide-react";
 import Link from "next/link";
-import { getAgents, getBundles, type AgentListingAPI, type BundleAPI } from "@/lib/api";
-import { CATEGORIES } from "@/lib/data";
+import { AGENTS, BUNDLES, CATEGORIES } from "@/lib/data";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { AgentCard } from "@/components/agent-card";
 import { BundleCard } from "@/components/bundle-card";
 import { SectionHeader } from "@/components/section-header";
@@ -15,59 +13,28 @@ import { CategoryFilter } from "@/components/category-filter";
 import { AtlasCta } from "@/components/atlas-cta";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 
+const featuredAgents = AGENTS.filter((a) => a.featured);
+
 export default function HomePage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [agents, setAgents] = useState<AgentListingAPI[]>([]);
-  const [bundles, setBundles] = useState<BundleAPI[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    Promise.all([getAgents(), getBundles()])
-      .then(([agentsData, bundlesData]) => {
-        setAgents(agentsData);
-        setBundles(bundlesData);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
-
-  const filteredAgents = agents.filter((agent) => {
-    const matchesSearch =
-      !search ||
-      agent.name.toLowerCase().includes(search.toLowerCase()) ||
-      agent.tags.some((t) => t.includes(search.toLowerCase()));
-    const matchesCategory =
-      !selectedCategory || agent.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const featuredAgents = agents.filter((a) => a.featured);
-
-  if (loading) {
-    return (
-      <div className="px-6 pt-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <Skeleton className="mx-auto h-8 w-48" />
-            <Skeleton className="mx-auto mt-6 h-16 w-96" />
-            <Skeleton className="mx-auto mt-4 h-12 w-full max-w-lg" />
-          </div>
-          <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <Skeleton key={i} className="h-56" />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const filteredAgents = useMemo(() => {
+    return AGENTS.filter((agent) => {
+      const matchesSearch =
+        !search ||
+        agent.name.toLowerCase().includes(search.toLowerCase()) ||
+        agent.tags.some((t) => t.includes(search.toLowerCase()));
+      const matchesCategory =
+        !selectedCategory || agent.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [search, selectedCategory]);
 
   return (
     <div>
       {/* Hero */}
       <section className="relative px-6 pt-16 pb-16">
-        {/* Radial glow */}
         <div className="pointer-events-none absolute inset-0 flex items-start justify-center">
           <div className="h-[500px] w-[800px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.08),transparent_70%)]" />
         </div>
@@ -81,15 +48,16 @@ export default function HomePage() {
 
           <FadeInUp delay={0.1}>
             <h1 className="mt-6 text-5xl font-bold leading-tight sm:text-7xl">
-              Your AI Workforce, Ready to Deploy.
+              Discover AI Agents.
               <br />
-              <span className="gradient-text-orange">One-Click Deploy.</span>
+              <span className="gradient-text-orange">Monthly Plans.</span>
             </h1>
           </FadeInUp>
 
           <FadeInUp delay={0.2}>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
-              Browse proven agents for marketing, dev, finance &amp; more. Deploy in minutes. No code required.
+              Browse pre-built AI agents for productivity, marketing, finance, and more.
+              Affordable monthly plans. No code. Deploy in minutes.
             </p>
           </FadeInUp>
 
@@ -179,7 +147,7 @@ export default function HomePage() {
       )}
 
       {/* Bundles */}
-      {!search && !selectedCategory && bundles.length > 0 && (
+      {!search && !selectedCategory && BUNDLES.length > 0 && (
         <section className="px-6 pb-12">
           <div className="mx-auto max-w-7xl">
             <SectionHeader
@@ -187,7 +155,7 @@ export default function HomePage() {
               action={{ label: "View All", href: "/bundles" }}
             />
             <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {bundles.map((bundle) => (
+              {BUNDLES.map((bundle) => (
                 <StaggerItem key={bundle.id}>
                   <BundleCard bundle={bundle} compact />
                 </StaggerItem>

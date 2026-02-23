@@ -1,28 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { getBundles, purchaseBundle, type BundleAPI } from "@/lib/api";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
+import { BUNDLES } from "@/lib/data";
 import { BundleCard } from "@/components/bundle-card";
 import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
 
 export default function BundlesPage() {
-  const [bundles, setBundles] = useState<BundleAPI[]>([]);
-  const [loading, setLoading] = useState(true);
   const [purchasingId, setPurchasingId] = useState<string | null>(null);
   const [purchasedIds, setPurchasedIds] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    getBundles()
-      .then(setBundles)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
 
   async function handleBuyBundle(bundleId: string) {
     setPurchasingId(bundleId);
     try {
-      await purchaseBundle(bundleId);
+      await new Promise((r) => setTimeout(r, 800));
       setPurchasedIds((prev) => new Set(prev).add(bundleId));
     } catch (err) {
       console.error(err);
@@ -41,26 +31,18 @@ export default function BundlesPage() {
         </p>
       </FadeInUp>
 
-      {loading ? (
-        <div className="mt-8 space-y-6">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <Skeleton key={i} className="h-64" />
-          ))}
-        </div>
-      ) : (
-        <StaggerContainer className="mt-8 space-y-6">
-          {bundles.map((bundle) => (
-            <StaggerItem key={bundle.id}>
-              <BundleCard
-                bundle={bundle}
-                onBuy={handleBuyBundle}
-                purchasing={purchasingId === bundle.id}
-                purchased={purchasedIds.has(bundle.id)}
-              />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-      )}
+      <StaggerContainer className="mt-8 space-y-6">
+        {BUNDLES.map((bundle) => (
+          <StaggerItem key={bundle.id}>
+            <BundleCard
+              bundle={bundle}
+              onBuy={handleBuyBundle}
+              purchasing={purchasingId === bundle.id}
+              purchased={purchasedIds.has(bundle.id)}
+            />
+          </StaggerItem>
+        ))}
+      </StaggerContainer>
     </div>
   );
 }
