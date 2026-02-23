@@ -1,3 +1,5 @@
+import { AGENTS, BUNDLES } from "./data";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
 
 async function fetchAPI<T>(path: string, options?: RequestInit): Promise<T> {
@@ -26,7 +28,39 @@ export async function getAgents(params?: {
   if (params?.sort) query.set("sort", params.sort);
   if (params?.search) query.set("search", params.search);
   const qs = query.toString();
-  return fetchAPI<AgentListingAPI[]>(`/agents${qs ? `?${qs}` : ""}`);
+  try {
+    return await fetchAPI<AgentListingAPI[]>(`/agents${qs ? `?${qs}` : ""}`);
+  } catch {
+    // Fallback to local data when API is unavailable (e.g. Vercel production)
+    let fallback: AgentListingAPI[] = AGENTS.map((a) => ({
+      id: a.id,
+      name: a.name,
+      slug: a.slug,
+      description: a.description,
+      long_description: a.longDescription,
+      category: a.category,
+      price: a.price,
+      price_type: a.priceType,
+      original_price: a.originalPrice,
+      icon: a.icon,
+      screenshots: a.screenshots,
+      demo_url: a.demoUrl,
+      install_type: a.installType,
+      atlas_compatible: a.atlasCompatible,
+      developer_name: a.developerName,
+      rating: a.rating,
+      review_count: a.reviewCount,
+      sales_count: a.salesCount,
+      featured: a.featured,
+      tags: a.tags,
+    }));
+    if (params?.category) fallback = fallback.filter((a) => a.category === params.category);
+    if (params?.search) {
+      const s = params.search.toLowerCase();
+      fallback = fallback.filter((a) => a.name.toLowerCase().includes(s) || a.tags.some((t) => t.includes(s)));
+    }
+    return fallback;
+  }
 }
 
 export async function getAgentBySlug(slug: string) {
@@ -36,7 +70,43 @@ export async function getAgentBySlug(slug: string) {
 // ---- Bundles ----
 
 export async function getBundles() {
-  return fetchAPI<BundleAPI[]>("/bundles");
+  try {
+    return await fetchAPI<BundleAPI[]>("/bundles");
+  } catch {
+    return BUNDLES.map((b) => ({
+      id: b.id,
+      name: b.name,
+      slug: b.slug,
+      description: b.description,
+      agents: b.agents.map((a) => ({
+        id: a.id,
+        name: a.name,
+        slug: a.slug,
+        description: a.description,
+        long_description: a.longDescription,
+        category: a.category,
+        price: a.price,
+        price_type: a.priceType,
+        original_price: a.originalPrice,
+        icon: a.icon,
+        screenshots: a.screenshots,
+        demo_url: a.demoUrl,
+        install_type: a.installType,
+        atlas_compatible: a.atlasCompatible,
+        developer_name: a.developerName,
+        rating: a.rating,
+        review_count: a.reviewCount,
+        sales_count: a.salesCount,
+        featured: a.featured,
+        tags: a.tags,
+      })),
+      price: b.price,
+      original_price: b.originalPrice,
+      category: b.category,
+      atlas_hint: b.atlasHint,
+      featured: b.featured,
+    })) as BundleAPI[];
+  }
 }
 
 export async function getBundleBySlug(slug: string) {

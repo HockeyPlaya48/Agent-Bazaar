@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, Rocket, Zap } from "lucide-react";
+import Link from "next/link";
 import { getAgents, getBundles, type AgentListingAPI, type BundleAPI } from "@/lib/api";
 import { CATEGORIES } from "@/lib/data";
 import { Input } from "@/components/ui/input";
@@ -80,16 +81,15 @@ export default function HomePage() {
 
           <FadeInUp delay={0.1}>
             <h1 className="mt-6 text-5xl font-bold leading-tight sm:text-7xl">
-              Discover AI Agents.
+              Your AI Workforce, Ready to Deploy.
               <br />
-              <span className="gradient-text-orange">Monthly Plans.</span>
+              <span className="gradient-text-orange">One-Click Deploy.</span>
             </h1>
           </FadeInUp>
 
           <FadeInUp delay={0.2}>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
-              Browse pre-built AI agents for productivity, marketing, finance, and
-              more. Affordable monthly plans. No code. Deploy in minutes.
+              Browse proven agents for marketing, dev, finance &amp; more. Deploy in minutes. No code required.
             </p>
           </FadeInUp>
 
@@ -105,6 +105,49 @@ export default function HomePage() {
               />
             </div>
           </FadeInUp>
+
+          <FadeInUp delay={0.4}>
+            <div className="mx-auto mt-8 flex max-w-md justify-center gap-8">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white">180+</p>
+                <p className="text-sm text-zinc-500">Agents</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white">12k+</p>
+                <p className="text-sm text-zinc-500">Deployments</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white">4.7★</p>
+                <p className="text-sm text-zinc-500">Avg Rating</p>
+              </div>
+            </div>
+          </FadeInUp>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="px-6 pb-12">
+        <div className="mx-auto max-w-4xl">
+          <FadeInUp>
+            <h2 className="mb-8 text-center text-2xl font-bold text-white">How It Works</h2>
+          </FadeInUp>
+          <div className="grid gap-6 sm:grid-cols-3">
+            {[
+              { icon: <Search size={28} />, title: "Browse", desc: "Find the perfect agent for your use case" },
+              { icon: <Rocket size={28} />, title: "Deploy", desc: "One-click setup, no code required" },
+              { icon: <Zap size={28} />, title: "Automate", desc: "Your agent works 24/7 while you grow" },
+            ].map((step, i) => (
+              <FadeInUp key={step.title} delay={i * 0.1}>
+                <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-center">
+                  <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-800 text-orange-400">
+                    {step.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">{step.title}</h3>
+                  <p className="mt-1 text-sm text-zinc-400">{step.desc}</p>
+                </div>
+              </FadeInUp>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -190,6 +233,26 @@ export default function HomePage() {
         <div className="mx-auto max-w-4xl">
           <FadeInUp>
             <AtlasCta />
+          </FadeInUp>
+        </div>
+      </section>
+
+      {/* Creator CTA */}
+      <section className="px-6 pb-16">
+        <div className="mx-auto max-w-4xl">
+          <FadeInUp>
+            <div className="rounded-2xl border border-transparent bg-zinc-900 p-8 text-center" style={{ borderImage: "linear-gradient(135deg, #f97316, #a855f7) 1" }}>
+              <h2 className="text-3xl font-bold text-white">Built an AI Agent? Sell It Here.</h2>
+              <p className="mx-auto mt-3 max-w-lg text-zinc-400">
+                Join 50+ creators earning passive income. Keep 80% of every sale.
+              </p>
+              <Link
+                href="/dev"
+                className="mt-6 inline-block rounded-full bg-gradient-to-r from-orange-500 to-purple-500 px-8 py-3 font-semibold text-white transition hover:opacity-90"
+              >
+                Become a Creator
+              </Link>
+            </div>
           </FadeInUp>
         </div>
       </section>
