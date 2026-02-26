@@ -1,55 +1,43 @@
-export type Category =
-  | "productivity"
-  | "marketing"
-  | "personal"
-  | "ecommerce"
-  | "dev-tools"
-  | "finance";
+export type CapabilityType = "api" | "cli" | "skill";
 
-export type PriceType = "lifetime" | "monthly" | "free";
-export type InstallType = "api" | "telegram" | "zapier" | "nocode" | "custom";
+export type CapabilityCategory =
+  | "code-generation"
+  | "image-generation"
+  | "data-analysis"
+  | "content-writing"
+  | "web-scraping"
+  | "trading"
+  | "research"
+  | "automation";
 
-export interface AgentListing {
+export interface Capability {
   id: string;
   name: string;
   slug: string;
   description: string;
   longDescription: string;
-  category: Category;
-  price: number;
-  priceType: PriceType;
-  originalPrice: number;
+  type: CapabilityType;
+  category: CapabilityCategory;
+  pricePerCall: number;
+  x402Endpoint: string;
   icon: string;
-  screenshots: string[];
-  demoUrl: string;
-  installType: InstallType;
-  atlasCompatible: boolean;
-  developerName: string;
   rating: number;
-  reviewCount: number;
-  salesCount: number;
+  usageCount: number;
   featured: boolean;
   tags: string[];
-}
-
-export interface Bundle {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  agents: AgentListing[];
-  price: number;
-  originalPrice: number;
-  category: string;
-  atlasHint: string;
-  featured: boolean;
+  creatorName: string;
 }
 
 export interface Review {
   id: string;
-  agentId: string;
+  capabilityId: string;
   userName: string;
   rating: number;
   comment: string;
   date: string;
 }
+
+// Legacy compat
+export type Category = CapabilityCategory;
+export type AgentListing = Capability;
+export type Bundle = never;
