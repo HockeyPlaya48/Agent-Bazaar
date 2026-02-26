@@ -1,5 +1,7 @@
 import { CAPABILITIES } from "./data";
 
+// Registry URL (x402 registry) takes priority, falls back to legacy backend
+const REGISTRY_BASE = process.env.NEXT_PUBLIC_REGISTRY_URL || "http://localhost:4002";
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api";
 
 async function fetchAPI<T>(path: string, options?: RequestInit): Promise<T> {
@@ -28,6 +30,16 @@ export async function getCapabilities(params?: {
   if (params?.type) query.set("type", params.type);
   if (params?.search) query.set("search", params.search);
   const qs = query.toString();
+
+  // Try x402 registry first, then legacy backend, then local data
+  try {
+    const res = await fetch(`${REGISTRY_BASE}/api/capabilities${qs ? `?${qs}` : ""}`);
+    if (res.ok) {
+      const data = await res.json();
+      return data.map(registryToAPI);
+    }
+  } catch { /* registry unavailable */ }
+
   try {
     return await fetchAPI<CapabilityAPI[]>(`/capabilities${qs ? `?${qs}` : ""}`);
   } catch {
@@ -76,6 +88,28 @@ export async function submitCapability(capability: CapabilitySubmitAPI) {
     method: "POST",
     body: JSON.stringify(capability),
   });
+}
+
+// ---- Registry → API adapter ----
+
+function registryToAPI(c: any): CapabilityAPI {
+  return {
+    id: c.id,
+    name: c.name,
+    slug: c.slug,
+    description: c.description,
+    long_description: c.longDescription || c.long_description || "",
+    type: c.type,
+    category: c.category,
+    price_per_call: c.pricePerCall ?? c.price_per_call ?? 0,
+    x402_endpoint: c.x402Endpoint ?? c.x402_endpoint ?? "",
+    icon: c.icon || "🔧",
+    rating: c.rating || 0,
+    usage_count: c.usageCount ?? c.usage_count ?? 0,
+    featured: c.featured || false,
+    tags: c.tags || [],
+    creator_name: c.creatorName ?? c.creator_name ?? "Unknown",
+  };
 }
 
 // ---- Helpers ----

@@ -1,0 +1,18 @@
+{
+  "name": "@agent-bazaar/x402-sdk",
+  "version": "0.1.0",
+  "description": "x402 payment protocol SDK for Agent Bazaar — middleware for providers, client for agents",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": ["x402", "agent", "payment", "middleware", "bazaar"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0"
+  }
+}
