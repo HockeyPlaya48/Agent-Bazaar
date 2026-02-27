@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: "/agents", label: "Browse Skills" },
   { href: "/bundles", label: "Skill Packs" },
   { href: "/atlas", label: "Agent Shopping" },
+  { href: "/demo", label: "Demo" },
   { href: "/dev", label: "List a Skill" },
 ];
 
@@ -36,7 +37,13 @@ export function NavBar() {
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/try"
+            className="hidden rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400 transition-all hover:bg-orange-500/20 hover:shadow-[0_0_20px_rgba(249,115,22,0.2)] sm:block"
+          >
+            Get Started
+          </Link>
           <Link
             href="/dashboard"
             className="hidden rounded-full bg-white px-4 py-2 text-sm font-medium text-zinc-950 transition-all hover:bg-zinc-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] sm:block"
@@ -70,9 +77,16 @@ export function NavBar() {
               </Link>
             ))}
             <Link
+              href="/try"
+              onClick={() => setOpen(false)}
+              className="mt-2 rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-2.5 text-center text-sm font-medium text-orange-400"
+            >
+              Get Started
+            </Link>
+            <Link
               href="/dashboard"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-white px-4 py-2.5 text-center text-sm font-medium text-zinc-950"
+              className="rounded-full bg-white px-4 py-2.5 text-center text-sm font-medium text-zinc-950"
             >
               Sign In
             </Link>
