@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Menu, X, Sparkles } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/agents", label: "Browse" },
-  { href: "/bundles", label: "Bundles" },
+  { href: "/agents", label: "Browse Skills" },
+  { href: "/bundles", label: "Skill Packs" },
   { href: "/dev", label: "For Developers" },
 ];
 

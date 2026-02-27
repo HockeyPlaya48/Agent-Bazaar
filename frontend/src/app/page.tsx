@@ -46,21 +46,21 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-4xl text-center">
           <FadeInUp>
             <Badge variant="deal" className="px-4 py-1.5 text-sm">
-              x402-enabled · Agent-native
+              Deal Marketplace for Agent Skills
             </Badge>
           </FadeInUp>
 
           <FadeInUp delay={0.1}>
             <h1 className="mt-6 text-5xl font-bold leading-tight tracking-tight sm:text-7xl">
-              The Capabilities Marketplace
+              Discover Agent Skills.
               <br />
-              <span className="gradient-text-orange">for Humans & Agents</span>
+              <span className="gradient-text-orange">Pay Per Use.</span>
             </h1>
           </FadeInUp>
 
           <FadeInUp delay={0.2}>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
-              Discover, purchase, and deploy AI capabilities. API endpoints, CLI tools, and agent skills — all pay-per-use via x402. Your agents can shop here too.
+              APIs, CLI tools, and agent skills for every workflow — all x402-enabled. Humans browse, agents shop autonomously. Developers earn from every call.
             </p>
           </FadeInUp>
 
@@ -70,7 +70,7 @@ export default function HomePage() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search capabilities (e.g., code review, image gen, scraping)..."
+                placeholder="Search skills (e.g., code review, image gen, trading bot)..."
                 icon={<Search size={18} />}
                 className="rounded-full py-3.5"
               />
@@ -81,15 +81,15 @@ export default function HomePage() {
             <div className="mx-auto mt-8 flex max-w-md justify-center gap-8">
               <div className="text-center">
                 <p className="text-2xl font-bold text-white">200+</p>
-                <p className="text-sm text-zinc-500">Capabilities</p>
+                <p className="text-sm text-zinc-500">Skills Listed</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-white">4.8M+</p>
-                <p className="text-sm text-zinc-500">API Calls</p>
+                <p className="text-sm text-zinc-500">Skill Calls</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-white">x402</p>
-                <p className="text-sm text-zinc-500">Payment Rail</p>
+                <p className="text-sm text-zinc-500">Agent Payment Rail</p>
               </div>
             </div>
           </FadeInUp>
@@ -104,9 +104,9 @@ export default function HomePage() {
           </FadeInUp>
           <div className="grid gap-6 sm:grid-cols-3">
             {[
-              { icon: <Search size={28} />, title: "Browse Capabilities", desc: "Find API endpoints, CLI tools, and agent skills for any task" },
-              { icon: <CreditCard size={28} />, title: "Pay via x402", desc: "Pay-per-use. No subscriptions. Agents pay agents automatically." },
-              { icon: <Rocket size={28} />, title: "Deploy Instantly", desc: "One call to integrate. Or let our AI agent shop for you." },
+              { icon: <Search size={28} />, title: "Browse Skills", desc: "Find APIs, CLI tools, and agent skills for any task or workflow" },
+              { icon: <CreditCard size={28} />, title: "Pay via x402", desc: "Pay-per-use. No subscriptions. Agents pay autonomously via x402." },
+              { icon: <Rocket size={28} />, title: "Deploy Instantly", desc: "One call to integrate. Or let our AI agent shop skills for you." },
             ].map((step, i) => (
               <FadeInUp key={step.title} delay={i * 0.1}>
                 <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center">
@@ -161,7 +161,7 @@ export default function HomePage() {
       {!search && !selectedCategory && !selectedType && featuredCapabilities.length > 0 && (
         <section className="px-6 pb-12">
           <div className="mx-auto max-w-7xl">
-            <SectionHeader title="Featured Capabilities" />
+            <SectionHeader title="Featured Skills" />
             <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {featuredCapabilities.map((cap) => (
                 <StaggerItem key={cap.id}>
@@ -185,9 +185,9 @@ export default function HomePage() {
                     <Bot size={32} />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">Let Our AI Find the Right Capabilities for You</h2>
+                    <h2 className="text-2xl font-bold text-white">Let Our AI Find the Right Skills for You</h2>
                     <p className="mt-2 max-w-xl text-zinc-400">
-                      Describe what you're building. Our built-in agent will browse the marketplace, compare options, and recommend the best capabilities — or purchase them on your behalf via x402.
+                      Describe what you're building. Our built-in agent will browse the marketplace, compare options, and recommend the best skills — or purchase them on your behalf via x402.
                     </p>
                     <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
                       <Zap size={16} /> Start Agent Shopping
@@ -208,8 +208,8 @@ export default function HomePage() {
               search
                 ? `Results for "${search}"`
                 : selectedCategory
-                ? CATEGORIES.find((c) => c.value === selectedCategory)?.label || "Capabilities"
-                : "All Capabilities"
+                ? CATEGORIES.find((c) => c.value === selectedCategory)?.label || "Skills"
+                : "All Skills"
             }
           />
           <StaggerContainer
@@ -224,7 +224,7 @@ export default function HomePage() {
           </StaggerContainer>
           {filtered.length === 0 && (
             <p className="py-12 text-center text-zinc-500">
-              No capabilities found. Try a different search or category.
+              No skills found. Try a different search or category.
             </p>
           )}
         </div>
@@ -235,8 +235,8 @@ export default function HomePage() {
         <section className="px-6 pb-12">
           <div className="mx-auto max-w-5xl">
             <FadeInUp>
-              <h2 className="mb-2 text-center text-2xl font-bold text-white">Promote Your Capability</h2>
-              <p className="mb-8 text-center text-zinc-400">Get discovered faster. Only capabilities with 4.0+ rating qualify.</p>
+              <h2 className="mb-2 text-center text-2xl font-bold text-white">Promote Your Skill</h2>
+              <p className="mb-8 text-center text-zinc-400">Get discovered faster. Only skills with 4.0+ rating qualify for promoted tiers.</p>
             </FadeInUp>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
@@ -244,7 +244,7 @@ export default function HomePage() {
                   tier: "Free",
                   price: "$0",
                   period: "forever",
-                  features: ["Listed in marketplace", "Searchable by agents & humans", "Basic analytics", "x402 payment rail included"],
+                  features: ["Listed in Skills marketplace", "Searchable by agents & humans", "Basic analytics", "x402 payment rail included"],
                   border: "border-zinc-800",
                   badge: "",
                 },
@@ -304,13 +304,13 @@ export default function HomePage() {
                 Built an API? A CLI Tool? An Agent Skill?
               </h2>
               <p className="mx-auto mt-3 max-w-lg text-zinc-400">
-                List your capability on Agent Bazaar. Set your price, get an x402 endpoint, and start earning from every call — human or agent.
+                List your skill on Agent Bazaar. Set your price, get an x402 endpoint, and start earning from every call — human or agent.
               </p>
               <Link
                 href="/dev"
                 className="mt-6 inline-block rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-3 font-semibold text-white transition hover:opacity-90"
               >
-                List a Capability
+                List a Skill
               </Link>
             </div>
           </FadeInUp>

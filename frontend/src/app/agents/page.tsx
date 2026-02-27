@@ -2,24 +2,32 @@
 
 import { useState, useMemo } from "react";
 import { ArrowUpDown } from "lucide-react";
-import { AGENTS, CATEGORIES } from "@/lib/data";
-import { AgentCard } from "@/components/agent-card";
+import { CAPABILITIES, CATEGORIES } from "@/lib/data";
+import { CapabilityCard } from "@/components/capability-card";
 import { CategoryFilter } from "@/components/category-filter";
 import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
 
-export default function BrowseAgents() {
+export default function BrowseSkills() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>("popular");
 
-  const agents = useMemo(() => {
+  const skills = useMemo(() => {
     let filtered = selectedCategory
-      ? AGENTS.filter((a) => a.category === selectedCategory)
-      : [...AGENTS];
+      ? CAPABILITIES.filter((a) => a.category === selectedCategory)
+      : [...CAPABILITIES];
 
     if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
-    else if (sortBy === "price-low") filtered.sort((a, b) => a.price - b.price);
-    else if (sortBy === "price-high") filtered.sort((a, b) => b.price - a.price);
-    else filtered.sort((a, b) => b.salesCount - a.salesCount);
+    else if (sortBy === "price-low") filtered.sort((a, b) => a.pricePerCall - b.pricePerCall);
+    else if (sortBy === "price-high") filtered.sort((a, b) => b.pricePerCall - a.pricePerCall);
+    else {
+      const tierOrder = { spotlight: 0, featured: 1, free: 2 };
+      filtered.sort((a, b) => {
+        const ta = tierOrder[a.listingTier || "free"] ?? 2;
+        const tb = tierOrder[b.listingTier || "free"] ?? 2;
+        if (ta !== tb) return ta - tb;
+        return b.usageCount - a.usageCount;
+      });
+    }
 
     return filtered;
   }, [selectedCategory, sortBy]);
@@ -27,8 +35,8 @@ export default function BrowseAgents() {
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
       <FadeInUp>
-        <h1 className="text-3xl font-bold">Browse Agents</h1>
-        <p className="mt-1 text-zinc-400">Discover AI agents for every workflow</p>
+        <h1 className="text-3xl font-bold">Browse Skills</h1>
+        <p className="mt-1 text-zinc-400">APIs, CLI tools, and agent skills — x402-enabled, pay per use</p>
       </FadeInUp>
 
       <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -52,22 +60,22 @@ export default function BrowseAgents() {
         </div>
       </div>
 
-      <p className="mt-6 text-sm text-zinc-500">{agents.length} agents found</p>
+      <p className="mt-6 text-sm text-zinc-500">{skills.length} skills found</p>
 
       <StaggerContainer
         key={`${selectedCategory}-${sortBy}`}
         className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        {agents.map((agent) => (
-          <StaggerItem key={agent.id}>
-            <AgentCard agent={agent} />
+        {skills.map((skill) => (
+          <StaggerItem key={skill.id}>
+            <CapabilityCard capability={skill} />
           </StaggerItem>
         ))}
       </StaggerContainer>
 
-      {agents.length === 0 && (
+      {skills.length === 0 && (
         <p className="py-12 text-center text-zinc-500">
-          No agents found. Try a different category.
+          No skills found. Try a different category.
         </p>
       )}
     </div>
