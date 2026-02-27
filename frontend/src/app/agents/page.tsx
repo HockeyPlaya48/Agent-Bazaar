@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ArrowUpDown } from "lucide-react";
-import { CAPABILITIES, CATEGORIES } from "@/lib/data";
+import { CATEGORIES } from "@/lib/data";
+import { getCapabilities, apiToCapability } from "@/lib/api";
+import { Capability } from "@/types";
 import { CapabilityCard } from "@/components/capability-card";
 import { CategoryFilter } from "@/components/category-filter";
 import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
@@ -10,11 +12,30 @@ import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
 export default function BrowseSkills() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>("popular");
+  const [capabilities, setCapabilities] = useState<Capability[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCapabilities() {
+      try {
+        setLoading(true);
+        const apiCapabilities = await getCapabilities();
+        const mappedCapabilities = apiCapabilities.map(apiToCapability);
+        setCapabilities(mappedCapabilities);
+      } catch (error) {
+        console.error("Failed to fetch capabilities:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchCapabilities();
+  }, []);
 
   const skills = useMemo(() => {
     let filtered = selectedCategory
-      ? CAPABILITIES.filter((a) => a.category === selectedCategory)
-      : [...CAPABILITIES];
+      ? capabilities.filter((a) => a.category === selectedCategory)
+      : [...capabilities];
 
     if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
     else if (sortBy === "price-low") filtered.sort((a, b) => a.pricePerCall - b.pricePerCall);
@@ -30,7 +51,7 @@ export default function BrowseSkills() {
     }
 
     return filtered;
-  }, [selectedCategory, sortBy]);
+  }, [selectedCategory, sortBy, capabilities]);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -60,20 +81,37 @@ export default function BrowseSkills() {
         </div>
       </div>
 
-      <p className="mt-6 text-sm text-zinc-500">{skills.length} skills found</p>
+      <p className="mt-6 text-sm text-zinc-500">
+        {loading ? "Loading..." : `${skills.length} skills found`}
+      </p>
 
-      <StaggerContainer
-        key={`${selectedCategory}-${sortBy}`}
-        className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
-        {skills.map((skill) => (
-          <StaggerItem key={skill.id}>
-            <CapabilityCard capability={skill} />
-          </StaggerItem>
-        ))}
-      </StaggerContainer>
+      {loading ? (
+        /* Loading Skeleton */
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 animate-pulse">
+              <div className="h-8 w-8 bg-zinc-700 rounded-full mb-3"></div>
+              <div className="h-5 bg-zinc-700 rounded mb-2"></div>
+              <div className="h-4 bg-zinc-700 rounded mb-4 w-3/4"></div>
+              <div className="h-4 bg-zinc-700 rounded mb-2"></div>
+              <div className="h-4 bg-zinc-700 rounded w-1/2"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <StaggerContainer
+          key={`${selectedCategory}-${sortBy}`}
+          className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          {skills.map((skill) => (
+            <StaggerItem key={skill.id}>
+              <CapabilityCard capability={skill} />
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      )}
 
-      {skills.length === 0 && (
+      {!loading && skills.length === 0 && (
         <p className="py-12 text-center text-zinc-500">
           No skills found. Try a different category.
         </p>

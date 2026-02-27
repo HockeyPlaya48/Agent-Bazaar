@@ -134,6 +134,29 @@ function toAPI(c: (typeof CAPABILITIES)[number]): CapabilityAPI {
   };
 }
 
+// ---- API to Capability mapper ----
+
+export function apiToCapability(c: CapabilityAPI): import('@/types').Capability {
+  return {
+    id: c.id,
+    name: c.name,
+    slug: c.slug,
+    description: c.description,
+    longDescription: c.long_description,
+    type: c.type as import('@/types').CapabilityType,
+    category: c.category as import('@/types').CapabilityCategory,
+    pricePerCall: c.price_per_call,
+    x402Endpoint: c.x402_endpoint,
+    icon: c.icon,
+    rating: c.rating,
+    usageCount: c.usage_count,
+    featured: c.featured,
+    tags: c.tags,
+    creatorName: c.creator_name,
+    listingTier: 'free', // Default to free tier, could be enhanced based on API data
+  };
+}
+
 // ---- Legacy aliases (for pages that pre-date the capability rename) ----
 
 export const getAgentBySlug = getCapabilityBySlug;

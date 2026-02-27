@@ -1,9 +1,11 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Search, Zap, CreditCard, Rocket, Bot, Terminal, Globe, Cpu } from "lucide-react";
 import Link from "next/link";
-import { CAPABILITIES, CATEGORIES } from "@/lib/data";
+import { CATEGORIES } from "@/lib/data";
+import { getCapabilities, apiToCapability } from "@/lib/api";
+import { Capability } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { CapabilityCard } from "@/components/capability-card";
@@ -11,16 +13,38 @@ import { SectionHeader } from "@/components/section-header";
 import { CategoryFilter } from "@/components/category-filter";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 
-const featuredCapabilities = CAPABILITIES.filter((c) => c.featured);
-
 export default function HomePage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [capabilities, setCapabilities] = useState<Capability[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchCapabilities() {
+      try {
+        setLoading(true);
+        const apiCapabilities = await getCapabilities();
+        const mappedCapabilities = apiCapabilities.map(apiToCapability);
+        setCapabilities(mappedCapabilities);
+      } catch (error) {
+        console.error("Failed to fetch capabilities:", error);
+        // Could show error state or fallback to empty array
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchCapabilities();
+  }, []);
+
+  const featuredCapabilities = useMemo(() => {
+    return capabilities.filter((c) => c.featured);
+  }, [capabilities]);
 
   const filtered = useMemo(() => {
     const tierOrder = { spotlight: 0, featured: 1, free: 2, undefined: 2 };
-    return CAPABILITIES.filter((cap) => {
+    return capabilities.filter((cap) => {
       const matchesSearch =
         !search ||
         cap.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -33,7 +57,7 @@ export default function HomePage() {
       const tb = tierOrder[b.listingTier || "free"] ?? 2;
       return ta - tb;
     });
-  }, [search, selectedCategory, selectedType]);
+  }, [search, selectedCategory, selectedType, capabilities]);
 
   return (
     <div>
@@ -158,7 +182,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Capabilities */}
-      {!search && !selectedCategory && !selectedType && featuredCapabilities.length > 0 && (
+      {!search && !selectedCategory && !selectedType && !loading && featuredCapabilities.length > 0 && (
         <section className="px-6 pb-12">
           <div className="mx-auto max-w-7xl">
             <SectionHeader title="Featured Skills" />
@@ -212,17 +236,34 @@ export default function HomePage() {
                 : "All Skills"
             }
           />
-          <StaggerContainer
-            key={`${search}-${selectedCategory}-${selectedType}`}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          >
-            {filtered.map((cap) => (
-              <StaggerItem key={cap.id}>
-                <CapabilityCard capability={cap} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-          {filtered.length === 0 && (
+          
+          {loading ? (
+            /* Loading Skeleton */
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 animate-pulse">
+                  <div className="h-8 w-8 bg-zinc-700 rounded-full mb-3"></div>
+                  <div className="h-5 bg-zinc-700 rounded mb-2"></div>
+                  <div className="h-4 bg-zinc-700 rounded mb-4 w-3/4"></div>
+                  <div className="h-4 bg-zinc-700 rounded mb-2"></div>
+                  <div className="h-4 bg-zinc-700 rounded w-1/2"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <StaggerContainer
+              key={`${search}-${selectedCategory}-${selectedType}`}
+              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            >
+              {filtered.map((cap) => (
+                <StaggerItem key={cap.id}>
+                  <CapabilityCard capability={cap} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          )}
+          
+          {!loading && filtered.length === 0 && (
             <p className="py-12 text-center text-zinc-500">
               No skills found. Try a different search or category.
             </p>
