@@ -69,7 +69,7 @@ export default function ListCapabilityPage() {
       {/* Form */}
       <FadeIn>
         <form onSubmit={handleSubmit} className="mt-10">
-          <h2 className="text-lg font-semibold">Capability Details</h2>
+          <h2 className="text-lg font-semibold">Skill Details</h2>
           <p className="mt-1 text-sm text-zinc-400">
             Fill in the details. Submissions are reviewed within 48 hours.
           </p>
@@ -77,13 +77,13 @@ export default function ListCapabilityPage() {
           {submitSuccess && (
             <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-500/20 bg-green-500/5 p-4 text-sm text-green-400">
               <CheckCircle size={18} />
-              Capability submitted successfully! It will appear after review.
+              Skill submitted successfully! It will appear after review.
             </div>
           )}
 
           <div className="mt-6 space-y-4">
             <Input
-              label="Capability Name"
+              label="Skill Name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="e.g., GPT-4 Code Review API"
