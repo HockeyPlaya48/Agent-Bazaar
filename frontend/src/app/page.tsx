@@ -30,45 +30,54 @@ export default function HomePage() {
     
     try {
       setShopLoading(true);
-      const response = await agentShop(shopQuery);
+      // Call our Next.js API route directly (works on Vercel)
+      const res = await fetch("/api/agent-shop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: shopQuery }),
+      });
+      const response = await res.json();
       
-      // Convert the API response format to what we expect
-      const mappedRecommendations = response.recommendations.map((rec: any) => 
-        apiToCapability({
+      // Map recommendations back to Capability type
+      const mappedRecommendations = (response.recommendations || []).map((rec: any) => {
+        const cap = CAPABILITIES.find(c => c.slug === rec.capability.slug);
+        return cap || {
           id: rec.capability.id,
           name: rec.capability.name,
           slug: rec.capability.slug,
           description: rec.capability.description,
-          long_description: rec.capability.description,
+          longDescription: rec.capability.description,
           type: rec.capability.type,
-          category: rec.capability.category || 'automation',
-          price_per_call: rec.capability.pricePerCall,
-          x402_endpoint: rec.capability.x402Endpoint || '',
-          icon: '🔧',
+          category: rec.capability.category || "automation",
+          pricePerCall: rec.capability.pricePerCall,
+          x402Endpoint: rec.capability.x402Endpoint || "",
+          icon: rec.capability.icon || "🔧",
           rating: rec.capability.rating,
-          usage_count: rec.capability.usageCount,
+          usageCount: rec.capability.usageCount,
           featured: false,
           tags: [],
-          creator_name: 'Agent Bazaar',
-        })
-      );
+          creatorName: "Agent Bazaar",
+        };
+      });
       
       setShopResults({
         recommendations: mappedRecommendations,
-        reasoning: response.suggestion || `Based on your query "${shopQuery}", here are the recommended skills:`
+        reasoning: response.suggestion || `Based on your query "${shopQuery}", here are the recommended skills:`,
       });
     } catch (error) {
       console.error("Agent shop failed:", error);
-      // Fallback to simple search
+      // Fallback: search local data
       const searchResults = capabilities.filter(cap => 
         cap.name.toLowerCase().includes(shopQuery.toLowerCase()) ||
         cap.description.toLowerCase().includes(shopQuery.toLowerCase()) ||
         cap.tags.some(tag => tag.toLowerCase().includes(shopQuery.toLowerCase()))
-      ).slice(0, 3);
+      ).slice(0, 5);
       
       setShopResults({
-        recommendations: searchResults,
-        reasoning: `Based on your query "${shopQuery}", here are some relevant skills from our marketplace:`
+        recommendations: searchResults.length > 0 ? searchResults : CAPABILITIES.slice(0, 5),
+        reasoning: searchResults.length > 0
+          ? `Here are skills matching "${shopQuery}":`
+          : `Here are our most popular skills to get you started:`,
       });
     } finally {
       setShopLoading(false);

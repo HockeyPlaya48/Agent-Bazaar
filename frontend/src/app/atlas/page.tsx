@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Bot, Search, Zap, Send } from "lucide-react";
-import { agentShop, type CapabilityAPI } from "@/lib/api";
+import { type CapabilityAPI } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,36 +25,46 @@ export default function AtlasPage() {
     setResults(null);
     setReasoning("");
     try {
-      const data = await agentShop(query);
-      setResults(data.recommendations);
-      setReasoning(data.suggestion || "");
+      const res = await fetch("/api/agent-shop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      const data = await res.json();
+      // Map to CapabilityAPI format for display
+      const mapped = (data.recommendations || []).map((rec: any) => {
+        const cap = CAPABILITIES.find(c => c.slug === rec.capability.slug);
+        if (cap) {
+          return {
+            id: cap.id, name: cap.name, slug: cap.slug, description: cap.description,
+            long_description: cap.longDescription, type: cap.type, category: cap.category,
+            price_per_call: cap.pricePerCall, x402_endpoint: cap.x402Endpoint, icon: cap.icon,
+            rating: cap.rating, usage_count: cap.usageCount, featured: cap.featured,
+            tags: cap.tags, creator_name: cap.creatorName,
+          };
+        }
+        return {
+          id: rec.capability.id, name: rec.capability.name, slug: rec.capability.slug,
+          description: rec.capability.description, long_description: rec.capability.description,
+          type: rec.capability.type, category: rec.capability.category || "automation",
+          price_per_call: rec.capability.pricePerCall, x402_endpoint: rec.capability.x402Endpoint || "",
+          icon: rec.capability.icon || "🔧", rating: rec.capability.rating,
+          usage_count: rec.capability.usageCount, featured: false, tags: [], creator_name: "Agent Bazaar",
+        };
+      });
+      setResults(mapped);
+      setReasoning(data.suggestion || "Here are our recommendations:");
     } catch {
-      // Fallback: local fuzzy match
-      const q = query.toLowerCase();
-      const matched = CAPABILITIES.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q) ||
-          c.tags.some((t) => t.includes(q))
-      ).slice(0, 4);
-      setResults(matched.map((c) => ({
-        id: c.id,
-        name: c.name,
-        slug: c.slug,
-        description: c.description,
-        long_description: c.longDescription,
-        type: c.type,
-        category: c.category,
-        price_per_call: c.pricePerCall,
-        x402_endpoint: c.x402Endpoint,
-        icon: c.icon,
-        rating: c.rating,
-        usage_count: c.usageCount,
-        featured: c.featured,
-        tags: c.tags,
-        creator_name: c.creatorName,
-      })));
-      setReasoning("Here are the best matches from our marketplace based on your query.");
+      // Fallback: show popular skills
+      const fallback = CAPABILITIES.slice(0, 4).map((c) => ({
+        id: c.id, name: c.name, slug: c.slug, description: c.description,
+        long_description: c.longDescription, type: c.type, category: c.category,
+        price_per_call: c.pricePerCall, x402_endpoint: c.x402Endpoint, icon: c.icon,
+        rating: c.rating, usage_count: c.usageCount, featured: c.featured,
+        tags: c.tags, creator_name: c.creatorName,
+      }));
+      setResults(fallback);
+      setReasoning("Here are our most popular skills to get you started:");
     } finally {
       setLoading(false);
     }
