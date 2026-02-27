@@ -25,7 +25,8 @@ export default function SkillDetailPage() {
     getCapabilityBySlug(slug)
       .then((data) => {
         setSkill(data);
-        return getReviews(data.id);
+        // Reviews may fail (no backend) — that's fine
+        return getReviews(data.id).catch(() => []);
       })
       .then(setReviews)
       .catch(console.error)
