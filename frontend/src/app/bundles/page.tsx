@@ -7,13 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 
-// Curated capability bundles
+// Curated capability bundles using actual slugs from data.ts
 const BUNDLES = [
   {
     id: "b1",
     name: "Content Creator Pack",
     description: "Everything you need to create, optimize, and publish content at scale.",
-    capabilities: CAPABILITIES.filter((c) => ["blog-post-writer", "seo-analyzer", "dalle-image-gen"].includes(c.slug)),
+    capabilities: CAPABILITIES.filter((c) => ["blog-post-writer", "seo-analyzer", "dalle-image-gen", "web-scraper-api"].includes(c.slug)),
     discount: 0.30,
   },
   {
@@ -25,9 +25,9 @@ const BUNDLES = [
   },
   {
     id: "b3",
-    name: "Agent Starter Kit",
-    description: "Core skills every AI agent needs: memory, web search, scheduling, and email.",
-    capabilities: CAPABILITIES.filter((c) => ["memory-store-skill", "web-search-skill", "scheduler-skill", "email-composer-skill"].includes(c.slug)),
+    name: "Data & Research Pack",
+    description: "Research, analyze, and extract insights from any data source at scale.",
+    capabilities: CAPABILITIES.filter((c) => ["web-scraper-api", "csv-intelligence", "research-summarizer", "crypto-price-oracle"].includes(c.slug)),
     discount: 0.40,
   },
 ];

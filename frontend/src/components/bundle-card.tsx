@@ -64,9 +64,7 @@ export function BundleCard({
         </div>
       )}
 
-      {bundle.atlasHint && (
-        <p className="mt-3 text-xs text-blue-400">{bundle.atlasHint}</p>
-      )}
+      {/* Atlas references removed */}
 
       {!compact && onBuy && (
         <div className="mt-6 flex items-center gap-3">
@@ -87,7 +85,7 @@ export function BundleCard({
               Buy Bundle
             </Button>
           )}
-          <p className="text-xs text-zinc-500">Monthly subscription. Cancel anytime.</p>
+          <p className="text-xs text-zinc-500">Bundled rate per call. No subscription.</p>
         </div>
       )}
     </>

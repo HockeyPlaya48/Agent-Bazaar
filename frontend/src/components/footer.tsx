@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const PRODUCT_LINKS = [
-  { href: "/agents", label: "Browse Agents" },
-  { href: "/bundles", label: "Bundles" },
-  { href: "/atlas", label: "Atlas Beta" },
+  { href: "/agents", label: "Browse Skills" },
+  { href: "/bundles", label: "Skill Packs" },
+  { href: "/atlas", label: "Agent Shopping" },
 ];
 
 const COMPANY_LINKS = [
@@ -22,8 +22,8 @@ export function Footer() {
               Agent Bazaar
             </Link>
             <p className="mt-2 max-w-sm text-sm text-zinc-500">
-              The deal marketplace for AI agents. Monthly plans, bundles, and
-              one-click deploys. No code required.
+              The marketplace for agent skills and capabilities. APIs, CLI tools,
+              and agent skills — all x402-enabled. Pay per use.
             </p>
           </div>
 

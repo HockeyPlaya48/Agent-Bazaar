@@ -175,17 +175,29 @@ export default function SkillDetailPage() {
                 </span>
                 <span className="text-zinc-500 text-sm">per call</span>
               </div>
-              <p className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-zinc-500">
+                No subscription — pay only when your agents use this skill
+              </p>
+              <p className="flex items-center gap-1 text-xs text-green-400">
                 <Zap size={12} />
-                x402-enabled — agents pay automatically
+                x402-enabled — automatic agent payments
               </p>
 
-              <div className="mt-4">
+              <div className="mt-6 space-y-3">
                 <button
                   onClick={() => setShowModal(true)}
                   className="block w-full rounded-full bg-orange-500 py-3 text-center text-sm font-semibold text-white transition hover:bg-orange-600"
                 >
-                  Use This Skill
+                  Get This Skill
+                </button>
+                <button
+                  onClick={() => {
+                    // Simulate adding to dashboard
+                    alert('Skill activated! Added to your dashboard.');
+                  }}
+                  className="block w-full rounded-full border border-zinc-700 py-3 text-center text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800"
+                >
+                  Add to My Skills
                 </button>
               </div>
 

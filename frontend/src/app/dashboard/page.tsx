@@ -28,8 +28,13 @@ export default function DashboardPage() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-8">
       <FadeInUp>
-        <h1 className="text-2xl font-bold">Developer Dashboard</h1>
-        <p className="mt-1 text-zinc-400">Manage your listed capabilities and track performance.</p>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">Developer Dashboard</h1>
+          <Badge variant="deal">
+            Demo
+          </Badge>
+        </div>
+        <p className="mt-1 text-zinc-400">Manage your listed skills and track performance. This is a demo dashboard showing sample data.</p>
       </FadeInUp>
 
       {/* Stats */}
