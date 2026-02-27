@@ -18,6 +18,8 @@ export default function SkillDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [testResult, setTestResult] = useState<string | null>(null);
+  const [testing, setTesting] = useState(false);
 
   useEffect(() => {
     if (!params.slug) return;
@@ -243,6 +245,23 @@ export default function SkillDetailPage() {
               </div>
 
               <div className="mt-6 space-y-6">
+                {/* How x402 works */}
+                <div className="rounded-lg border border-orange-500/20 bg-orange-500/5 p-4">
+                  <h3 className="text-sm font-semibold text-orange-400 mb-2">💡 How x402 Pay-Per-Call Works</h3>
+                  <div className="text-sm text-zinc-300 space-y-1.5">
+                    <p>The endpoint is <strong>public</strong> — anyone can discover it. But every call requires automatic payment.</p>
+                    <p>When your agent calls the endpoint, x402 handles payment instantly:</p>
+                    <div className="mt-2 flex items-center gap-2 text-xs text-zinc-400">
+                      <span className="rounded bg-zinc-800 px-2 py-1">Agent calls endpoint</span>
+                      <span>→</span>
+                      <span className="rounded bg-zinc-800 px-2 py-1">x402 deducts ${skill.price_per_call.toFixed(3)}</span>
+                      <span>→</span>
+                      <span className="rounded bg-zinc-800 px-2 py-1">Result returned</span>
+                    </div>
+                    <p className="mt-2 text-zinc-500">No API keys. No subscriptions. No sign-up. Just call and pay.</p>
+                  </div>
+                </div>
+
                 <div>
                   <h3 className="text-sm font-semibold mb-2">x402 Endpoint</h3>
                   <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-3">
@@ -264,13 +283,13 @@ export default function SkillDetailPage() {
                     <code className="text-sm text-zinc-300 whitespace-pre-wrap">
 {`curl -X POST "${skill.x402_endpoint}" \\
   -H "Content-Type: application/json" \\
-  -H "x402-agent: your-agent-name" \\
+  -H "X-402-Payment: <your-payment-token>" \\
   -d '{"query": "your input here"}'`}
                     </code>
                     <button
                       onClick={() => handleCopy(`curl -X POST "${skill.x402_endpoint}" \\
   -H "Content-Type: application/json" \\
-  -H "x402-agent: your-agent-name" \\
+  -H "X-402-Payment: <your-payment-token>" \\
   -d '{"query": "your input here"}'`)}
                       className="mt-2 p-1 hover:bg-zinc-700 rounded float-right"
                     >
@@ -279,13 +298,49 @@ export default function SkillDetailPage() {
                   </div>
                 </div>
 
+                {/* Simulated test call */}
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Try It (Simulated)</h3>
+                  <div className="bg-zinc-800 rounded-lg p-4">
+                    <button
+                      onClick={() => {
+                        setTesting(true);
+                        setTestResult(null);
+                        setTimeout(() => {
+                          setTesting(false);
+                          setTestResult(JSON.stringify({
+                            status: 200,
+                            billed: skill.price_per_call,
+                            result: `[simulated] ${skill.name} executed successfully`,
+                            latency_ms: Math.floor(Math.random() * 150) + 80,
+                            x402_payment: "verified",
+                          }, null, 2));
+                        }, 1200);
+                      }}
+                      disabled={testing}
+                      className="w-full rounded-lg bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 py-2.5 text-sm font-semibold text-white transition"
+                    >
+                      {testing ? "⏳ Calling endpoint..." : `▶ Simulate x402 Call ($${skill.price_per_call.toFixed(3)})`}
+                    </button>
+                    {testResult && (
+                      <div className="mt-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-green-400 text-xs font-semibold">✓ 200 OK</span>
+                          <span className="text-zinc-500 text-xs">Payment verified via x402</span>
+                        </div>
+                        <pre className="text-xs text-zinc-300 bg-zinc-900 rounded p-3 overflow-x-auto">{testResult}</pre>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <div>
                   <h3 className="text-sm font-semibold mb-2">Integration Guide</h3>
                   <div className="bg-zinc-800 rounded-lg p-4 text-sm text-zinc-300 space-y-2">
-                    <p><strong>1. Set up x402 payments:</strong> Add your payment method to your agent framework</p>
-                    <p><strong>2. Make the call:</strong> Send a POST request to the endpoint above</p>
-                    <p><strong>3. Include your agent name:</strong> Use the x402-agent header for attribution</p>
-                    <p><strong>4. Handle the response:</strong> Process the JSON response in your agent's workflow</p>
+                    <p><strong>1. Call the endpoint:</strong> POST to the x402 URL with your payload</p>
+                    <p><strong>2. Payment is automatic:</strong> x402 deducts ${skill.price_per_call.toFixed(3)} USDC per call — no API keys needed</p>
+                    <p><strong>3. Get your result:</strong> Structured JSON response, typically in &lt;200ms</p>
+                    <p><strong>4. For agents:</strong> x402-compatible frameworks handle payment automatically</p>
                   </div>
                 </div>
 
@@ -293,25 +348,15 @@ export default function SkillDetailPage() {
                   <div>
                     <p className="text-sm text-zinc-500">Cost per call</p>
                     <p className="text-lg font-bold text-orange-400">
-                      ${skill.price_per_call.toFixed(3)}
+                      ${skill.price_per_call.toFixed(3)} <span className="text-sm font-normal text-zinc-500">USDC</span>
                     </p>
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="px-4 py-2 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors"
-                    >
-                      Close
-                    </button>
-                    <a
-                      href={skill.x402_endpoint}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
-                    >
-                      Test Endpoint
-                    </a>
-                  </div>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="px-4 py-2 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors"
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>
