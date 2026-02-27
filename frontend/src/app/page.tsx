@@ -19,6 +19,7 @@ export default function HomePage() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
+    const tierOrder = { spotlight: 0, featured: 1, free: 2, undefined: 2 };
     return CAPABILITIES.filter((cap) => {
       const matchesSearch =
         !search ||
@@ -27,6 +28,10 @@ export default function HomePage() {
       const matchesCategory = !selectedCategory || cap.category === selectedCategory;
       const matchesType = !selectedType || cap.type === selectedType;
       return matchesSearch && matchesCategory && matchesType;
+    }).sort((a, b) => {
+      const ta = tierOrder[a.listingTier || "free"] ?? 2;
+      const tb = tierOrder[b.listingTier || "free"] ?? 2;
+      return ta - tb;
     });
   }, [search, selectedCategory, selectedType]);
 
@@ -224,6 +229,71 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {/* Developer Promotion Tiers */}
+      {!search && !selectedCategory && !selectedType && (
+        <section className="px-6 pb-12">
+          <div className="mx-auto max-w-5xl">
+            <FadeInUp>
+              <h2 className="mb-2 text-center text-2xl font-bold text-white">Promote Your Capability</h2>
+              <p className="mb-8 text-center text-zinc-400">Get discovered faster. Only capabilities with 4.0+ rating qualify.</p>
+            </FadeInUp>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  tier: "Free",
+                  price: "$0",
+                  period: "forever",
+                  features: ["Listed in marketplace", "Searchable by agents & humans", "Basic analytics", "x402 payment rail included"],
+                  border: "border-zinc-800",
+                  badge: "",
+                },
+                {
+                  tier: "Featured",
+                  price: "$49",
+                  period: "/mo",
+                  features: ["★ Featured badge on card", "Priority in category results", "Appears in agent recommendations", "Detailed analytics dashboard", "Everything in Free"],
+                  border: "border-amber-500/30",
+                  badge: "★ POPULAR",
+                },
+                {
+                  tier: "Spotlight",
+                  price: "$149",
+                  period: "/mo",
+                  features: ["⚡ Spotlight badge + glow border", "Homepage featured placement", "Top of all search results", "Priority in AI agent shopping", "Conversion analytics + A/B", "Everything in Featured"],
+                  border: "border-orange-500/30",
+                  badge: "⚡ MAX VISIBILITY",
+                },
+              ].map((plan, i) => (
+                <FadeInUp key={plan.tier} delay={i * 0.1}>
+                  <div className={`rounded-xl border ${plan.border} bg-zinc-900/50 p-6 ${plan.tier === "Spotlight" ? "ring-1 ring-orange-500/10" : ""}`}>
+                    {plan.badge && (
+                      <span className={`mb-3 inline-flex rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide ${plan.tier === "Spotlight" ? "bg-orange-500/10 text-orange-400 border border-orange-500/30" : "bg-amber-500/10 text-amber-400 border border-amber-500/30"}`}>
+                        {plan.badge}
+                      </span>
+                    )}
+                    <h3 className="text-lg font-bold text-white">{plan.tier}</h3>
+                    <div className="mt-2">
+                      <span className="text-3xl font-bold text-white">{plan.price}</span>
+                      <span className="text-zinc-500">{plan.period}</span>
+                    </div>
+                    <ul className="mt-4 space-y-2">
+                      {plan.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2 text-sm text-zinc-400">
+                          <span className="mt-0.5 text-green-500">✓</span> {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <button className={`mt-5 w-full rounded-full py-2 text-sm font-semibold transition ${plan.tier === "Spotlight" ? "bg-orange-500 text-white hover:bg-orange-600" : plan.tier === "Featured" ? "bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20" : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"}`}>
+                      {plan.tier === "Free" ? "List for Free" : `Get ${plan.tier}`}
+                    </button>
+                  </div>
+                </FadeInUp>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Creator CTA */}
       <section className="px-6 pb-16">

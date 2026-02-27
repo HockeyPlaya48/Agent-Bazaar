@@ -15,11 +15,25 @@ function formatUsage(n: number): string {
   return n.toString();
 }
 
+const tierStyles: Record<string, { label: string; className: string; border: string }> = {
+  spotlight: { label: "⚡ SPOTLIGHT", className: "bg-orange-500/10 text-orange-400 border-orange-500/30", border: "border-orange-500/30 ring-1 ring-orange-500/10" },
+  featured: { label: "★ FEATURED", className: "bg-amber-500/10 text-amber-400 border-amber-500/30", border: "border-amber-500/20" },
+  free: { label: "", className: "", border: "border-zinc-800" },
+};
+
 export function CapabilityCard({ capability }: { capability: Capability }) {
   const t = typeStyles[capability.type] || typeStyles.api;
+  const tier = tierStyles[capability.listingTier || "free"] || tierStyles.free;
 
   return (
-    <div className="group relative flex flex-col rounded-xl border border-zinc-800 bg-zinc-900/50 p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900">
+    <div className={`group relative flex flex-col rounded-xl border bg-zinc-900/50 p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900 ${tier.border}`}>
+      {capability.listingTier && capability.listingTier !== "free" && (
+        <div className="mb-2">
+          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wide ${tier.className}`}>
+            {tier.label}
+          </span>
+        </div>
+      )}
       <div className="flex items-start justify-between">
         <span className="text-2xl">{capability.icon}</span>
         <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${t.className}`}>

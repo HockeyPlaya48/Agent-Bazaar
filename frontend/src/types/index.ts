@@ -10,6 +10,8 @@ export type CapabilityCategory =
   | "research"
   | "automation";
 
+export type ListingTier = "free" | "featured" | "spotlight";
+
 export interface Capability {
   id: string;
   name: string;
@@ -26,6 +28,7 @@ export interface Capability {
   featured: boolean;
   tags: string[];
   creatorName: string;
+  listingTier?: ListingTier; // free (default), featured ($49/mo), spotlight ($149/mo)
 }
 
 export interface Review {

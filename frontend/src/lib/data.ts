@@ -28,6 +28,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["code-review", "security", "gpt-4", "developer"],
     creatorName: "DevForge",
+    listingTier: "spotlight",
   },
   {
     id: "2",
@@ -45,6 +46,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["image", "dalle", "generation", "creative"],
     creatorName: "PixelMint",
+    listingTier: "spotlight",
   },
   {
     id: "3",
@@ -79,6 +81,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["seo", "marketing", "analysis", "content"],
     creatorName: "RankForge",
+    listingTier: "featured",
   },
   {
     id: "5",
@@ -147,6 +150,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["blog", "seo", "writing", "content"],
     creatorName: "ContentForge",
+    listingTier: "featured",
   },
   {
     id: "9",
