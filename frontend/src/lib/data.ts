@@ -1,4 +1,4 @@
-import { Capability, Review } from "@/types";
+import { Capability, Review, Bundle } from "@/types";
 
 export const CATEGORIES = [
   { value: "code-generation", label: "Code Generation", icon: "💻" },
@@ -295,6 +295,51 @@ export const CAPABILITIES: Capability[] = [
 
 // Alias for backwards compatibility
 export const AGENTS = CAPABILITIES;
+
+export const BUNDLES: Bundle[] = [
+  {
+    id: "b1",
+    name: "Developer Skills Pack",
+    description: "Everything a coding agent needs: code review, SQL generation, git auditing, and one-command deploys. Ship faster with AI assistance on every step.",
+    price: 7,
+    originalPrice: 19,
+    atlasHint: "⚡ Atlas-ready — these skills run automatically in your dev workflows.",
+    agents: [
+      { id: "1", name: "GPT-4 Code Review", slug: "gpt4-code-review", icon: "🔍", originalPrice: 5 },
+      { id: "5", name: "SQL Query Generator", slug: "sql-query-gen", icon: "🗄️", originalPrice: 3 },
+      { id: "6", name: "git-audit CLI", slug: "git-audit-cli", icon: "🔐", originalPrice: 4 },
+      { id: "11", name: "deploy-cli", slug: "deploy-cli", icon: "🚀", originalPrice: 7 },
+    ],
+  },
+  {
+    id: "b2",
+    name: "Content & Research Pack",
+    description: "Your content agent's full toolkit: write blog posts, audit SEO, scrape sources, and summarize research — all on autopilot via x402.",
+    price: 9,
+    originalPrice: 29,
+    atlasHint: "✍️ Pair with Atlas to run a fully automated content pipeline.",
+    agents: [
+      { id: "8", name: "Blog Post Writer", slug: "blog-post-writer", icon: "✍️", originalPrice: 8 },
+      { id: "4", name: "SEO Analyzer", slug: "seo-analyzer", icon: "📈", originalPrice: 10 },
+      { id: "3", name: "Web Scraper API", slug: "web-scraper-api", icon: "🕸️", originalPrice: 5 },
+      { id: "10", name: "Research Summarizer", slug: "research-summarizer", icon: "🔬", originalPrice: 6 },
+    ],
+  },
+  {
+    id: "b3",
+    name: "Agent Infrastructure Pack",
+    description: "Core infrastructure for any autonomous agent: persistent memory, real-time web search, email composition, and task scheduling — all x402-native.",
+    price: 12,
+    originalPrice: 35,
+    atlasHint: "🧠 The foundation layer for production-grade Atlas agents.",
+    agents: [
+      { id: "13", name: "Memory Store Skill", slug: "memory-store-skill", icon: "🧠", originalPrice: 10 },
+      { id: "14", name: "Web Search Skill", slug: "web-search-skill", icon: "🔎", originalPrice: 8 },
+      { id: "12", name: "Email Composer Skill", slug: "email-composer-skill", icon: "📧", originalPrice: 9 },
+      { id: "16", name: "Scheduler Skill", slug: "scheduler-skill", icon: "⏰", originalPrice: 8 },
+    ],
+  },
+];
 
 export const REVIEWS: Review[] = [
   { id: "r1", capabilityId: "1", userName: "DevAlex", rating: 5, comment: "Catches bugs my team misses. The x402 integration means my CI agent just pays per review automatically.", date: "2026-02-01" },

@@ -2,192 +2,186 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Zap, Users, Globe, Monitor, Check } from "lucide-react";
-import { joinWaitlist } from "@/lib/api";
+import { Bot, Search, Zap, Send } from "lucide-react";
+import { agentShop, type CapabilityAPI } from "@/lib/api";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
-import { FadeInUp, StaggerContainer, StaggerItem, ScaleOnHover } from "@/components/motion";
+import { CapabilityCard } from "@/components/capability-card";
+import { CAPABILITIES } from "@/lib/data";
+import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 
-export default function AtlasWaitlist() {
-  const [email, setEmail] = useState("");
-  const [goals, setGoals] = useState<string[]>([]);
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+export default function AtlasPage() {
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<CapabilityAPI[] | null>(null);
+  const [reasoning, setReasoning] = useState("");
 
-  function toggleGoal(goal: string) {
-    setGoals((prev) =>
-      prev.includes(goal) ? prev.filter((g) => g !== goal) : [...prev, goal]
-    );
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSearch(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitting(true);
-    setError("");
+    if (!query.trim()) return;
+    setLoading(true);
+    setResults(null);
+    setReasoning("");
     try {
-      await joinWaitlist(email, goals);
-      setSubmitted(true);
+      const data = await agentShop(query);
+      setResults(data.recommendations);
+      setReasoning(data.reasoning);
     } catch {
-      setError("Something went wrong. Please try again.");
+      // Fallback: local fuzzy match
+      const q = query.toLowerCase();
+      const matched = CAPABILITIES.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          c.description.toLowerCase().includes(q) ||
+          c.tags.some((t) => t.includes(q))
+      ).slice(0, 4);
+      setResults(matched.map((c) => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        description: c.description,
+        long_description: c.longDescription,
+        type: c.type,
+        category: c.category,
+        price_per_call: c.pricePerCall,
+        x402_endpoint: c.x402Endpoint,
+        icon: c.icon,
+        rating: c.rating,
+        usage_count: c.usageCount,
+        featured: c.featured,
+        tags: c.tags,
+        creator_name: c.creatorName,
+      })));
+      setReasoning("Here are the best matches from our marketplace based on your query.");
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   }
 
-  const LIFE_GOALS = [
-    { label: "Get fit & healthy", icon: "\u{1F4AA}", value: "fitness" },
-    { label: "Grow my business", icon: "\u{1F680}", value: "business" },
-    { label: "Create content", icon: "\u270D\uFE0F", value: "content" },
-    { label: "Save money", icon: "\u{1F4B0}", value: "finance" },
-    { label: "Generate leads", icon: "\u{1F3AF}", value: "leads" },
-    { label: "Learn faster", icon: "\u{1F9E0}", value: "learning" },
-    { label: "Build products", icon: "\u26A1", value: "building" },
-    { label: "Stay organized", icon: "\u{1F4CB}", value: "productivity" },
-  ];
-
-  const FEATURES = [
-    { icon: Zap, title: "Proactive Agents", desc: "Your agents reach out to YOU with completed work" },
-    { icon: Users, title: "Agent Collaboration", desc: "Your content and lead agents coordinate automatically" },
-    { icon: Globe, title: "Life-Wide Coverage", desc: "Fitness, finances, content, sales — all handled" },
-    { icon: Monitor, title: "Virtual Office", desc: "Watch your agents work in a gamified dashboard" },
-  ];
-
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16 text-center">
-      {submitted ? (
+    <div className="mx-auto max-w-4xl px-6 py-16">
+      {/* Hero */}
+      <div className="relative text-center">
+        <div className="pointer-events-none absolute inset-0 flex items-start justify-center -top-32">
+          <div className="h-[400px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(249,115,22,0.06),transparent_70%)]" />
+        </div>
+
         <FadeInUp>
-          <Card className="p-12 border-green-500/20 bg-green-500/5">
-            <span className="text-5xl">🎉</span>
-            <h1 className="mt-4 text-3xl font-bold">You&apos;re on the list!</h1>
-            <p className="mx-auto mt-4 max-w-md text-zinc-400">
-              We&apos;ll notify you when Atlas is ready. Your Agent Bazaar
-              purchases will auto-import into your Atlas workspace.
-            </p>
-            <Link href="/">
-              <Button variant="secondary" size="lg" className="mt-8">
-                Browse More Agents
-              </Button>
-            </Link>
-          </Card>
-        </FadeInUp>
-      ) : (
-        <>
-          {/* Hero with blue glow */}
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-0 flex items-start justify-center -top-32">
-              <div className="h-[400px] w-[600px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.08),transparent_70%)]" />
-            </div>
-
-            <FadeInUp>
-              <Badge variant="atlas" className="px-4 py-1.5 text-sm">
-                Coming Soon
-              </Badge>
-            </FadeInUp>
-
-            <FadeInUp delay={0.1}>
-              <h1 className="mt-6 text-4xl font-bold sm:text-5xl">
-                Atlas
-                <br />
-                <span className="gradient-text-blue">Your AI Workforce</span>
-              </h1>
-            </FadeInUp>
-
-            <FadeInUp delay={0.2}>
-              <p className="mx-auto mt-6 max-w-lg text-lg text-zinc-400">
-                Stop managing agents one by one. Atlas runs them all for you,
-                24/7. Your agents work proactively and deliver results to your
-                Telegram or dashboard — no prompts needed.
-              </p>
-            </FadeInUp>
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 text-orange-400">
+            <Bot size={32} />
           </div>
+        </FadeInUp>
 
-          {/* Features */}
-          <StaggerContainer className="mt-12 grid gap-4 text-left sm:grid-cols-2">
-            {FEATURES.map((feature) => (
-              <StaggerItem key={feature.title}>
-                <Card className="p-5">
-                  <feature.icon size={24} className="text-blue-400" />
-                  <h3 className="mt-2 font-semibold">{feature.title}</h3>
-                  <p className="mt-1 text-sm text-zinc-500">{feature.desc}</p>
-                </Card>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+        <FadeInUp delay={0.1}>
+          <h1 className="text-4xl font-bold sm:text-5xl">
+            Agent Shopping
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-zinc-400">
+            Describe what you&apos;re building. Our AI will browse the marketplace and recommend the best capabilities for your workflow.
+          </p>
+        </FadeInUp>
 
-          {/* Signup Form */}
-          <FadeInUp delay={0.3}>
-            <Card className="mt-12 border-blue-500/20 bg-zinc-900 p-8">
-              <h2 className="text-xl font-bold">Join the Atlas Beta</h2>
-              <p className="mt-2 text-sm text-zinc-400">
-                Tell us your goals and we&apos;ll match you with the right agents.
-              </p>
+        <FadeInUp delay={0.2}>
+          <form onSubmit={handleSearch} className="mx-auto mt-8 flex max-w-xl gap-3">
+            <Input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="e.g., I need to build an automated content pipeline..."
+              className="rounded-full"
+            />
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              loading={loading}
+            >
+              <Search size={16} />
+              Shop
+            </Button>
+          </form>
+        </FadeInUp>
 
-              <div className="mt-6">
-                <p className="mb-3 text-sm text-zinc-400">What do you want your agents to help with?</p>
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {LIFE_GOALS.map((goal) => (
-                    <ScaleOnHover key={goal.value}>
-                      <button
-                        onClick={() => toggleGoal(goal.value)}
-                        className={`relative w-full rounded-xl border p-3 text-left text-xs transition-all duration-200 ${
-                          goals.includes(goal.value)
-                            ? "border-blue-500 bg-blue-500/10"
-                            : "border-zinc-800 hover:border-zinc-600"
-                        }`}
-                      >
-                        {goals.includes(goal.value) && (
-                          <div className="absolute top-2 right-2">
-                            <Check size={12} className="text-blue-400" />
-                          </div>
-                        )}
-                        <span className="text-lg">{goal.icon}</span>
-                        <p className="mt-1">{goal.label}</p>
-                      </button>
-                    </ScaleOnHover>
-                  ))}
-                </div>
-              </div>
-
-              <form onSubmit={handleSubmit} className="mt-6 flex gap-3">
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  required
-                  className="rounded-full"
-                />
-                <Button
-                  type="submit"
-                  variant="atlas"
-                  size="lg"
-                  loading={submitting}
-                >
-                  Join Waitlist
-                </Button>
-              </form>
-              {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
-            </Card>
-          </FadeInUp>
-
-          <FadeInUp delay={0.4}>
-            <Card className="mt-8 p-6">
-              <p className="text-sm text-zinc-400">
-                Already have Agent Bazaar agents? They&apos;ll automatically
-                import into your Atlas workspace when you join.
-              </p>
-              <Link
-                href="/"
-                className="mt-3 inline-block text-sm font-medium text-orange-400 transition-colors hover:text-orange-300"
+        {/* Example queries */}
+        <FadeInUp delay={0.3}>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {["code review", "trading bot", "content writing", "web scraping"].map((q) => (
+              <button
+                key={q}
+                onClick={() => { setQuery(q); }}
+                className="rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs text-zinc-400 transition hover:border-zinc-700 hover:text-white"
               >
-                Browse Agent Bazaar &rarr;
-              </Link>
-            </Card>
-          </FadeInUp>
-        </>
+                {q}
+              </button>
+            ))}
+          </div>
+        </FadeInUp>
+      </div>
+
+      {/* Results */}
+      {results && (
+        <FadeIn>
+          <div className="mt-12">
+            {reasoning && (
+              <Card className="mb-6 p-4">
+                <div className="flex items-start gap-3">
+                  <Bot size={20} className="mt-0.5 shrink-0 text-orange-400" />
+                  <p className="text-sm text-zinc-300">{reasoning}</p>
+                </div>
+              </Card>
+            )}
+
+            {results.length > 0 ? (
+              <StaggerContainer className="grid gap-4 sm:grid-cols-2">
+                {results.map((cap) => (
+                  <StaggerItem key={cap.id}>
+                    <Link href={`/agents/${cap.slug}`}>
+                      <Card className="p-5 transition-all hover:border-orange-500/30">
+                        <div className="flex items-start gap-3">
+                          <span className="text-3xl">{cap.icon}</span>
+                          <div>
+                            <h3 className="font-semibold">{cap.name}</h3>
+                            <p className="mt-1 text-xs text-zinc-500">by {cap.creator_name} · ${cap.price_per_call}/call</p>
+                            <p className="mt-2 text-sm text-zinc-400">{cap.description}</p>
+                            <div className="mt-2 flex items-center gap-2">
+                              <Badge>{cap.type}</Badge>
+                              <span className="text-xs text-yellow-500">{cap.rating} ★</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+            ) : (
+              <p className="text-center text-zinc-500">No matching capabilities found. Try a different query.</p>
+            )}
+          </div>
+        </FadeIn>
+      )}
+
+      {/* How it works */}
+      {!results && (
+        <FadeInUp delay={0.4}>
+          <div className="mt-16 grid gap-4 sm:grid-cols-3">
+            {[
+              { icon: <Search size={24} />, title: "Describe Your Need", desc: "Tell us what you're building or what task you need to automate" },
+              { icon: <Bot size={24} />, title: "AI Shops for You", desc: "Our agent browses capabilities, compares pricing and ratings" },
+              { icon: <Zap size={24} />, title: "Instant Integration", desc: "Get x402 endpoints ready to call from your code or agent" },
+            ].map((step) => (
+              <Card key={step.title} className="p-5 text-center">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-800 text-orange-400">
+                  {step.icon}
+                </div>
+                <h3 className="font-semibold">{step.title}</h3>
+                <p className="mt-1 text-sm text-zinc-500">{step.desc}</p>
+              </Card>
+            ))}
+          </div>
+        </FadeInUp>
       )}
     </div>
   );

@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { type AgentListing } from "@/types";
+import { type Capability } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/star-rating";
 
 interface AgentCardProps {
-  agent: AgentListing;
+  agent: Capability;
 }
 
+/** @deprecated Use CapabilityCard instead */
 export function AgentCard({ agent }: AgentCardProps) {
   return (
     <Link
@@ -16,7 +17,7 @@ export function AgentCard({ agent }: AgentCardProps) {
       <div className="flex items-start justify-between">
         <span className="text-3xl">{agent.icon}</span>
         <div className="flex gap-1.5">
-          {agent.atlasCompatible && <Badge variant="atlas">Atlas</Badge>}
+          {agent.featured && <Badge variant="deal">Featured</Badge>}
         </div>
       </div>
       <h3 className="mt-3 font-semibold transition-colors group-hover:text-orange-400">
@@ -26,24 +27,14 @@ export function AgentCard({ agent }: AgentCardProps) {
         {agent.description}
       </p>
       <div className="mt-3">
-        <StarRating rating={agent.rating} count={agent.reviewCount} />
+        <StarRating rating={agent.rating} count={agent.usageCount} />
       </div>
       <div className="mt-2 flex items-baseline gap-2">
-        <span className="font-bold">
-          {agent.price === 0 ? "Free" : `$${agent.price}`}
-        </span>
-        {agent.originalPrice > 0 && agent.price > 0 && (
-          <span className="text-xs text-zinc-500 line-through">
-            ${agent.originalPrice}
-          </span>
-        )}
-        {agent.priceType === "lifetime" && agent.price > 0 && (
-          <Badge variant="success">/mo</Badge>
-        )}
+        <span className="font-bold">${agent.pricePerCall}/call</span>
       </div>
       <p className="mt-1.5 text-[10px] text-zinc-600">
-        by {agent.developerName} &middot;{" "}
-        {agent.salesCount.toLocaleString()} sales
+        by {agent.creatorName} &middot;{" "}
+        {agent.usageCount.toLocaleString()} calls
       </p>
     </Link>
   );

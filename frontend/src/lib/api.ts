@@ -134,6 +134,33 @@ function toAPI(c: (typeof CAPABILITIES)[number]): CapabilityAPI {
   };
 }
 
+// ---- Legacy aliases (for pages that pre-date the capability rename) ----
+
+export const getAgentBySlug = getCapabilityBySlug;
+
+export async function purchaseAgent(id: string) {
+  return fetchAPI<{ message: string }>(`/capabilities/${id}/purchase`, { method: "POST" });
+}
+
+export async function getDevStats(devName: string) {
+  return fetchAPI<DevStatsAPI>(`/dev/${devName}/stats`);
+}
+
+export async function getDevAgents(devName: string) {
+  return fetchAPI<CapabilityAPI[]>(`/dev/${devName}/capabilities`);
+}
+
+export async function submitAgent(data: AgentSubmitAPI & { developer_name: string }) {
+  return submitCapability({
+    name: data.name,
+    type: data.type || "skill",
+    category: data.category,
+    description: data.description,
+    price_per_call: data.price_per_call ?? 0,
+    x402_endpoint: data.x402_endpoint ?? "",
+  });
+}
+
 // ---- API Types ----
 
 export interface CapabilityAPI {
@@ -170,4 +197,28 @@ export interface CapabilitySubmitAPI {
   description: string;
   price_per_call: number;
   x402_endpoint: string;
+}
+
+export type AgentListingAPI = CapabilityAPI;
+
+export interface DevStatsAPI {
+  total_revenue: number;
+  total_sales: number;
+  avg_rating: number;
+  agent_count: number;
+}
+
+export interface AgentSubmitAPI {
+  name: string;
+  type?: string;
+  category: string;
+  description: string;
+  price_per_call?: number;
+  x402_endpoint?: string;
+  // legacy fields (ignored on submission)
+  price?: number;
+  price_type?: string;
+  demo_url?: string;
+  install_type?: string;
+  atlas_compatible?: boolean;
 }

@@ -3,50 +3,32 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, ExternalLink, Check, MessageSquare, Zap } from "lucide-react";
-import { getAgentBySlug, getReviews, purchaseAgent, type AgentListingAPI, type ReviewAPI } from "@/lib/api";
+import { ChevronRight, Check, MessageSquare, Zap } from "lucide-react";
+import { getCapabilityBySlug, getReviews, type CapabilityAPI, type ReviewAPI } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { StarRating } from "@/components/ui/star-rating";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AtlasCta } from "@/components/atlas-cta";
 import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 
-export default function AgentDetailPage() {
+export default function SkillDetailPage() {
   const params = useParams();
-  const [agent, setAgent] = useState<AgentListingAPI | null>(null);
+  const [skill, setSkill] = useState<CapabilityAPI | null>(null);
   const [reviews, setReviews] = useState<ReviewAPI[]>([]);
   const [loading, setLoading] = useState(true);
-  const [purchasing, setPurchasing] = useState(false);
-  const [purchased, setPurchased] = useState(false);
 
   useEffect(() => {
     if (!params.slug) return;
     const slug = params.slug as string;
-    getAgentBySlug(slug)
+    getCapabilityBySlug(slug)
       .then((data) => {
-        setAgent(data);
+        setSkill(data);
         return getReviews(data.id);
       })
       .then(setReviews)
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [params.slug]);
-
-  async function handleBuy() {
-    if (!agent) return;
-    setPurchasing(true);
-    try {
-      await purchaseAgent(agent.id);
-      setPurchased(true);
-    } catch (err) {
-      console.error(err);
-      alert("Purchase failed. Please try again.");
-    } finally {
-      setPurchasing(false);
-    }
-  }
 
   if (loading) {
     return (
@@ -64,17 +46,15 @@ export default function AgentDetailPage() {
     );
   }
 
-  if (!agent) {
+  if (!skill) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <p className="text-zinc-500">Agent not found.</p>
+        <p className="text-zinc-500">Skill not found.</p>
       </div>
     );
   }
 
-  const discount = agent.original_price
-    ? Math.round((1 - agent.price / agent.original_price) * 100)
-    : 0;
+  const typeLabel = skill.type === "api" ? "API" : skill.type === "cli" ? "CLI Tool" : "Agent Skill";
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
@@ -86,10 +66,10 @@ export default function AgentDetailPage() {
           </Link>
           <ChevronRight size={14} />
           <Link href="/agents" className="transition-colors hover:text-white">
-            Browse
+            Browse Skills
           </Link>
           <ChevronRight size={14} />
-          <span className="text-zinc-300">{agent.name}</span>
+          <span className="text-zinc-300">{skill.name}</span>
         </nav>
       </FadeIn>
 
@@ -99,24 +79,19 @@ export default function AgentDetailPage() {
           <FadeInUp>
             <div className="flex items-start gap-4">
               <div className="rounded-2xl bg-zinc-800/50 p-4">
-                <span className="text-5xl">{agent.icon}</span>
+                <span className="text-5xl">{skill.icon}</span>
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-2xl font-bold">{agent.name}</h1>
-                  {agent.atlas_compatible && <Badge variant="atlas">Atlas-Compatible</Badge>}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="text-2xl font-bold">{skill.name}</h1>
+                  <Badge>{typeLabel}</Badge>
                 </div>
-                <p className="mt-1 text-sm text-zinc-400">by {agent.developer_name}</p>
+                <p className="mt-1 text-sm text-zinc-400">by {skill.creator_name}</p>
                 <div className="mt-2">
-                  <StarRating
-                    rating={agent.rating}
-                    showValue
-                    count={agent.review_count}
-                    size="md"
-                  />
+                  <StarRating rating={skill.rating} showValue size="md" />
                 </div>
                 <p className="mt-1 text-xs text-zinc-600">
-                  {agent.sales_count.toLocaleString()} sales
+                  {skill.usage_count.toLocaleString()} calls made
                 </p>
               </div>
             </div>
@@ -126,20 +101,20 @@ export default function AgentDetailPage() {
             <div className="mt-8">
               <h2 className="text-lg font-semibold">What it does</h2>
               <p className="mt-2 leading-relaxed text-zinc-400">
-                {agent.long_description || agent.description}
+                {skill.long_description || skill.description}
               </p>
             </div>
           </FadeInUp>
 
           <FadeInUp delay={0.15}>
             <div className="mt-8">
-              <h2 className="text-lg font-semibold">Setup</h2>
+              <h2 className="text-lg font-semibold">How to use</h2>
               <div className="mt-3 space-y-3">
                 {[
-                  `Install type: ${agent.install_type.toUpperCase()}`,
-                  "Connect via API key or bot link (takes 2 minutes)",
-                  "Follow the setup wizard — no coding required",
-                  "Agent starts working immediately after connection",
+                  `Type: ${typeLabel} — call via the x402 endpoint below`,
+                  "Make an x402-enabled HTTP call — agents pay automatically",
+                  "Returns structured JSON response on every call",
+                  "No subscription needed — pay only for what you use",
                 ].map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-400">
@@ -180,14 +155,6 @@ export default function AgentDetailPage() {
               )}
             </div>
           </FadeInUp>
-
-          {agent.atlas_compatible && (
-            <FadeInUp delay={0.25}>
-              <div className="mt-8">
-                <AtlasCta variant="inline" />
-              </div>
-            </FadeInUp>
-          )}
         </div>
 
         {/* Sidebar */}
@@ -196,72 +163,43 @@ export default function AgentDetailPage() {
             <Card className="p-6">
               <div className="flex items-baseline gap-2">
                 <span className="text-3xl font-bold">
-                  {agent.price === 0 ? "Free" : `$${agent.price}`}
+                  ${skill.price_per_call.toFixed(3)}
                 </span>
-                {agent.original_price > 0 && agent.price > 0 && (
-                  <>
-                    <span className="text-lg text-zinc-500 line-through">
-                      ${agent.original_price}
-                    </span>
-                    <Badge variant="success">{discount}% off</Badge>
-                  </>
-                )}
+                <span className="text-zinc-500 text-sm">per call</span>
               </div>
-              {agent.price_type === "lifetime" && agent.price > 0 && (
-                <p className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
-                  <Zap size={12} />
-                  Monthly subscription. Cancel anytime.
-                </p>
-              )}
+              <p className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
+                <Zap size={12} />
+                x402-enabled — agents pay automatically
+              </p>
 
               <div className="mt-4">
-                {purchased ? (
-                  <div className="w-full rounded-full bg-green-500/20 py-3 text-center font-medium text-green-400">
-                    Purchased!
-                  </div>
-                ) : (
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    loading={purchasing}
-                    onClick={handleBuy}
-                    className="w-full"
-                  >
-                    {agent.price === 0 ? "Get for Free" : "Buy Now"}
-                  </Button>
-                )}
-              </div>
-
-              {agent.demo_url && (
                 <a
-                  href={agent.demo_url}
+                  href={skill.x402_endpoint}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="block w-full rounded-full bg-orange-500 py-3 text-center text-sm font-semibold text-white transition hover:bg-orange-600"
                 >
-                  <Button variant="secondary" size="lg" className="mt-3 w-full">
-                    Try Demo
-                    <ExternalLink size={14} />
-                  </Button>
+                  Use This Skill
                 </a>
-              )}
+              </div>
 
               <div className="mt-6 space-y-3 border-t border-zinc-800/50 pt-4">
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Install type</span>
-                  <span className="text-xs uppercase">{agent.install_type}</span>
+                  <span className="text-zinc-500">Type</span>
+                  <span className="text-xs uppercase">{typeLabel}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-500">Category</span>
-                  <span className="capitalize">{agent.category}</span>
+                  <span className="capitalize">{skill.category.replace("-", " ")}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-zinc-500">Atlas compatible</span>
-                  <span>{agent.atlas_compatible ? "Yes" : "No"}</span>
+                  <span className="text-zinc-500">Usage</span>
+                  <span>{skill.usage_count.toLocaleString()} calls</span>
                 </div>
               </div>
 
               <div className="mt-4 flex flex-wrap gap-1">
-                {agent.tags.map((tag) => (
+                {skill.tags.map((tag) => (
                   <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>

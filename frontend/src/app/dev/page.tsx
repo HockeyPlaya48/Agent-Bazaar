@@ -1,58 +1,35 @@
 "use client";
 
 import { useState } from "react";
-import { User, DollarSign, ShoppingCart, Star, CheckCircle } from "lucide-react";
-import { getDevStats, getDevAgents, submitAgent, type AgentListingAPI, type DevStatsAPI, type AgentSubmitAPI } from "@/lib/api";
+import { CheckCircle, Zap, Globe, Terminal, Bot } from "lucide-react";
+import { submitCapability, type CapabilitySubmitAPI } from "@/lib/api";
+import { CATEGORIES } from "@/lib/data";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
+import { FadeInUp, FadeIn } from "@/components/motion";
 
-export default function DevPortal() {
-  const [tab, setTab] = useState<"dashboard" | "submit">("dashboard");
-  const [devName, setDevName] = useState("");
-  const [stats, setStats] = useState<DevStatsAPI | null>(null);
-  const [agents, setAgents] = useState<AgentListingAPI[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [looked, setLooked] = useState(false);
-
-  const [form, setForm] = useState<AgentSubmitAPI>({
+export default function ListCapabilityPage() {
+  const [form, setForm] = useState<CapabilitySubmitAPI>({
     name: "",
+    type: "api",
     category: "",
     description: "",
-    price: 0,
-    price_type: "lifetime",
-    demo_url: "",
-    install_type: "api",
-    atlas_compatible: false,
+    price_per_call: 0,
+    x402_endpoint: "",
   });
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  function loadDashboard() {
-    if (!devName.trim()) return;
-    setLoading(true);
-    setLooked(true);
-    Promise.all([getDevStats(devName), getDevAgents(devName)])
-      .then(([s, a]) => {
-        setStats(s);
-        setAgents(a);
-      })
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setSubmitSuccess(false);
     try {
-      await submitAgent({ ...form, developer_name: devName } as AgentSubmitAPI & { developer_name: string });
+      await submitCapability(form);
       setSubmitSuccess(true);
-      setForm({ name: "", category: "", description: "", price: 0, price_type: "lifetime", demo_url: "", install_type: "api", atlas_compatible: false });
+      setForm({ name: "", type: "api", category: "", description: "", price_per_call: 0, x402_endpoint: "" });
     } catch (err) {
       console.error(err);
       alert("Submission failed. Please try again.");
@@ -62,249 +39,117 @@ export default function DevPortal() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-8">
+    <div className="mx-auto max-w-3xl px-6 py-12">
       <FadeInUp>
-        <h1 className="text-2xl font-bold">Developer Portal</h1>
-        <p className="mt-1 text-zinc-400">
-          List your AI agents, set pricing, and earn revenue.
+        <h1 className="text-3xl font-bold">List a Skill</h1>
+        <p className="mt-2 text-zinc-400">
+          Publish your API, CLI tool, or agent skill on Agent Bazaar. Set your price, get an x402 endpoint, and earn from every call — human or agent.
         </p>
       </FadeInUp>
 
-      {/* Dev Name Input */}
+      {/* Benefits */}
       <FadeInUp delay={0.1}>
-        <div className="mt-6 flex gap-3">
-          <Input
-            value={devName}
-            onChange={(e) => setDevName(e.target.value)}
-            placeholder="Enter your developer name"
-            icon={<User size={16} />}
-          />
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={loadDashboard}
-            loading={loading}
-            disabled={!devName.trim()}
-          >
-            Load Dashboard
-          </Button>
+        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          {[
+            { icon: <Zap size={20} />, title: "x402 Payments", desc: "Get paid per call automatically" },
+            { icon: <Globe size={20} />, title: "Human + Agent Discovery", desc: "Found by humans and AI agents" },
+            { icon: <Bot size={20} />, title: "Zero Setup", desc: "We handle billing and discovery" },
+          ].map((b) => (
+            <Card key={b.title} className="p-4 text-center">
+              <div className="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/10 text-orange-400">
+                {b.icon}
+              </div>
+              <h3 className="text-sm font-semibold">{b.title}</h3>
+              <p className="mt-1 text-xs text-zinc-500">{b.desc}</p>
+            </Card>
+          ))}
         </div>
       </FadeInUp>
 
-      {/* Tabs */}
-      <div className="mt-6 flex gap-1 rounded-xl bg-zinc-900/50 p-1 w-fit">
-        <button
-          onClick={() => setTab("dashboard")}
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-            tab === "dashboard" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-300"
-          }`}
-        >
-          Dashboard
-        </button>
-        <button
-          onClick={() => setTab("submit")}
-          className={`rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 ${
-            tab === "submit" ? "bg-zinc-800 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-300"
-          }`}
-        >
-          Submit Agent
-        </button>
-      </div>
+      {/* Form */}
+      <FadeIn>
+        <form onSubmit={handleSubmit} className="mt-10">
+          <h2 className="text-lg font-semibold">Capability Details</h2>
+          <p className="mt-1 text-sm text-zinc-400">
+            Fill in the details. Submissions are reviewed within 48 hours.
+          </p>
 
-      {tab === "dashboard" && (
-        <>
-          {!looked && (
-            <p className="mt-8 text-sm text-zinc-500">
-              Enter your developer name above to see your stats.
-            </p>
-          )}
-
-          {looked && loading && (
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-28" />
-              ))}
+          {submitSuccess && (
+            <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-500/20 bg-green-500/5 p-4 text-sm text-green-400">
+              <CheckCircle size={18} />
+              Capability submitted successfully! It will appear after review.
             </div>
           )}
 
-          {looked && !loading && stats && (
-            <>
-              <StaggerContainer className="mt-8 grid gap-4 sm:grid-cols-3">
-                <StaggerItem>
-                  <Card>
-                    <div className="flex items-center gap-2">
-                      <DollarSign size={16} className="text-green-400" />
-                      <p className="text-xs text-zinc-500">Total Revenue</p>
-                    </div>
-                    <p className="mt-2 text-3xl font-bold">${stats.total_revenue.toLocaleString()}</p>
-                    <p className="text-xs text-zinc-400">Across {stats.agent_count} agents</p>
-                  </Card>
-                </StaggerItem>
-                <StaggerItem>
-                  <Card>
-                    <div className="flex items-center gap-2">
-                      <ShoppingCart size={16} className="text-blue-400" />
-                      <p className="text-xs text-zinc-500">Total Sales</p>
-                    </div>
-                    <p className="mt-2 text-3xl font-bold">{stats.total_sales}</p>
-                    <p className="text-xs text-zinc-400">Across {stats.agent_count} agents</p>
-                  </Card>
-                </StaggerItem>
-                <StaggerItem>
-                  <Card>
-                    <div className="flex items-center gap-2">
-                      <Star size={16} className="text-yellow-400" />
-                      <p className="text-xs text-zinc-500">Avg Rating</p>
-                    </div>
-                    <p className="mt-2 text-3xl font-bold">{stats.avg_rating.toFixed(1)}</p>
-                    <p className="text-yellow-400 text-xs">{"★".repeat(Math.floor(stats.avg_rating))}</p>
-                  </Card>
-                </StaggerItem>
-              </StaggerContainer>
-
-              <div className="mt-8">
-                <h2 className="mb-4 text-lg font-semibold">Your Agents</h2>
-                {agents.length > 0 ? (
-                  <StaggerContainer className="space-y-3">
-                    {agents.map((agent) => (
-                      <StaggerItem key={agent.id}>
-                        <Card className="flex items-center justify-between p-4">
-                          <div className="flex items-center gap-3">
-                            <span className="text-2xl">{agent.icon}</span>
-                            <div>
-                              <p className="font-medium">{agent.name}</p>
-                              <p className="text-xs text-zinc-500">
-                                {agent.sales_count} sales &middot; ${agent.price} per sale
-                              </p>
-                            </div>
-                          </div>
-                          <Badge variant="success">live</Badge>
-                        </Card>
-                      </StaggerItem>
-                    ))}
-                  </StaggerContainer>
-                ) : (
-                  <p className="text-sm text-zinc-500">No agents listed yet. Submit your first agent!</p>
-                )}
-              </div>
-            </>
-          )}
-        </>
-      )}
-
-      {tab === "submit" && (
-        <FadeIn>
-          <form onSubmit={handleSubmit} className="mt-8 max-w-xl">
-            <h2 className="text-lg font-semibold">Submit a New Agent</h2>
-            <p className="mt-1 text-sm text-zinc-400">
-              Fill in the details. Our team reviews submissions within 48 hours.
-            </p>
-
-            {submitSuccess && (
-              <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-500/20 bg-green-500/5 p-4 text-sm text-green-400">
-                <CheckCircle size={18} />
-                Agent submitted successfully! It will appear after review.
-              </div>
-            )}
-
-            <div className="mt-6 space-y-4">
-              <Input
-                label="Agent Name"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="e.g., Email Outreach Agent"
+          <div className="mt-6 space-y-4">
+            <Input
+              label="Capability Name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="e.g., GPT-4 Code Review API"
+              required
+            />
+            <Select
+              label="Type"
+              value={form.type}
+              onChange={(e) => setForm({ ...form, type: e.target.value })}
+              required
+              options={[
+                { value: "api", label: "API Endpoint" },
+                { value: "cli", label: "CLI Tool" },
+                { value: "skill", label: "Agent Skill" },
+              ]}
+            />
+            <Select
+              label="Category"
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+              required
+              options={[
+                { value: "", label: "Select category" },
+                ...CATEGORIES.map((c) => ({ value: c.value, label: `${c.icon} ${c.label}` })),
+              ]}
+            />
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-zinc-500">Description</label>
+              <textarea
+                rows={3}
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                placeholder="What does your capability do? How do agents/humans use it?"
                 required
+                className="w-full rounded-xl border border-zinc-800 bg-zinc-900/80 px-4 py-3 text-sm text-white placeholder:text-zinc-500 transition-all duration-200 focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/20 focus:outline-none"
               />
-              <Select
-                label="Category"
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-                required
-                options={[
-                  { value: "", label: "Select category" },
-                  { value: "productivity", label: "Productivity" },
-                  { value: "marketing", label: "Marketing" },
-                  { value: "personal", label: "Personal" },
-                  { value: "ecommerce", label: "E-commerce" },
-                  { value: "dev-tools", label: "Dev Tools" },
-                  { value: "finance", label: "Finance" },
-                ]}
-              />
-              <div>
-                <label className="mb-1.5 block text-xs font-medium text-zinc-500">Description</label>
-                <textarea
-                  rows={3}
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="What does your agent do?"
-                  required
-                  className="w-full rounded-xl border border-zinc-800 bg-zinc-900/80 px-4 py-3 text-sm text-white placeholder:text-zinc-500 transition-all duration-200 focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/20 focus:outline-none"
-                />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Input
-                  label="Price ($)"
-                  type="number"
-                  value={form.price}
-                  onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
-                  placeholder="49"
-                />
-                <Select
-                  label="Price Type"
-                  value={form.price_type}
-                  onChange={(e) => setForm({ ...form, price_type: e.target.value })}
-                  options={[
-                    { value: "lifetime", label: "Monthly Plan" },
-                    { value: "monthly", label: "Monthly" },
-                    { value: "free", label: "Free" },
-                  ]}
-                />
-              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
               <Input
-                label="Demo URL (Telegram bot link)"
+                label="Price per Call ($)"
+                type="number"
+                value={form.price_per_call}
+                onChange={(e) => setForm({ ...form, price_per_call: Number(e.target.value) })}
+                placeholder="0.05"
+              />
+              <Input
+                label="x402 Endpoint URL"
                 type="url"
-                value={form.demo_url}
-                onChange={(e) => setForm({ ...form, demo_url: e.target.value })}
-                placeholder="https://t.me/YourDemoBot"
+                value={form.x402_endpoint}
+                onChange={(e) => setForm({ ...form, x402_endpoint: e.target.value })}
+                placeholder="https://your-api.com/x402/endpoint"
               />
-              <Select
-                label="Install Type"
-                value={form.install_type}
-                onChange={(e) => setForm({ ...form, install_type: e.target.value })}
-                options={[
-                  { value: "api", label: "API" },
-                  { value: "telegram", label: "Telegram Bot" },
-                  { value: "zapier", label: "Zapier" },
-                  { value: "nocode", label: "No-Code" },
-                  { value: "custom", label: "Custom" },
-                ]}
-              />
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="atlas"
-                  checked={form.atlas_compatible}
-                  onChange={(e) => setForm({ ...form, atlas_compatible: e.target.checked })}
-                  className="rounded border-zinc-700"
-                />
-                <label htmlFor="atlas" className="text-sm text-zinc-400">
-                  This agent is Atlas-Compatible (supports autonomous orchestration)
-                </label>
-              </div>
-
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                loading={submitting}
-                className="w-full"
-              >
-                Submit for Review
-              </Button>
             </div>
-          </form>
-        </FadeIn>
-      )}
+
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              loading={submitting}
+              className="w-full"
+            >
+              Submit for Review
+            </Button>
+          </div>
+        </form>
+      </FadeIn>
     </div>
   );
 }

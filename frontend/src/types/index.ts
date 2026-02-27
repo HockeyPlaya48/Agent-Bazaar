@@ -40,7 +40,22 @@ export interface Review {
   date: string;
 }
 
+export interface Bundle {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  originalPrice: number;
+  atlasHint?: string;
+  agents: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    icon: string;
+    originalPrice: number;
+  }>;
+}
+
 // Legacy compat
 export type Category = CapabilityCategory;
 export type AgentListing = Capability;
-export type Bundle = never;

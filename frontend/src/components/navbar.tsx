@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "/agents", label: "Browse Skills" },
   { href: "/bundles", label: "Skill Packs" },
-  { href: "/dev", label: "For Developers" },
+  { href: "/atlas", label: "Agent Shopping" },
+  { href: "/dev", label: "List a Skill" },
 ];
 
 export function NavBar() {
@@ -36,13 +37,6 @@ export function NavBar() {
 
         {/* Right */}
         <div className="flex items-center gap-4">
-          <Link
-            href="/atlas"
-            className="hidden items-center gap-1.5 text-sm text-blue-400 transition-colors hover:text-blue-300 sm:flex"
-          >
-            <Sparkles size={14} />
-            Atlas Beta
-          </Link>
           <Link
             href="/dashboard"
             className="hidden rounded-full bg-white px-4 py-2 text-sm font-medium text-zinc-950 transition-all hover:bg-zinc-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] sm:block"
@@ -75,14 +69,6 @@ export function NavBar() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/atlas"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-1.5 text-sm text-blue-400 py-2"
-            >
-              <Sparkles size={14} />
-              Atlas Beta
-            </Link>
             <Link
               href="/dashboard"
               onClick={() => setOpen(false)}
