@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Bot, Search, Zap, Send, DollarSign, Clock, Target } from "lucide-react";
-import { type CapabilityAPI } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -61,7 +60,6 @@ export default function AtlasPage() {
   const [budget, setBudget] = useState("");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<any>(null);
-  const [reasoning, setReasoning] = useState<string>("");
 
   async function handleSearch(e?: React.FormEvent, templateQuery?: string) {
     if (e) e.preventDefault();
@@ -81,7 +79,6 @@ export default function AtlasPage() {
       });
       const data = await res.json();
       setResults(data);
-      setReasoning(data.reasoning || "");
       if (templateQuery) {
         setQuery(templateQuery);
       }
@@ -105,7 +102,7 @@ export default function AtlasPage() {
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-16">
+    <div className="mx-auto max-w-6xl px-6 py-16">
       {/* Hero */}
       <div className="relative text-center">
         <div className="pointer-events-none absolute inset-0 flex items-start justify-center -top-32">
@@ -119,89 +116,275 @@ export default function AtlasPage() {
         </FadeInUp>
 
         <FadeInUp delay={0.1}>
+          <Badge variant="deal" className="mb-4">
+            ⚡ First marketplace where agents shop for you
+          </Badge>
           <h1 className="text-4xl font-bold sm:text-5xl">
-            Agent Shopping
+            AI Workflow Shopping
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-zinc-400">
-            Describe what you&apos;re building. Our AI will browse the marketplace and recommend the best capabilities for your workflow.
+            Describe your goal. Our AI discovers skills, chains them into workflows, shows cost breakdowns, and generates deployment-ready code.
           </p>
         </FadeInUp>
 
         <FadeInUp delay={0.2}>
-          <form onSubmit={handleSearch} className="mx-auto mt-8 flex max-w-xl gap-3">
-            <Input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="e.g., I need to build an automated content pipeline..."
-              className="rounded-full"
-            />
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              loading={loading}
-            >
-              <Search size={16} />
-              Shop
-            </Button>
+          <form onSubmit={handleSearch} className="mx-auto mt-8 space-y-4">
+            <div className="flex max-w-2xl gap-3">
+              <Input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="e.g., I need to build a content pipeline that generates and optimizes blog posts..."
+                className="flex-1 rounded-full"
+              />
+              <Input
+                type="number"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                placeholder="Budget"
+                className="w-28 rounded-full"
+                step="0.01"
+                min="0"
+              />
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                loading={loading}
+                className="rounded-full"
+              >
+                <Search size={16} />
+                Shop
+              </Button>
+            </div>
+            
+            {/* Budget Slider */}
+            {budget && (
+              <div className="flex items-center gap-3 max-w-md mx-auto">
+                <DollarSign size={16} className="text-zinc-500" />
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={budget}
+                  onChange={(e) => setBudget(e.target.value)}
+                  className="flex-1 h-2 bg-zinc-800 rounded-lg appearance-none slider"
+                />
+                <span className="text-sm text-zinc-400 w-20">${budget || "0.00"}</span>
+              </div>
+            )}
           </form>
         </FadeInUp>
-
-        {/* Example queries */}
-        <FadeInUp delay={0.3}>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            {["code review", "trading bot", "content writing", "web scraping"].map((q) => (
-              <button
-                key={q}
-                onClick={() => { setQuery(q); }}
-                className="rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs text-zinc-400 transition hover:border-zinc-700 hover:text-white"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        </FadeInUp>
       </div>
+
+      {/* Workflow Templates */}
+      {!results && (
+        <section className="mt-16">
+          <FadeInUp>
+            <h2 className="text-2xl font-bold text-center mb-2">Pre-built Workflows</h2>
+            <p className="text-zinc-400 text-center mb-8">Click a template to see how skills chain together</p>
+          </FadeInUp>
+          
+          <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {WORKFLOW_TEMPLATES.map((template) => (
+              <StaggerItem key={template.id}>
+                <Card 
+                  className="p-5 cursor-pointer transition-all hover:border-orange-500/30 hover:bg-zinc-800/50"
+                  onClick={() => handleSearch(undefined, template.query)}
+                >
+                  <div className="text-center">
+                    <div className="text-3xl mb-3">{template.icon}</div>
+                    <h3 className="font-semibold mb-2">{template.name}</h3>
+                    <p className="text-sm text-zinc-400 mb-3">{template.description}</p>
+                    <div className="flex items-center justify-between text-xs text-zinc-500">
+                      <div className="flex items-center gap-1">
+                        <DollarSign size={12} />
+                        {template.estimatedCost}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Clock size={12} />
+                        {template.estimatedTime}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center mt-2">
+                      <Badge className="text-xs">{template.skills.length} skills</Badge>
+                    </div>
+                  </div>
+                </Card>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </section>
+      )}
 
       {/* Results */}
       {results && (
         <FadeIn>
-          <div className="mt-12">
-            {reasoning && (
-              <Card className="mb-6 p-4">
+          <div className="mt-12 space-y-6">
+            {/* AI Analysis */}
+            {results.suggestion && (
+              <Card className="p-5">
                 <div className="flex items-start gap-3">
                   <Bot size={20} className="mt-0.5 shrink-0 text-orange-400" />
-                  <p className="text-sm text-zinc-300">{reasoning}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-semibold text-orange-400">AI Analysis</h3>
+                      {results.confidence && (
+                        <Badge variant={results.confidence > 80 ? "success" : "default"} className="text-xs">
+                          {results.confidence}% confidence
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-zinc-300">{results.suggestion}</p>
+                    {results.estimatedCostPerUse && (
+                      <p className="text-xs text-zinc-400 mt-2">
+                        Total cost per run: <span className="text-orange-400 font-medium">{results.estimatedCostPerUse}</span>
+                        {results.budgetUtilization && (
+                          <span className="ml-2">({results.budgetUtilization} of budget)</span>
+                        )}
+                      </p>
+                    )}
+                  </div>
                 </div>
               </Card>
             )}
 
-            {results.length > 0 ? (
-              <StaggerContainer className="grid gap-4 sm:grid-cols-2">
-                {results.map((cap: any) => (
-                  <StaggerItem key={cap.id}>
-                    <Link href={`/agents/${cap.slug}`}>
-                      <Card className="p-5 transition-all hover:border-orange-500/30">
-                        <div className="flex items-start gap-3">
-                          <span className="text-3xl">{cap.icon}</span>
-                          <div>
-                            <h3 className="font-semibold">{cap.name}</h3>
-                            <p className="mt-1 text-xs text-zinc-500">by {cap.creator_name} · ${cap.price_per_call}/call</p>
-                            <p className="mt-2 text-sm text-zinc-400">{cap.description}</p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Badge>{cap.type}</Badge>
-                              <span className="text-xs text-yellow-500">{cap.rating} ★</span>
-                            </div>
+            {/* Workflow Visualization */}
+            {results.workflow && (
+              <Card className="p-6 bg-gradient-to-br from-zinc-800/30 to-zinc-900/30">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-orange-500/10 rounded-xl">
+                    <Zap size={20} className="text-orange-400" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white">{results.workflow.name}</h3>
+                    <p className="text-zinc-400">{results.workflow.description}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-lg font-bold text-orange-400">{results.workflow.estimatedCostPerRun}</p>
+                    <p className="text-sm text-zinc-500">{results.workflow.estimatedTime}</p>
+                  </div>
+                </div>
+
+                {/* Workflow Steps */}
+                <div className="relative">
+                  {results.workflow.steps?.map((step: any, i: number) => (
+                    <div key={step.order} className="flex gap-4 mb-6 last:mb-0">
+                      <div className="flex flex-col items-center">
+                        <div className="w-10 h-10 bg-orange-500/20 border-2 border-orange-500 rounded-full flex items-center justify-center font-bold text-orange-400">
+                          {step.order}
+                        </div>
+                        {i < results.workflow.steps.length - 1 && (
+                          <div className="w-0.5 h-12 bg-zinc-700 mt-2"></div>
+                        )}
+                      </div>
+                      <Card className="flex-1 p-4 bg-zinc-800/50">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="text-2xl">{step.skill_data?.icon || "🔧"}</span>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-white">{step.skill_data?.name || step.skill}</h4>
+                            <p className="text-sm text-zinc-300">{step.action}</p>
+                          </div>
+                          <div className="text-right">
+                            <Badge>${step.skill_data?.pricePerCall || "0.00"}</Badge>
+                            <p className="text-xs text-zinc-500 mt-1">{step.estimatedTime}</p>
                           </div>
                         </div>
+                        <p className="text-xs text-zinc-500">→ {step.output}</p>
                       </Card>
-                    </Link>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
-            ) : (
-              <p className="text-center text-zinc-500">No matching capabilities found. Try a different query.</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Use Cases & Deploy */}
+                <div className="mt-6 pt-6 border-t border-zinc-700">
+                  {results.workflow.useCases?.length > 0 && (
+                    <div className="mb-4">
+                      <p className="text-sm font-medium text-white mb-2">Perfect for:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {results.workflow.useCases.map((useCase: string) => (
+                          <Badge key={useCase} variant="category" className="text-xs">
+                            {useCase}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="flex gap-3">
+                    <Button variant="primary" className="flex-1">
+                      Deploy This Workflow
+                    </Button>
+                    <Button variant="secondary">
+                      View Code
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+            {/* Individual Skills */}
+            {results.recommendations?.length > 0 && (
+              <div>
+                <h3 className="text-xl font-bold text-white mb-4">
+                  {results.workflow ? "Skills in this Workflow:" : "Recommended Skills:"}
+                </h3>
+                <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {results.recommendations.map((rec: any) => {
+                    const cap = CAPABILITIES.find(c => c.slug === rec.capability.slug) || rec.capability;
+                    return (
+                      <StaggerItem key={cap.id}>
+                        <Link href={`/agents/${cap.slug}`}>
+                          <Card className="p-5 transition-all hover:border-orange-500/30">
+                            <div className="flex items-start gap-3">
+                              <span className="text-2xl">{cap.icon}</span>
+                              <div className="flex-1">
+                                <h4 className="font-semibold">{cap.name}</h4>
+                                <p className="text-xs text-zinc-500 mt-1">
+                                  ${cap.pricePerCall}/call · {cap.rating} ★
+                                </p>
+                                <p className="text-sm text-zinc-400 mt-2">{cap.description}</p>
+                                <div className="mt-3 flex items-center justify-between">
+                                  <Badge>{cap.type}</Badge>
+                                  {rec.relevanceScore && (
+                                    <Badge variant="success" className="text-xs">
+                                      {rec.relevanceScore}% match
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </Card>
+                        </Link>
+                      </StaggerItem>
+                    );
+                  })}
+                </StaggerContainer>
+              </div>
+            )}
+
+            {/* Alternatives */}
+            {results.alternatives?.length > 0 && (
+              <Card className="p-4 bg-blue-500/5 border-blue-500/20">
+                <h4 className="font-medium text-blue-400 mb-2 flex items-center gap-2">
+                  <Target size={16} />
+                  Alternative Options:
+                </h4>
+                <ul className="text-sm text-zinc-300 space-y-1">
+                  {results.alternatives.map((alt: string, i: number) => (
+                    <li key={i}>• {alt}</li>
+                  ))}
+                </ul>
+              </Card>
+            )}
+
+            {results.recommendations?.length === 0 && (
+              <Card className="p-8 text-center">
+                <p className="text-zinc-500">
+                  No matching skills found within your criteria. Try adjusting your budget or search terms.
+                </p>
+              </Card>
             )}
           </div>
         </FadeIn>
@@ -212,9 +395,9 @@ export default function AtlasPage() {
         <FadeInUp delay={0.4}>
           <div className="mt-16 grid gap-4 sm:grid-cols-3">
             {[
-              { icon: <Search size={24} />, title: "Describe Your Need", desc: "Tell us what you're building or what task you need to automate" },
-              { icon: <Bot size={24} />, title: "AI Shops for You", desc: "Our agent browses capabilities, compares pricing and ratings" },
-              { icon: <Zap size={24} />, title: "Instant Integration", desc: "Get x402 endpoints ready to call from your code or agent" },
+              { icon: <Search size={24} />, title: "Describe Your Goal", desc: "Tell us what you're building and set an optional budget" },
+              { icon: <Bot size={24} />, title: "AI Builds Workflows", desc: "Our AI chains skills together and shows cost/time estimates" },
+              { icon: <Zap size={24} />, title: "Deploy & Integrate", desc: "Get working code and x402 endpoints ready to use" },
             ].map((step) => (
               <Card key={step.title} className="p-5 text-center">
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-zinc-800 text-orange-400">
