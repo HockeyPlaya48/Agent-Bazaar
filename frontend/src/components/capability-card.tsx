@@ -47,6 +47,20 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
         {capability.name}
       </h3>
 
+      {/* Reputation badges */}
+      <div className="mt-2 flex flex-wrap gap-1">
+        {capability.usageCount > 100000 && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10px] font-medium text-amber-400">
+            🏆 Top Skill
+          </span>
+        )}
+        {capability.rating >= 4.8 && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-yellow-500/10 border border-yellow-500/30 px-2 py-0.5 text-[10px] font-medium text-yellow-400">
+            ⭐ Highly Rated
+          </span>
+        )}
+      </div>
+
       <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-zinc-400">
         {capability.description}
       </p>
@@ -65,6 +79,14 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
           <span className="text-yellow-500">★</span>
           <span className="text-zinc-300">{capability.rating}</span>
         </div>
+      </div>
+
+      {/* Creator info with verified badge */}
+      <div className="mt-2 flex items-center gap-1 text-[11px] text-zinc-500">
+        <span>by {capability.creatorName}</span>
+        {capability.rating > 4.5 && capability.usageCount > 50000 && (
+          <span className="text-green-400">✓</span>
+        )}
       </div>
 
       <div className="mt-2.5 flex flex-wrap gap-1">

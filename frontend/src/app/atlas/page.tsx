@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Bot, Search, Zap, Send } from "lucide-react";
+import { Bot, Search, Zap, Send, DollarSign, Clock, Target } from "lucide-react";
 import { type CapabilityAPI } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,59 +12,93 @@ import { CapabilityCard } from "@/components/capability-card";
 import { CAPABILITIES } from "@/lib/data";
 import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 
+// Workflow template cards
+const WORKFLOW_TEMPLATES = [
+  {
+    id: "content-pipeline",
+    name: "Content Pipeline",
+    description: "Research → Write → Optimize → Visual assets",
+    icon: "✍️",
+    estimatedCost: "$0.35",
+    estimatedTime: "58s",
+    skills: ["research-summarizer", "blog-post-writer", "seo-analyzer", "dalle-image-gen"],
+    query: "build a content pipeline for blogs and articles"
+  },
+  {
+    id: "code-quality",
+    name: "Code Quality",
+    description: "Review → Audit → Optimize → Deploy",
+    icon: "🔍",
+    estimatedCost: "$0.10",
+    estimatedTime: "70s",
+    skills: ["gpt4-code-review", "git-audit-cli", "sql-query-gen", "deploy-cli"],
+    query: "set up code quality and deployment pipeline"
+  },
+  {
+    id: "data-pipeline",
+    name: "Data Analysis",
+    description: "Scrape → Process → Analyze → Report",
+    icon: "📊",
+    estimatedCost: "$0.22",
+    estimatedTime: "47s",
+    skills: ["web-scraper-api", "csv-intelligence", "research-summarizer"],
+    query: "create data analysis and reporting workflow"
+  },
+  {
+    id: "trading-pipeline",
+    name: "Trading Bot",
+    description: "Price data → Analysis → Signals → Execute",
+    icon: "📈",
+    estimatedCost: "$0.03",
+    estimatedTime: "27s",
+    skills: ["crypto-price-oracle", "csv-intelligence", "research-summarizer", "bankr-cli"],
+    query: "build automated crypto trading system"
+  }
+];
+
 export default function AtlasPage() {
   const [query, setQuery] = useState("");
+  const [budget, setBudget] = useState("");
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<CapabilityAPI[] | null>(null);
-  const [reasoning, setReasoning] = useState("");
+  const [results, setResults] = useState<any>(null);
+  const [reasoning, setReasoning] = useState<string>("");
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    if (!query.trim()) return;
+  async function handleSearch(e?: React.FormEvent, templateQuery?: string) {
+    if (e) e.preventDefault();
+    const searchQuery = templateQuery || query;
+    if (!searchQuery.trim()) return;
+    
     setLoading(true);
     setResults(null);
-    setReasoning("");
     try {
       const res = await fetch("/api/agent-shop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ 
+          query: searchQuery,
+          budget: budget ? parseFloat(budget) : null
+        }),
       });
       const data = await res.json();
-      // Map to CapabilityAPI format for display
-      const mapped = (data.recommendations || []).map((rec: any) => {
-        const cap = CAPABILITIES.find(c => c.slug === rec.capability.slug);
-        if (cap) {
-          return {
-            id: cap.id, name: cap.name, slug: cap.slug, description: cap.description,
-            long_description: cap.longDescription, type: cap.type, category: cap.category,
-            price_per_call: cap.pricePerCall, x402_endpoint: cap.x402Endpoint, icon: cap.icon,
-            rating: cap.rating, usage_count: cap.usageCount, featured: cap.featured,
-            tags: cap.tags, creator_name: cap.creatorName,
-          };
-        }
-        return {
-          id: rec.capability.id, name: rec.capability.name, slug: rec.capability.slug,
-          description: rec.capability.description, long_description: rec.capability.description,
-          type: rec.capability.type, category: rec.capability.category || "automation",
-          price_per_call: rec.capability.pricePerCall, x402_endpoint: rec.capability.x402Endpoint || "",
-          icon: rec.capability.icon || "🔧", rating: rec.capability.rating,
-          usage_count: rec.capability.usageCount, featured: false, tags: [], creator_name: "Agent Bazaar",
-        };
-      });
-      setResults(mapped);
-      setReasoning(data.suggestion || "Here are our recommendations:");
+      setResults(data);
+      setReasoning(data.reasoning || "");
+      if (templateQuery) {
+        setQuery(templateQuery);
+      }
     } catch {
       // Fallback: show popular skills
       const fallback = CAPABILITIES.slice(0, 4).map((c) => ({
         id: c.id, name: c.name, slug: c.slug, description: c.description,
-        long_description: c.longDescription, type: c.type, category: c.category,
-        price_per_call: c.pricePerCall, x402_endpoint: c.x402Endpoint, icon: c.icon,
-        rating: c.rating, usage_count: c.usageCount, featured: c.featured,
-        tags: c.tags, creator_name: c.creatorName,
+        type: c.type, category: c.category, pricePerCall: c.pricePerCall,
+        x402Endpoint: c.x402Endpoint, icon: c.icon, rating: c.rating,
+        usageCount: c.usageCount, creatorName: c.creatorName,
       }));
-      setResults(fallback);
-      setReasoning("Here are our most popular skills to get you started:");
+      setResults({
+        success: true,
+        recommendations: fallback.map(cap => ({ capability: cap, relevanceScore: 80, reasoning: "Popular choice" })),
+        suggestion: "Here are our most popular skills to get you started:",
+        confidence: 50
+      });
     } finally {
       setLoading(false);
     }
@@ -145,7 +179,7 @@ export default function AtlasPage() {
 
             {results.length > 0 ? (
               <StaggerContainer className="grid gap-4 sm:grid-cols-2">
-                {results.map((cap) => (
+                {results.map((cap: any) => (
                   <StaggerItem key={cap.id}>
                     <Link href={`/agents/${cap.slug}`}>
                       <Card className="p-5 transition-all hover:border-orange-500/30">

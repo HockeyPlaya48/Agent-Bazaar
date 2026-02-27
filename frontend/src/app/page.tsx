@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { CapabilityCard } from "@/components/capability-card";
 import { SectionHeader } from "@/components/section-header";
 import { CategoryFilter } from "@/components/category-filter";
+import { LiveTicker } from "@/components/live-ticker";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 
 export default function HomePage() {
@@ -19,8 +20,17 @@ export default function HomePage() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [showAgentShop, setShowAgentShop] = useState(false);
   const [shopQuery, setShopQuery] = useState("");
+  const [shopBudget, setShopBudget] = useState("");
   const [shopLoading, setShopLoading] = useState(false);
-  const [shopResults, setShopResults] = useState<{ recommendations: Capability[]; reasoning: string } | null>(null);
+  const [shopResults, setShopResults] = useState<{ 
+    recommendations: Capability[]; 
+    reasoning: string;
+    workflow?: any;
+    alternatives?: string[];
+    confidence?: number;
+    estimatedCostPerUse?: string;
+    budgetUtilization?: string;
+  } | null>(null);
 
   // Use static data directly — always available, no API dependency
   const capabilities = CAPABILITIES;
@@ -34,7 +44,10 @@ export default function HomePage() {
       const res = await fetch("/api/agent-shop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: shopQuery }),
+        body: JSON.stringify({ 
+          query: shopQuery,
+          budget: shopBudget ? parseFloat(shopBudget) : null
+        }),
       });
       const response = await res.json();
       
@@ -63,6 +76,11 @@ export default function HomePage() {
       setShopResults({
         recommendations: mappedRecommendations,
         reasoning: response.suggestion || `Based on your query "${shopQuery}", here are the recommended skills:`,
+        workflow: response.workflow,
+        alternatives: response.alternatives || [],
+        confidence: response.confidence,
+        estimatedCostPerUse: response.estimatedCostPerUse,
+        budgetUtilization: response.budgetUtilization
       });
     } catch (error) {
       console.error("Agent shop failed:", error);
@@ -78,6 +96,9 @@ export default function HomePage() {
         reasoning: searchResults.length > 0
           ? `Here are skills matching "${shopQuery}":`
           : `Here are our most popular skills to get you started:`,
+        workflow: null,
+        alternatives: [],
+        confidence: 50
       });
     } finally {
       setShopLoading(false);
@@ -116,7 +137,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-4xl text-center">
           <FadeInUp>
             <Badge variant="deal" className="px-4 py-1.5 text-sm">
-              Deal Marketplace for Agent Skills
+              The First Marketplace Where Agents Shop For You
             </Badge>
           </FadeInUp>
 
@@ -165,6 +186,9 @@ export default function HomePage() {
           </FadeInUp>
         </div>
       </section>
+
+      {/* Live Ticker */}
+      <LiveTicker />
 
       {/* How It Works */}
       <section className="px-6 pb-16">
@@ -255,15 +279,23 @@ export default function HomePage() {
                     <Bot size={32} />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">Let Our AI Find the Right Skills for You</h2>
+                    <Badge variant="deal" className="mb-3">
+                      ⚡ First marketplace where agents shop for you
+                    </Badge>
+                    <h2 className="text-2xl font-bold text-white">AI Agent Shopping</h2>
                     <p className="mt-2 max-w-xl text-zinc-400">
-                      Describe what you're building. Our built-in agent will browse the marketplace, compare options, and recommend the best skills — or purchase them on your behalf via x402.
+                      Describe your goal. Our AI discovers skills, chains them into workflows, and shows you exactly how they work together — with cost breakdowns and deployment-ready code.
                     </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <Badge variant="category" className="text-xs">🔗 Workflow Builder</Badge>
+                      <Badge variant="category" className="text-xs">💰 Budget Controls</Badge>
+                      <Badge variant="category" className="text-xs">🧠 Smart Reasoning</Badge>
+                    </div>
                     <button 
                       onClick={() => setShowAgentShop(true)}
-                      className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+                      className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
                     >
-                      <Zap size={16} /> Start Agent Shopping
+                      <Zap size={16} /> Start Workflow Shopping
                     </button>
                   </div>
                 </div>
@@ -304,6 +336,70 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {/* CLI Tools Section */}
+      {!search && !selectedCategory && !selectedType && (
+        <section className="px-6 pb-12">
+          <div className="mx-auto max-w-7xl">
+            <FadeInUp>
+              <div className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 p-8 mb-8">
+                <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-green-500/5 blur-3xl" />
+                <div className="relative flex flex-col items-center text-center sm:flex-row sm:text-left sm:items-start gap-6">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-green-500/10 text-green-400">
+                    <Terminal size={32} />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">CLI Tools for Developers</h2>
+                    <p className="mt-2 max-w-xl text-zinc-400">
+                      Install and run from your terminal. Perfect for CI/CD pipelines and developer workflows.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </FadeInUp>
+            
+            <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {capabilities.filter(cap => cap.type === "cli").map((cap) => (
+                <StaggerItem key={cap.id}>
+                  <CapabilityCard capability={cap} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </section>
+      )}
+
+      {/* Agent Skills Section */}
+      {!search && !selectedCategory && !selectedType && (
+        <section className="px-6 pb-12">
+          <div className="mx-auto max-w-7xl">
+            <FadeInUp>
+              <div className="relative overflow-hidden rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 p-8 mb-8">
+                <div className="pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full bg-purple-500/5 blur-3xl" />
+                <div className="relative flex flex-col items-center text-center sm:flex-row sm:text-left sm:items-start gap-6">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-purple-500/10 text-purple-400">
+                    <Bot size={32} />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">Composable Agent Skills</h2>
+                    <p className="mt-2 max-w-xl text-zinc-400">
+                      Drop into any agent framework. Memory, scheduling, email, web search — the building blocks of autonomous agents.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </FadeInUp>
+            
+            <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {capabilities.filter(cap => cap.type === "skill").map((cap) => (
+                <StaggerItem key={cap.id}>
+                  <CapabilityCard capability={cap} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </section>
+      )}
 
       {/* Developer Promotion Tiers */}
       {!search && !selectedCategory && !selectedType && (
@@ -395,19 +491,23 @@ export default function HomePage() {
       {/* Agent Shopping Modal */}
       {showAgentShop && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-zinc-900 rounded-xl border border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-zinc-900 rounded-xl border border-zinc-800 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-orange-500/10 rounded-lg">
                     <Bot size={20} className="text-orange-400" />
                   </div>
-                  <h2 className="text-xl font-bold">AI Agent Shopping</h2>
+                  <div>
+                    <h2 className="text-xl font-bold">AI Workflow Shopping</h2>
+                    <Badge variant="deal" className="text-xs mt-1">⚡ First marketplace where agents shop for you</Badge>
+                  </div>
                 </div>
                 <button
                   onClick={() => {
                     setShowAgentShop(false);
                     setShopQuery("");
+                    setShopBudget("");
                     setShopResults(null);
                   }}
                   className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
@@ -417,10 +517,10 @@ export default function HomePage() {
               </div>
 
               <p className="mt-4 text-zinc-400">
-                Describe what you're building or what you need. Our AI will browse the marketplace and recommend the best skills for your project.
+                Describe your goal and budget. Our AI will discover the best skills and chain them into a complete workflow with cost estimates.
               </p>
 
-              <div className="mt-6">
+              <div className="mt-6 space-y-4">
                 <div className="flex gap-3">
                   <Input
                     type="text"
@@ -430,14 +530,41 @@ export default function HomePage() {
                     className="flex-1"
                     onKeyPress={(e) => e.key === 'Enter' && handleAgentShop()}
                   />
+                  <Input
+                    type="number"
+                    value={shopBudget}
+                    onChange={(e) => setShopBudget(e.target.value)}
+                    placeholder="Budget (optional)"
+                    className="w-32"
+                    step="0.01"
+                    min="0"
+                  />
                   <button
                     onClick={handleAgentShop}
                     disabled={shopLoading || !shopQuery.trim()}
-                    className="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-zinc-700 disabled:text-zinc-500 text-white rounded-lg transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 disabled:bg-zinc-700 disabled:text-zinc-500 text-white rounded-lg transition-all flex items-center gap-2"
                   >
                     <Send size={16} />
                     {shopLoading ? "Shopping..." : "Shop"}
                   </button>
+                </div>
+                
+                {/* Quick Templates */}
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "build a content pipeline",
+                    "create a trading bot",
+                    "automate code reviews",
+                    "scrape and analyze data"
+                  ].map((template) => (
+                    <button
+                      key={template}
+                      onClick={() => setShopQuery(template)}
+                      className="px-3 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-full transition-colors"
+                    >
+                      {template}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -445,27 +572,133 @@ export default function HomePage() {
                 <div className="mt-6 text-center py-8">
                   <div className="inline-flex items-center gap-2 text-orange-400">
                     <Bot size={20} className="animate-pulse" />
-                    <span>AI is browsing the marketplace...</span>
+                    <span>AI is analyzing your needs and building a workflow...</span>
                   </div>
                 </div>
               )}
 
               {shopResults && (
-                <div className="mt-6">
-                  <div className="mb-4 p-4 bg-zinc-800/50 rounded-lg">
-                    <h3 className="font-semibold mb-2 text-orange-400">AI Recommendation:</h3>
-                    <p className="text-sm text-zinc-300">{shopResults.reasoning}</p>
+                <div className="mt-6 space-y-6">
+                  {/* AI Reasoning */}
+                  <div className="p-4 bg-zinc-800/50 rounded-lg border border-zinc-700">
+                    <div className="flex items-start gap-3">
+                      <Bot size={20} className="text-orange-400 mt-0.5 shrink-0" />
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="font-semibold text-orange-400">AI Analysis</h3>
+                          {shopResults.confidence && (
+                            <Badge variant={shopResults.confidence > 80 ? "success" : "default"} className="text-xs">
+                              {shopResults.confidence}% confidence
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-zinc-300">{shopResults.reasoning}</p>
+                        {shopResults.estimatedCostPerUse && (
+                          <p className="text-xs text-zinc-400 mt-2">
+                            Estimated cost per run: <span className="text-orange-400 font-medium">{shopResults.estimatedCostPerUse}</span>
+                            {shopResults.budgetUtilization && (
+                              <span className="ml-2">({shopResults.budgetUtilization} of budget)</span>
+                            )}
+                          </p>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  {shopResults.recommendations.length > 0 ? (
-                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      {shopResults.recommendations.map((cap) => (
-                        <CapabilityCard key={cap.id} capability={cap} />
-                      ))}
+                  {/* Workflow Visualization */}
+                  {shopResults.workflow && (
+                    <div className="p-5 bg-gradient-to-br from-zinc-800/30 to-zinc-900/30 rounded-lg border border-zinc-700">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-orange-500/10 rounded-lg">
+                          <Zap size={16} className="text-orange-400" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-white">{shopResults.workflow.name}</h3>
+                          <p className="text-xs text-zinc-400">{shopResults.workflow.description}</p>
+                        </div>
+                        <div className="ml-auto text-right">
+                          <p className="text-sm font-medium text-orange-400">{shopResults.workflow.estimatedCostPerRun}</p>
+                          <p className="text-xs text-zinc-500">{shopResults.workflow.estimatedTime}</p>
+                        </div>
+                      </div>
+
+                      {/* Workflow Steps */}
+                      <div className="relative">
+                        {shopResults.workflow.steps?.map((step: any, i: number) => (
+                          <div key={step.order} className="flex items-center gap-4 mb-4 last:mb-0">
+                            <div className="flex flex-col items-center">
+                              <div className="w-8 h-8 bg-orange-500/20 border-2 border-orange-500 rounded-full flex items-center justify-center text-sm font-semibold text-orange-400">
+                                {step.order}
+                              </div>
+                              {i < shopResults.workflow.steps.length - 1 && (
+                                <div className="w-0.5 h-8 bg-zinc-700 mt-2"></div>
+                              )}
+                            </div>
+                            <div className="flex-1 bg-zinc-800/50 rounded-lg p-3">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-lg">{step.skill_data?.icon || "🔧"}</span>
+                                <h4 className="font-medium text-white">{step.skill_data?.name || step.skill}</h4>
+                                <Badge className="text-xs">${step.skill_data?.pricePerCall || "0.00"}</Badge>
+                              </div>
+                              <p className="text-sm text-zinc-300">{step.action}</p>
+                              <p className="text-xs text-zinc-500 mt-1">Output: {step.output}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Use Cases */}
+                      {shopResults.workflow.useCases?.length > 0 && (
+                        <div className="mt-4 pt-4 border-t border-zinc-700">
+                          <p className="text-xs text-zinc-400 mb-2">Perfect for:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {shopResults.workflow.useCases.map((useCase: string) => (
+                              <Badge key={useCase} variant="category" className="text-xs">
+                                {useCase}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Deploy Button */}
+                      <div className="mt-4 pt-4 border-t border-zinc-700">
+                        <button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 text-white py-2 rounded-lg font-medium transition-opacity">
+                          Deploy This Workflow
+                        </button>
+                      </div>
                     </div>
-                  ) : (
+                  )}
+
+                  {/* Individual Skills */}
+                  {shopResults.recommendations.length > 0 && (
+                    <div>
+                      <h3 className="font-semibold text-white mb-4">
+                        {shopResults.workflow ? "Individual Skills in Workflow:" : "Recommended Skills:"}
+                      </h3>
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {shopResults.recommendations.map((cap) => (
+                          <CapabilityCard key={cap.id} capability={cap} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Alternatives */}
+                  {shopResults.alternatives && shopResults.alternatives.length > 0 && (
+                    <div className="p-4 bg-blue-500/5 border border-blue-500/20 rounded-lg">
+                      <h4 className="text-sm font-medium text-blue-400 mb-2">💡 Alternative Options:</h4>
+                      <ul className="text-sm text-zinc-300 space-y-1">
+                        {shopResults.alternatives.map((alt, i) => (
+                          <li key={i}>• {alt}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {shopResults.recommendations.length === 0 && (
                     <p className="text-center text-zinc-500 py-8">
-                      No matching skills found. Try a different description or browse our categories.
+                      No matching skills found within your budget. Try increasing your budget or different keywords.
                     </p>
                   )}
                 </div>
