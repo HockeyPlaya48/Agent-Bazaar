@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight, Check, MessageSquare, Zap } from "lucide-react";
+import { ChevronRight, Check, MessageSquare, Zap, Copy, X } from "lucide-react";
 import { getCapabilityBySlug, getReviews, type CapabilityAPI, type ReviewAPI } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,8 @@ export default function SkillDetailPage() {
   const [skill, setSkill] = useState<CapabilityAPI | null>(null);
   const [reviews, setReviews] = useState<ReviewAPI[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!params.slug) return;
@@ -29,6 +31,12 @@ export default function SkillDetailPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [params.slug]);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   if (loading) {
     return (
@@ -173,14 +181,12 @@ export default function SkillDetailPage() {
               </p>
 
               <div className="mt-4">
-                <a
-                  href={skill.x402_endpoint}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setShowModal(true)}
                   className="block w-full rounded-full bg-orange-500 py-3 text-center text-sm font-semibold text-white transition hover:bg-orange-600"
                 >
                   Use This Skill
-                </a>
+                </button>
               </div>
 
               <div className="mt-6 space-y-3 border-t border-zinc-800/50 pt-4">
@@ -207,6 +213,104 @@ export default function SkillDetailPage() {
           </FadeIn>
         </div>
       </div>
+
+      {/* Use This Skill Modal */}
+      {showModal && skill && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-zinc-900 rounded-xl border border-zinc-800 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold">Use {skill.name}</h2>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="mt-6 space-y-6">
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">x402 Endpoint</h3>
+                  <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-3">
+                    <code className="flex-1 text-sm text-green-400 break-all">
+                      {skill.x402_endpoint}
+                    </code>
+                    <button
+                      onClick={() => handleCopy(skill.x402_endpoint)}
+                      className="p-1 hover:bg-zinc-700 rounded"
+                    >
+                      <Copy size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">cURL Example</h3>
+                  <div className="bg-zinc-800 rounded-lg p-3">
+                    <code className="text-sm text-zinc-300 whitespace-pre-wrap">
+{`curl -X POST "${skill.x402_endpoint}" \\
+  -H "Content-Type: application/json" \\
+  -H "x402-agent: your-agent-name" \\
+  -d '{"query": "your input here"}'`}
+                    </code>
+                    <button
+                      onClick={() => handleCopy(`curl -X POST "${skill.x402_endpoint}" \\
+  -H "Content-Type: application/json" \\
+  -H "x402-agent: your-agent-name" \\
+  -d '{"query": "your input here"}'`)}
+                      className="mt-2 p-1 hover:bg-zinc-700 rounded float-right"
+                    >
+                      <Copy size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-sm font-semibold mb-2">Integration Guide</h3>
+                  <div className="bg-zinc-800 rounded-lg p-4 text-sm text-zinc-300 space-y-2">
+                    <p><strong>1. Set up x402 payments:</strong> Add your payment method to your agent framework</p>
+                    <p><strong>2. Make the call:</strong> Send a POST request to the endpoint above</p>
+                    <p><strong>3. Include your agent name:</strong> Use the x402-agent header for attribution</p>
+                    <p><strong>4. Handle the response:</strong> Process the JSON response in your agent's workflow</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-zinc-800">
+                  <div>
+                    <p className="text-sm text-zinc-500">Cost per call</p>
+                    <p className="text-lg font-bold text-orange-400">
+                      ${skill.price_per_call.toFixed(3)}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="px-4 py-2 border border-zinc-700 rounded-lg hover:bg-zinc-800 transition-colors"
+                    >
+                      Close
+                    </button>
+                    <a
+                      href={skill.x402_endpoint}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-colors"
+                    >
+                      Test Endpoint
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {copied && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg z-50">
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 }

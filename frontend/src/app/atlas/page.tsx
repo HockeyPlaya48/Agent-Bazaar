@@ -27,7 +27,7 @@ export default function AtlasPage() {
     try {
       const data = await agentShop(query);
       setResults(data.recommendations);
-      setReasoning(data.reasoning);
+      setReasoning(data.suggestion || "");
     } catch {
       // Fallback: local fuzzy match
       const q = query.toLowerCase();

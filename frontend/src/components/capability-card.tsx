@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Capability } from "@/types";
 import { Badge } from "@/components/ui/badge";
 
@@ -26,7 +27,8 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
   const tier = tierStyles[capability.listingTier || "free"] || tierStyles.free;
 
   return (
-    <div className={`group relative flex flex-col rounded-xl border bg-zinc-900/50 p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900 ${tier.border}`}>
+    <Link href={`/agents/${capability.slug}`} className="block">
+      <div className={`group relative flex flex-col rounded-xl border bg-zinc-900/50 p-5 transition-all hover:border-zinc-700 hover:bg-zinc-900 cursor-pointer ${tier.border}`}>
       {capability.listingTier && capability.listingTier !== "free" && (
         <div className="mb-2">
           <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wide ${tier.className}`}>
@@ -72,6 +74,7 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
           </span>
         ))}
       </div>
-    </div>
+      </div>
+    </Link>
   );
 }

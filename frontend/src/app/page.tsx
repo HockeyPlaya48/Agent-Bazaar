@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { Search, Zap, CreditCard, Rocket, Bot, Terminal, Globe, Cpu } from "lucide-react";
+import { Search, Zap, CreditCard, Rocket, Bot, Terminal, Globe, Cpu, Send, X } from "lucide-react";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/data";
-import { getCapabilities, apiToCapability } from "@/lib/api";
+import { getCapabilities, apiToCapability, agentShop } from "@/lib/api";
 import { Capability } from "@/types";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,10 @@ export default function HomePage() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [capabilities, setCapabilities] = useState<Capability[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAgentShop, setShowAgentShop] = useState(false);
+  const [shopQuery, setShopQuery] = useState("");
+  const [shopLoading, setShopLoading] = useState(false);
+  const [shopResults, setShopResults] = useState<{ recommendations: Capability[]; reasoning: string } | null>(null);
 
   useEffect(() => {
     async function fetchCapabilities() {
@@ -37,6 +41,56 @@ export default function HomePage() {
     
     fetchCapabilities();
   }, []);
+
+  const handleAgentShop = async () => {
+    if (!shopQuery.trim()) return;
+    
+    try {
+      setShopLoading(true);
+      const response = await agentShop(shopQuery);
+      
+      // Convert the API response format to what we expect
+      const mappedRecommendations = response.recommendations.map((rec: any) => 
+        apiToCapability({
+          id: rec.capability.id,
+          name: rec.capability.name,
+          slug: rec.capability.slug,
+          description: rec.capability.description,
+          long_description: rec.capability.description,
+          type: rec.capability.type,
+          category: rec.capability.category || 'automation',
+          price_per_call: rec.capability.pricePerCall,
+          x402_endpoint: rec.capability.x402Endpoint || '',
+          icon: '🔧',
+          rating: rec.capability.rating,
+          usage_count: rec.capability.usageCount,
+          featured: false,
+          tags: [],
+          creator_name: 'Agent Bazaar',
+        })
+      );
+      
+      setShopResults({
+        recommendations: mappedRecommendations,
+        reasoning: response.suggestion || `Based on your query "${shopQuery}", here are the recommended skills:`
+      });
+    } catch (error) {
+      console.error("Agent shop failed:", error);
+      // Fallback to simple search
+      const searchResults = capabilities.filter(cap => 
+        cap.name.toLowerCase().includes(shopQuery.toLowerCase()) ||
+        cap.description.toLowerCase().includes(shopQuery.toLowerCase()) ||
+        cap.tags.some(tag => tag.toLowerCase().includes(shopQuery.toLowerCase()))
+      ).slice(0, 3);
+      
+      setShopResults({
+        recommendations: searchResults,
+        reasoning: `Based on your query "${shopQuery}", here are some relevant skills from our marketplace:`
+      });
+    } finally {
+      setShopLoading(false);
+    }
+  };
 
   const featuredCapabilities = useMemo(() => {
     return capabilities.filter((c) => c.featured);
@@ -213,7 +267,10 @@ export default function HomePage() {
                     <p className="mt-2 max-w-xl text-zinc-400">
                       Describe what you're building. Our built-in agent will browse the marketplace, compare options, and recommend the best skills — or purchase them on your behalf via x402.
                     </p>
-                    <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600">
+                    <button 
+                      onClick={() => setShowAgentShop(true)}
+                      className="mt-5 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+                    >
                       <Zap size={16} /> Start Agent Shopping
                     </button>
                   </div>
@@ -357,6 +414,89 @@ export default function HomePage() {
           </FadeInUp>
         </div>
       </section>
+
+      {/* Agent Shopping Modal */}
+      {showAgentShop && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-zinc-900 rounded-xl border border-zinc-800 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-orange-500/10 rounded-lg">
+                    <Bot size={20} className="text-orange-400" />
+                  </div>
+                  <h2 className="text-xl font-bold">AI Agent Shopping</h2>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowAgentShop(false);
+                    setShopQuery("");
+                    setShopResults(null);
+                  }}
+                  className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <p className="mt-4 text-zinc-400">
+                Describe what you're building or what you need. Our AI will browse the marketplace and recommend the best skills for your project.
+              </p>
+
+              <div className="mt-6">
+                <div className="flex gap-3">
+                  <Input
+                    type="text"
+                    value={shopQuery}
+                    onChange={(e) => setShopQuery(e.target.value)}
+                    placeholder="e.g., I need to build a content pipeline that generates blog posts and optimizes them for SEO"
+                    className="flex-1"
+                    onKeyPress={(e) => e.key === 'Enter' && handleAgentShop()}
+                  />
+                  <button
+                    onClick={handleAgentShop}
+                    disabled={shopLoading || !shopQuery.trim()}
+                    className="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:bg-zinc-700 disabled:text-zinc-500 text-white rounded-lg transition-colors flex items-center gap-2"
+                  >
+                    <Send size={16} />
+                    {shopLoading ? "Shopping..." : "Shop"}
+                  </button>
+                </div>
+              </div>
+
+              {shopLoading && (
+                <div className="mt-6 text-center py-8">
+                  <div className="inline-flex items-center gap-2 text-orange-400">
+                    <Bot size={20} className="animate-pulse" />
+                    <span>AI is browsing the marketplace...</span>
+                  </div>
+                </div>
+              )}
+
+              {shopResults && (
+                <div className="mt-6">
+                  <div className="mb-4 p-4 bg-zinc-800/50 rounded-lg">
+                    <h3 className="font-semibold mb-2 text-orange-400">AI Recommendation:</h3>
+                    <p className="text-sm text-zinc-300">{shopResults.reasoning}</p>
+                  </div>
+
+                  {shopResults.recommendations.length > 0 ? (
+                    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {shopResults.recommendations.map((cap) => (
+                        <CapabilityCard key={cap.id} capability={cap} />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-center text-zinc-500 py-8">
+                      No matching skills found. Try a different description or browse our categories.
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

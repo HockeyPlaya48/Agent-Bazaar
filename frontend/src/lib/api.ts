@@ -75,7 +75,14 @@ export async function getReviews(capabilityId: string) {
 // ---- Agent Shopping ----
 
 export async function agentShop(query: string) {
-  return fetchAPI<{ recommendations: CapabilityAPI[]; reasoning: string }>("/agent-shop", {
+  return fetchAPI<{ 
+    success: boolean; 
+    query: string; 
+    recommendations: any[]; 
+    totalMatches: number; 
+    suggestion: string; 
+    timestamp: number; 
+  }>("/agent-shop", {
     method: "POST",
     body: JSON.stringify({ query }),
   });
