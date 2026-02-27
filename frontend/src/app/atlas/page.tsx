@@ -189,29 +189,31 @@ export default function AtlasPage() {
           <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {WORKFLOW_TEMPLATES.map((template) => (
               <StaggerItem key={template.id}>
-                <Card 
-                  className="p-5 cursor-pointer transition-all hover:border-orange-500/30 hover:bg-zinc-800/50"
+                <button 
+                  className="w-full text-left"
                   onClick={() => handleSearch(undefined, template.query)}
                 >
-                  <div className="text-center">
-                    <div className="text-3xl mb-3">{template.icon}</div>
-                    <h3 className="font-semibold mb-2">{template.name}</h3>
-                    <p className="text-sm text-zinc-400 mb-3">{template.description}</p>
-                    <div className="flex items-center justify-between text-xs text-zinc-500">
-                      <div className="flex items-center gap-1">
-                        <DollarSign size={12} />
-                        {template.estimatedCost}
+                  <Card className="p-5 cursor-pointer transition-all hover:border-orange-500/30 hover:bg-zinc-800/50">
+                    <div className="text-center">
+                      <div className="text-3xl mb-3">{template.icon}</div>
+                      <h3 className="font-semibold mb-2">{template.name}</h3>
+                      <p className="text-sm text-zinc-400 mb-3">{template.description}</p>
+                      <div className="flex items-center justify-between text-xs text-zinc-500">
+                        <div className="flex items-center gap-1">
+                          <DollarSign size={12} />
+                          {template.estimatedCost}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock size={12} />
+                          {template.estimatedTime}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock size={12} />
-                        {template.estimatedTime}
+                      <div className="flex items-center justify-center mt-2">
+                        <Badge className="text-xs">{template.skills.length} skills</Badge>
                       </div>
                     </div>
-                    <div className="flex items-center justify-center mt-2">
-                      <Badge className="text-xs">{template.skills.length} skills</Badge>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </button>
               </StaggerItem>
             ))}
           </StaggerContainer>
