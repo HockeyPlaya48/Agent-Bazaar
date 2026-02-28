@@ -186,9 +186,7 @@ export default function HomePage() {
                 <p className="text-sm text-zinc-500">Skills Listed</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-white">
-                  {(capabilities.reduce((sum, c) => sum + (c.usageCount || 0), 0) / 1_000_000).toFixed(1)}M+
-                </p>
+                <p className="text-2xl font-bold text-white">1,567</p>
                 <p className="text-sm text-zinc-500">Skill Calls</p>
               </div>
               <div className="text-center">
