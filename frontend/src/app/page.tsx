@@ -182,11 +182,13 @@ export default function HomePage() {
           <FadeInUp delay={0.4}>
             <div className="mx-auto mt-8 flex max-w-md justify-center gap-8">
               <div className="text-center">
-                <p className="text-2xl font-bold text-white">200+</p>
+                <p className="text-2xl font-bold text-white">{capabilities.length}+</p>
                 <p className="text-sm text-zinc-500">Skills Listed</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-white">4.8M+</p>
+                <p className="text-2xl font-bold text-white">
+                  {(capabilities.reduce((sum, c) => sum + (c.usageCount || 0), 0) / 1_000_000).toFixed(1)}M+
+                </p>
                 <p className="text-sm text-zinc-500">Skill Calls</p>
               </div>
               <div className="text-center">
