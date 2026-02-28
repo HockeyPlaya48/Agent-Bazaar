@@ -22,6 +22,7 @@ export default function SkillDetailPage() {
   const [copied, setCopied] = useState(false);
   const [testResult, setTestResult] = useState<string | null>(null);
   const [testing, setTesting] = useState(false);
+  const [checkingOut, setCheckingOut] = useState(false);
 
   useEffect(() => {
     if (!params.slug) return;
@@ -188,23 +189,49 @@ export default function SkillDetailPage() {
                 x402-enabled — automatic agent payments
               </p>
 
-              <div className="mt-6 space-y-3">
+              <div className="mt-6 space-y-2.5">
+                {/* Credit Card Payment */}
+                <button
+                  onClick={async () => {
+                    setCheckingOut(true);
+                    try {
+                      const res = await fetch("/api/checkout", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ capabilitySlug: skill.slug }),
+                      });
+                      const data = await res.json();
+                      if (data.url) window.location.href = data.url;
+                      else alert("Checkout error: " + (data.error || "Unknown error"));
+                    } catch (e) { alert("Checkout failed"); }
+                    setCheckingOut(false);
+                  }}
+                  disabled={checkingOut}
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-orange-500 py-3 text-sm font-semibold text-white transition hover:bg-orange-600 disabled:opacity-50"
+                >
+                  💳 {checkingOut ? "Loading..." : `Pay with Card — $${Math.max(0.50, skill.price_per_call).toFixed(2)}`}
+                </button>
+
+                {/* USDC Payment */}
                 <button
                   onClick={() => setShowModal(true)}
-                  className="block w-full rounded-full bg-orange-500 py-3 text-center text-sm font-semibold text-white transition hover:bg-orange-600"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 py-3 text-sm font-semibold text-blue-400 transition hover:bg-blue-500/20"
                 >
-                  Get This Skill
+                  🔗 Pay with USDC — ${skill.price_per_call.toFixed(3)}
                 </button>
+
+                {/* x402 Endpoint for Agents */}
                 <button
-                  onClick={() => {
-                    // Simulate adding to dashboard
-                    alert('Skill activated! Added to your dashboard.');
-                  }}
-                  className="block w-full rounded-full border border-zinc-700 py-3 text-center text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800"
+                  onClick={() => setShowModal(true)}
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-zinc-700 py-3 text-sm font-semibold text-zinc-300 transition hover:bg-zinc-800"
                 >
-                  Add to My Skills
+                  🤖 x402 Endpoint — For Agents
                 </button>
               </div>
+
+              <p className="mt-2 text-center text-[10px] text-zinc-600">
+                Card payments min $0.50 • USDC & x402 = exact price • No subscription
+              </p>
 
               <div className="mt-6 space-y-3 border-t border-zinc-800/50 pt-4">
                 <div className="flex justify-between text-sm">
