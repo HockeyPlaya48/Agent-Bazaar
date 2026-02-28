@@ -257,6 +257,54 @@ export default function SkillDetailPage() {
               </div>
 
               <div className="mt-6 space-y-6">
+                {/* Delivery type indicator */}
+                {skill.type === "cli" && (
+                  <div className="rounded-lg border border-green-500/20 bg-green-500/5 p-4">
+                    <h3 className="text-sm font-semibold text-green-400 mb-2">📦 Installable CLI Tool</h3>
+                    <div className="text-sm text-zinc-300 space-y-3">
+                      <p>This is a <strong>local CLI tool</strong> that runs on your machine. Install it once, use it forever.</p>
+                      <div>
+                        <p className="text-xs text-zinc-500 mb-1">Install via npm:</p>
+                        <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-3">
+                          <code className="flex-1 text-sm text-green-400">npm install -g @agent-bazaar/{skill.slug}</code>
+                          <button onClick={() => handleCopy(`npm install -g @agent-bazaar/${skill.slug}`)} className="p-1 hover:bg-zinc-700 rounded"><Copy size={16} /></button>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-xs text-zinc-500 mb-1">Or via Agent Bazaar CLI:</p>
+                        <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-3">
+                          <code className="flex-1 text-sm text-green-400">npx agent-bazaar install {skill.slug}</code>
+                          <button onClick={() => handleCopy(`npx agent-bazaar install ${skill.slug}`)} className="p-1 hover:bg-zinc-700 rounded"><Copy size={16} /></button>
+                        </div>
+                      </div>
+                      <p className="text-xs text-zinc-500">Some CLI tools make x402 calls for compute-heavy operations. Pay-per-call pricing applies to remote features.</p>
+                    </div>
+                  </div>
+                )}
+
+                {skill.type === "skill" && (
+                  <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-4">
+                    <h3 className="text-sm font-semibold text-purple-400 mb-2">🧩 Agent Skill Package</h3>
+                    <div className="text-sm text-zinc-300 space-y-3">
+                      <p>This is an <strong>agent skill</strong> that extends your AI agent&apos;s capabilities. Install it into your agent framework.</p>
+                      <div>
+                        <p className="text-xs text-zinc-500 mb-1">Install for OpenClaw:</p>
+                        <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-3">
+                          <code className="flex-1 text-sm text-purple-400">openclaw skill install {skill.slug}</code>
+                          <button onClick={() => handleCopy(`openclaw skill install ${skill.slug}`)} className="p-1 hover:bg-zinc-700 rounded"><Copy size={16} /></button>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-xs text-zinc-500 mb-1">Install for other frameworks:</p>
+                        <div className="flex items-center gap-2 bg-zinc-800 rounded-lg p-3">
+                          <code className="flex-1 text-sm text-purple-400">npx agent-bazaar install {skill.slug} --framework crewai</code>
+                          <button onClick={() => handleCopy(`npx agent-bazaar install ${skill.slug} --framework crewai`)} className="p-1 hover:bg-zinc-700 rounded"><Copy size={16} /></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* How x402 works */}
                 <div className="rounded-lg border border-orange-500/20 bg-orange-500/5 p-4">
                   <h3 className="text-sm font-semibold text-orange-400 mb-2">💡 How x402 Pay-Per-Call Works</h3>
