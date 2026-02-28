@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, Zap, CreditCard, Rocket, Bot, Terminal, Globe, Cpu, Send, X } from "lucide-react";
 import Link from "next/link";
 import { CAPABILITIES, CATEGORIES } from "@/lib/data";
@@ -32,8 +32,19 @@ export default function HomePage() {
     budgetUtilization?: string;
   } | null>(null);
 
-  // Use static data directly — always available, no API dependency
-  const capabilities = CAPABILITIES;
+  // Fetch from Supabase via API, fall back to static data
+  const [capabilities, setCapabilities] = useState<Capability[]>(CAPABILITIES);
+  
+  useEffect(() => {
+    fetch("/api/capabilities")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data?.length > 0) {
+          setCapabilities(data.data);
+        }
+      })
+      .catch(() => {}); // silent fallback to static
+  }, []);
 
   const handleAgentShop = async () => {
     if (!shopQuery.trim()) return;

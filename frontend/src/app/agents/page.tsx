@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ArrowUpDown } from "lucide-react";
 import { CAPABILITIES, CATEGORIES } from "@/lib/data";
+import { Capability } from "@/types";
 import { CapabilityCard } from "@/components/capability-card";
 import { CategoryFilter } from "@/components/category-filter";
 import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
@@ -10,11 +11,21 @@ import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
 export default function BrowseSkills() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>("popular");
+  const [allCapabilities, setAllCapabilities] = useState<Capability[]>(CAPABILITIES);
+
+  useEffect(() => {
+    fetch("/api/capabilities")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data?.length > 0) setAllCapabilities(data.data);
+      })
+      .catch(() => {});
+  }, []);
 
   const skills = useMemo(() => {
     let filtered = selectedCategory
-      ? CAPABILITIES.filter((a) => a.category === selectedCategory)
-      : [...CAPABILITIES];
+      ? allCapabilities.filter((a) => a.category === selectedCategory)
+      : [...allCapabilities];
 
     if (sortBy === "rating") filtered.sort((a, b) => b.rating - a.rating);
     else if (sortBy === "price-low") filtered.sort((a, b) => a.pricePerCall - b.pricePerCall);
