@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { Capability } from "@/types";
 import { Badge } from "@/components/ui/badge";
+import { getVerificationData } from "@/lib/verification";
+import { TrustBadgeRow } from "@/components/trust-badge";
 
 const typeStyles: Record<string, { label: string; className: string }> = {
   api: { label: "API", className: "bg-blue-500/10 text-blue-400 border-blue-500/20" },
@@ -25,6 +27,7 @@ const tierStyles: Record<string, { label: string; className: string; border: str
 export function CapabilityCard({ capability }: { capability: Capability }) {
   const t = typeStyles[capability.type] || typeStyles.api;
   const tier = tierStyles[capability.listingTier || "free"] || tierStyles.free;
+  const verification = getVerificationData(capability);
 
   return (
     <Link href={`/agents/${capability.slug}`} className="block">
@@ -47,19 +50,12 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
         {capability.name}
       </h3>
 
-      {/* Reputation badges */}
-      <div className="mt-2 flex flex-wrap gap-1">
-        {capability.usageCount > 100000 && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 text-[10px] font-medium text-amber-400">
-            🏆 Top Skill
-          </span>
-        )}
-        {capability.rating >= 4.8 && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-yellow-500/10 border border-yellow-500/30 px-2 py-0.5 text-[10px] font-medium text-yellow-400">
-            ⭐ Highly Rated
-          </span>
-        )}
-      </div>
+      {/* Trust & Verification Badges */}
+      {verification.badges.length > 0 && (
+        <div className="mt-2">
+          <TrustBadgeRow badges={verification.badges} max={3} />
+        </div>
+      )}
 
       <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-zinc-400">
         {capability.description}
@@ -81,12 +77,19 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
         </div>
       </div>
 
-      {/* Creator info with verified badge */}
-      <div className="mt-2 flex items-center gap-1 text-[11px] text-zinc-500">
+      {/* Creator info with verification status */}
+      <div className="mt-2 flex items-center gap-2 text-[11px] text-zinc-500">
         <span>by {capability.creatorName}</span>
-        {capability.rating > 4.5 && capability.usageCount > 50000 && (
-          <span className="text-green-400">✓</span>
+        {verification.status === "verified" && (
+          <span className="inline-flex items-center gap-0.5 text-green-400 font-medium">✅ Verified</span>
         )}
+        {verification.status === "pending" && (
+          <span className="inline-flex items-center gap-0.5 text-yellow-400 font-medium">⏳ Pending</span>
+        )}
+        <span className="text-zinc-600">|</span>
+        <span className={verification.uptime >= 99 ? "text-green-400" : verification.uptime >= 95 ? "text-yellow-400" : "text-zinc-400"}>
+          {verification.uptime}% up
+        </span>
       </div>
 
       <div className="mt-2.5 flex flex-wrap gap-1">

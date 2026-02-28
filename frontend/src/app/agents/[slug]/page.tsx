@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Check, MessageSquare, Zap, Copy, X } from "lucide-react";
 import { getCapabilityBySlug, getReviews, type CapabilityAPI, type ReviewAPI } from "@/lib/api";
+import { getVerificationData } from "@/lib/verification";
+import { TrustScoreCard } from "@/components/trust-badge";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/star-rating";
@@ -225,6 +227,16 @@ export default function SkillDetailPage() {
                 ))}
               </div>
             </Card>
+
+            {/* Trust & Verification Card */}
+            <div className="mt-4">
+              <TrustScoreCard
+                data={getVerificationData({
+                  rating: skill.rating,
+                  usageCount: skill.usage_count,
+                })}
+              />
+            </div>
           </FadeIn>
         </div>
       </div>
