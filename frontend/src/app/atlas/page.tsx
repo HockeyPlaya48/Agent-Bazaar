@@ -315,11 +315,34 @@ export default function AtlasPage() {
                   )}
                   
                   <div className="flex gap-3">
-                    <Button variant="primary" className="flex-1">
-                      Deploy This Workflow
+                    <Button
+                      variant="primary"
+                      className="flex-1"
+                      onClick={() => {
+                        const steps = results.workflow?.steps || [];
+                        const code = steps.map((s: any) => {
+                          const cap = CAPABILITIES.find((c: any) => c.slug === s.skill);
+                          return `// Step ${s.order}: ${s.action}\nconst step${s.order} = await fetch("${cap?.x402Endpoint || s.skill}", {\n  method: "POST",\n  headers: { "Content-Type": "application/json", "X-402-Payment": paymentToken },\n  body: JSON.stringify({ input: ${s.order > 1 ? `step${s.order - 1}Result` : '"your input"'} })\n});\nconst step${s.order}Result = await step${s.order}.json();`;
+                        }).join('\n\n');
+                        navigator.clipboard.writeText(code);
+                        alert('✅ Workflow code copied to clipboard!\n\nPaste into your agent to deploy. Each call pays automatically via x402.');
+                      }}
+                    >
+                      Deploy This Workflow — Copy Code
                     </Button>
-                    <Button variant="secondary">
-                      View Code
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        const steps = results.workflow?.steps || [];
+                        const endpoints = steps.map((s: any) => {
+                          const cap = CAPABILITIES.find((c: any) => c.slug === s.skill);
+                          return `Step ${s.order}: ${s.action}\n  Endpoint: ${cap?.x402Endpoint || s.skill}\n  Cost: ${s.cost || 'N/A'}`;
+                        }).join('\n\n');
+                        navigator.clipboard.writeText(endpoints);
+                        alert('✅ Endpoint list copied!');
+                      }}
+                    >
+                      Copy Endpoints
                     </Button>
                   </div>
                 </div>

@@ -1,13 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { CAPABILITIES } from "@/lib/data";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
+import { X, Copy, Check, Zap } from "lucide-react";
 
-// Curated capability bundles using actual slugs from data.ts
 const BUNDLES = [
   {
     id: "b1",
@@ -33,12 +34,23 @@ const BUNDLES = [
 ];
 
 export default function BundlesPage() {
+  const [activeBundle, setActiveBundle] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const selectedBundle = BUNDLES.find((b) => b.id === activeBundle);
+
   return (
     <div className="mx-auto max-w-5xl px-6 py-8">
       <FadeInUp>
         <h1 className="text-3xl font-bold">Skill Packs</h1>
         <p className="mt-2 text-zinc-400">
-          Curated bundles of capabilities at a discount. One integration, multiple skills.
+          Curated bundles of capabilities at a discounted rate. One integration, multiple skills — pay per call.
         </p>
       </FadeInUp>
 
@@ -80,15 +92,104 @@ export default function BundlesPage() {
                 </div>
 
                 <div className="mt-6">
-                  <Button variant="primary" size="lg">
+                  <Button variant="primary" size="lg" onClick={() => setActiveBundle(bundle.id)}>
                     Get Bundle
                   </Button>
+                  <p className="mt-2 text-xs text-zinc-500">No subscription — bundled rate per call via x402</p>
                 </div>
               </Card>
             </StaggerItem>
           );
         })}
       </StaggerContainer>
+
+      {/* Bundle Activation Modal */}
+      {activeBundle && selectedBundle && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+          <div className="bg-zinc-900 rounded-xl border border-zinc-800 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold">{selectedBundle.name}</h2>
+                <button onClick={() => setActiveBundle(null)} className="p-2 hover:bg-zinc-800 rounded-lg transition-colors">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="mt-4 rounded-lg border border-green-500/20 bg-green-500/5 p-4">
+                <div className="flex items-center gap-2 text-green-400 text-sm font-semibold mb-2">
+                  <Zap size={14} /> Bundle Activated — x402 Pay-Per-Call
+                </div>
+                <p className="text-sm text-zinc-300">
+                  Every skill in this bundle is now available at a {Math.round(selectedBundle.discount * 100)}% discounted rate.
+                  Your agent pays automatically via x402 on each call — no upfront cost.
+                </p>
+              </div>
+
+              <div className="mt-6">
+                <h3 className="text-sm font-semibold mb-3">Your Bundle Endpoints</h3>
+                <div className="space-y-3">
+                  {selectedBundle.capabilities.map((cap) => {
+                    const discounted = cap.pricePerCall * (1 - selectedBundle.discount);
+                    return (
+                      <div key={cap.id} className="bg-zinc-800 rounded-lg p-3">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-sm font-medium">{cap.icon} {cap.name}</span>
+                          <span className="text-xs text-green-400">${discounted.toFixed(3)}/call</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <code className="flex-1 text-xs text-green-400 break-all">{cap.x402Endpoint}</code>
+                          <button onClick={() => handleCopy(cap.x402Endpoint)} className="p-1 hover:bg-zinc-700 rounded shrink-0">
+                            {copied ? <Check size={14} /> : <Copy size={14} />}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <h3 className="text-sm font-semibold mb-2">Quick Start Code</h3>
+                <div className="bg-zinc-800 rounded-lg p-3">
+                  <code className="text-xs text-zinc-300 whitespace-pre-wrap">
+{`// Use any skill in the ${selectedBundle.name}
+${selectedBundle.capabilities.map((cap) => `
+// ${cap.icon} ${cap.name} ($${(cap.pricePerCall * (1 - selectedBundle.discount)).toFixed(3)}/call)
+const ${cap.slug.replace(/-/g, '_')}_result = await fetch("${cap.x402Endpoint}", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", "X-402-Payment": paymentToken },
+  body: JSON.stringify({ query: "your input" })
+});`).join('\n')}`}
+                  </code>
+                  <button
+                    onClick={() => handleCopy(selectedBundle.capabilities.map((cap) =>
+                      `fetch("${cap.x402Endpoint}", { method: "POST", headers: { "Content-Type": "application/json", "X-402-Payment": paymentToken }, body: JSON.stringify({ query: "your input" }) })`
+                    ).join('\n\n'))}
+                    className="mt-2 p-1 hover:bg-zinc-700 rounded float-right"
+                  >
+                    <Copy size={14} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-3">
+                <button onClick={() => setActiveBundle(null)} className="flex-1 py-2.5 rounded-lg border border-zinc-700 text-sm font-medium hover:bg-zinc-800 transition">
+                  Close
+                </button>
+                <Link href="/dashboard" className="flex-1 py-2.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium text-center transition">
+                  View in Dashboard
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {copied && (
+        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg z-50 text-sm">
+          Copied to clipboard!
+        </div>
+      )}
     </div>
   );
 }

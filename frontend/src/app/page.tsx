@@ -663,9 +663,20 @@ export default function HomePage() {
 
                       {/* Deploy Button */}
                       <div className="mt-4 pt-4 border-t border-zinc-700">
-                        <button className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 text-white py-2 rounded-lg font-medium transition-opacity">
-                          Deploy This Workflow
+                        <button
+                          onClick={() => {
+                            const endpoints = shopResults.workflow.steps.map((s: any) => {
+                              const cap = CAPABILITIES.find((c: any) => c.slug === s.skill);
+                              return `// Step ${s.order}: ${s.action}\nfetch("${cap?.x402Endpoint || s.skill}", {\n  method: "POST",\n  headers: { "Content-Type": "application/json", "X-402-Payment": paymentToken },\n  body: JSON.stringify({ input: previousStepOutput })\n});`;
+                            }).join('\n\n');
+                            navigator.clipboard.writeText(endpoints);
+                            alert('✅ Workflow code copied to clipboard!\n\nPaste into your agent to deploy this workflow. Each step calls via x402 — payment is automatic.');
+                          }}
+                          className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:opacity-90 text-white py-2 rounded-lg font-medium transition-opacity"
+                        >
+                          Deploy This Workflow — Copy Code
                         </button>
+                        <p className="mt-2 text-xs text-zinc-500 text-center">Copies all endpoint calls to clipboard. Paste into your agent.</p>
                       </div>
                     </div>
                   )}
