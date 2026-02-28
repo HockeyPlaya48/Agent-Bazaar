@@ -15,7 +15,7 @@ export async function registerCapability(
     body: JSON.stringify(capability),
   });
   if (!res.ok) throw new Error(`Registration failed: ${res.status}`);
-  return res.json();
+  return res.json() as Promise<Capability>;
 }
 
 /**
@@ -27,7 +27,7 @@ export async function getCapabilityStats(
 ): Promise<CapabilityStats> {
   const res = await fetch(`${registryUrl}/api/capabilities/${capabilityId}/stats`);
   if (!res.ok) throw new Error(`Stats fetch failed: ${res.status}`);
-  return res.json();
+  return res.json() as Promise<CapabilityStats>;
 }
 
 /**
@@ -39,5 +39,5 @@ export async function searchCapabilities(
 ): Promise<Capability[]> {
   const res = await fetch(`${registryUrl}/api/capabilities?search=${encodeURIComponent(query)}`);
   if (!res.ok) throw new Error(`Search failed: ${res.status}`);
-  return res.json();
+  return res.json() as Promise<Capability[]>;
 }
