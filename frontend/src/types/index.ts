@@ -8,7 +8,15 @@ export type CapabilityCategory =
   | "web-scraping"
   | "trading"
   | "research"
-  | "automation";
+  | "automation"
+  | "security"
+  | "testing"
+  | "cicd"
+  | "translation"
+  | "voice-audio"
+  | "payments"
+  | "notifications"
+  | "scheduling";
 
 export type ListingTier = "free" | "featured" | "spotlight";
 
