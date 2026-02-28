@@ -111,14 +111,53 @@ export class X402Client {
     return res.json() as Promise<Capability[]>;
   }
 
-  /** Get a single capability by ID */
+  /**
+   * Retrieve detailed information about a specific capability.
+   * 
+   * Fetches complete metadata for a capability including pricing, description,
+   * usage statistics, and integration details.
+   * 
+   * @param id - Unique identifier of the capability
+   * @returns Promise that resolves to the capability details
+   * @throws Error if the capability is not found or request fails
+   * 
+   * @example
+   * ```ts
+   * const capability = await client.get("code-review-gpt4");
+   * console.log(`${capability.name}: $${capability.pricePerCall} per call`);
+   * console.log(`Rating: ${capability.rating}/5 (${capability.usageCount} uses)`);
+   * ```
+   */
   async get(id: string): Promise<Capability> {
     const res = await fetch(`${this.registryUrl}/api/capabilities/${id}`);
     if (!res.ok) throw new Error(`Capability not found: ${id}`);
     return res.json() as Promise<Capability>;
   }
 
-  /** Get pricing info for a capability (sends empty request, expects 402) */
+  /**
+   * Get pricing information for a capability by probing its endpoint.
+   * 
+   * Sends an empty POST request to the capability's endpoint to trigger a 402
+   * Payment Required response, which contains detailed payment information
+   * including price, supported networks, and payment addresses.
+   * 
+   * @param endpointOrId - Either a capability ID or direct HTTP endpoint URL
+   * @returns Promise that resolves to payment information from the 402 response
+   * @throws Error if the endpoint doesn't return a 402 response as expected
+   * 
+   * @example With capability ID
+   * ```ts
+   * const payment = await client.pricing("code-review-gpt4");
+   * console.log(`Price: $${payment.priceUsd}`);
+   * console.log(`Pay to: ${payment.payTo}`);
+   * console.log(`Networks: ${payment.networks.join(", ")}`);
+   * ```
+   * 
+   * @example With direct endpoint URL
+   * ```ts
+   * const payment = await client.pricing("https://myapi.com/ai-service");
+   * ```
+   */
   async pricing(endpointOrId: string): Promise<X402Response["payment"]> {
     const url = endpointOrId.startsWith("http")
       ? endpointOrId
@@ -132,8 +171,54 @@ export class X402Client {
   }
 
   /**
-   * Make a paid call to a capability.
-   * Automatically attaches payment token and handles 402 responses.
+   * Execute a paid call to a capability with automatic payment handling.
+   * 
+   * This is the primary method for invoking paid capabilities. It automatically
+   * attaches payment tokens from the client configuration or method options,
+   * handles 402 Payment Required responses by surfacing payment details, and
+   * returns the capability's response upon successful payment verification.
+   * 
+   * @template T - Expected return type of the capability response
+   * @param capabilityId - Unique identifier of the capability to call
+   * @param payload - Request payload to send to the capability
+   * @param options - Call-specific options
+   * @param options.paymentToken - Override the default payment token for this call
+   * @returns Promise that resolves to the capability's response
+   * @throws Error with status 402 and payment details if payment is required/invalid
+   * @throws Error for other HTTP errors (network issues, server errors, etc.)
+   * 
+   * @example Basic usage with default payment token
+   * ```ts
+   * const client = new X402Client({ paymentToken: "your-token" });
+   * const result = await client.call("code-review-gpt4", {
+   *   code: "function add(a, b) { return a + b; }",
+   *   language: "javascript"
+   * });
+   * console.log(result.review);
+   * ```
+   * 
+   * @example Override payment token for specific call
+   * ```ts
+   * const result = await client.call("image-gen-dalle", {
+   *   prompt: "A sunset over mountains"
+   * }, { 
+   *   paymentToken: "special-high-limit-token" 
+   * });
+   * ```
+   * 
+   * @example Handling payment required errors
+   * ```ts
+   * try {
+   *   const result = await client.call("capability-id", payload);
+   * } catch (error) {
+   *   if (error.status === 402) {
+   *     console.log("Payment required:");
+   *     console.log(`Price: $${error.payment.priceUsd}`);
+   *     console.log(`Pay to: ${error.payment.payTo}`);
+   *     // Implement payment flow
+   *   }
+   * }
+   * ```
    */
   async call<T = unknown>(
     capabilityId: string,
@@ -165,7 +250,32 @@ export class X402Client {
     return res.json() as Promise<T>;
   }
 
-  /** Set default payment token */
+  /**
+   * Update the default payment token for this client instance.
+   * 
+   * Changes the payment token that will be automatically attached to all
+   * subsequent capability calls. This is useful for switching between
+   * different payment accounts or updating tokens when they expire.
+   * 
+   * @param token - New payment token to use as default
+   * 
+   * @example
+   * ```ts
+   * const client = new X402Client();
+   * 
+   * // Set initial payment token
+   * client.setPaymentToken("payment-proof-token-abc123");
+   * 
+   * // Make calls with this token
+   * await client.call("capability-1", payload);
+   * 
+   * // Update to a new token
+   * client.setPaymentToken("new-payment-token-xyz789");
+   * 
+   * // Subsequent calls use the new token
+   * await client.call("capability-2", payload);
+   * ```
+   */
   setPaymentToken(token: string) {
     this.paymentToken = token;
   }
