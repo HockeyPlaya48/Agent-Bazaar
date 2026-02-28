@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/star-rating";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
+import { PayUsdcButton } from "@/components/pay-usdc-button";
 
 export default function SkillDetailPage() {
   const params = useParams();
@@ -212,13 +213,11 @@ export default function SkillDetailPage() {
                   💳 {checkingOut ? "Loading..." : `Pay with Card — $${Math.max(0.50, skill.price_per_call).toFixed(2)}`}
                 </button>
 
-                {/* USDC Payment */}
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="flex w-full items-center justify-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 py-3 text-sm font-semibold text-blue-400 transition hover:bg-blue-500/20"
-                >
-                  🔗 Pay with USDC — ${skill.price_per_call.toFixed(3)}
-                </button>
+                {/* USDC Payment via RainbowKit */}
+                <PayUsdcButton
+                  priceUsd={skill.price_per_call}
+                  skillSlug={skill.slug}
+                />
 
                 {/* x402 Endpoint for Agents */}
                 <button
