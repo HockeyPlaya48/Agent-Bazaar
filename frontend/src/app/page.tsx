@@ -190,8 +190,8 @@ export default function HomePage() {
                 <p className="text-sm text-zinc-500">Skills Listed</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-white">1,567</p>
-                <p className="text-sm text-zinc-500">Skill Calls</p>
+                <p className="text-2xl font-bold text-white">Pay-Per-Use</p>
+                <p className="text-sm text-zinc-500">No Subscriptions</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold text-white">x402</p>
