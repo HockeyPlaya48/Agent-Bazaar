@@ -120,6 +120,10 @@ export default function HomePage() {
     return capabilities.filter((c) => c.featured);
   }, [capabilities]);
 
+  const trendingCapabilities = useMemo(() => {
+    return [...capabilities].sort((a, b) => b.usageCount - a.usageCount).slice(0, 5);
+  }, [capabilities]);
+
   const filtered = useMemo(() => {
     const tierOrder = { spotlight: 0, featured: 1, free: 2, undefined: 2 };
     return capabilities.filter((cap) => {
@@ -269,6 +273,22 @@ export default function HomePage() {
             <SectionHeader title="Featured Skills" />
             <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {featuredCapabilities.map((cap) => (
+                <StaggerItem key={cap.id}>
+                  <CapabilityCard capability={cap} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        </section>
+      )}
+
+      {/* Trending Skills */}
+      {!search && !selectedCategory && !selectedType && trendingCapabilities.length > 0 && (
+        <section className="px-6 pb-12">
+          <div className="mx-auto max-w-7xl">
+            <SectionHeader title="🔥 Trending Skills" />
+            <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {trendingCapabilities.map((cap) => (
                 <StaggerItem key={cap.id}>
                   <CapabilityCard capability={cap} />
                 </StaggerItem>

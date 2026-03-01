@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, ShieldCheck } from "lucide-react";
 import { CAPABILITIES, CATEGORIES } from "@/lib/data";
 import { Capability } from "@/types";
+import { getVerificationData } from "@/lib/verification";
 import { CapabilityCard } from "@/components/capability-card";
 import { CategoryFilter } from "@/components/category-filter";
+import { SectionHeader } from "@/components/section-header";
 import { StaggerContainer, StaggerItem, FadeInUp } from "@/components/motion";
 
 export default function BrowseSkills() {
@@ -70,6 +72,30 @@ export default function BrowseSkills() {
           </select>
         </div>
       </div>
+
+      {/* Recently Verified Section */}
+      {!selectedCategory && sortBy === "popular" && (() => {
+        const verified = allCapabilities.filter(
+          (cap) => getVerificationData(cap).status === "verified"
+        );
+        if (verified.length === 0) return null;
+        return (
+          <div className="mt-8 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <ShieldCheck size={18} className="text-green-400" />
+              <h2 className="text-lg font-bold text-white">Recently Verified</h2>
+              <span className="text-xs text-zinc-500">Skills that passed automated verification</span>
+            </div>
+            <StaggerContainer className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {verified.slice(0, 4).map((cap) => (
+                <StaggerItem key={cap.id}>
+                  <CapabilityCard capability={cap} />
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
+          </div>
+        );
+      })()}
 
       <p className="mt-6 text-sm text-zinc-500">
         {skills.length} skills found

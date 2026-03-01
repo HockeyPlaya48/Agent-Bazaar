@@ -41,9 +41,16 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
       )}
       <div className="flex items-start justify-between">
         <span className="text-2xl">{capability.icon}</span>
-        <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${t.className}`}>
-          {t.label}
-        </span>
+        <div className="flex items-center gap-1.5">
+          {verification.status === "verified" && (
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-white" title="Verified Skill">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </span>
+          )}
+          <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${t.className}`}>
+            {t.label}
+          </span>
+        </div>
       </div>
 
       <h3 className="mt-3 text-[15px] font-semibold text-white group-hover:text-orange-400 transition-colors">
