@@ -5,13 +5,14 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/agents", label: "Browse Skills" },
-  { href: "/bundles", label: "Skill Packs" },
-  { href: "/atlas", label: "Agent Shopping" },
-  { href: "/setup", label: "Setup" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/demo", label: "Demo" },
-  { href: "/dev", label: "List a Skill" },
+  { href: "/build", label: "🤖 Build", featured: true },
+  { href: "/agents", label: "Browse Skills", featured: false },
+  { href: "/bundles", label: "Skill Packs", featured: false },
+  { href: "/atlas", label: "Agent Shopping", featured: false },
+  { href: "/setup", label: "Setup", featured: false },
+  { href: "/dashboard", label: "Dashboard", featured: false },
+  { href: "/demo", label: "Demo", featured: false },
+  { href: "/dev", label: "List a Skill", featured: false },
 ];
 
 export function NavBar() {
@@ -30,7 +31,9 @@ export function NavBar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative py-1 transition-colors hover:text-white after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-orange-500 after:transition-all hover:after:w-full"
+                className={`relative py-1 transition-colors hover:text-white after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-orange-500 after:transition-all hover:after:w-full ${
+                  link.featured ? "text-orange-400 font-medium" : ""
+                }`}
               >
                 {link.label}
               </Link>
@@ -73,7 +76,9 @@ export function NavBar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="text-sm text-zinc-400 transition-colors hover:text-white py-2"
+                className={`text-sm transition-colors hover:text-white py-2 ${
+                  link.featured ? "text-orange-400 font-medium" : "text-zinc-400"
+                }`}
               >
                 {link.label}
               </Link>
