@@ -21,6 +21,24 @@ export const CATEGORIES = [
 
 export const CAPABILITIES: Capability[] = [
   {
+    id: "0",
+    name: "AI Agent Builder",
+    slug: "agent-builder",
+    description: "Describe what you want. Get a complete, ready-to-run AI agent with personality, tools, cron jobs, and Agent Bazaar skill integrations.",
+    longDescription: "The meta skill that creates agents. Describe your desired functionality in natural language and get a complete OpenClaw agent with SOUL.md, AGENTS.md, TOOLS.md, cron jobs, and Agent Bazaar skill integrations. Every agent created becomes a customer of Agent Bazaar skills — the ultimate flywheel.",
+    type: "api",
+    category: "automation",
+    pricePerCall: 0.25,
+    x402Endpoint: "https://api.agentbazaar.xyz/x402/agent-builder",
+    icon: "🤖",
+    rating: 5.0,
+    usageCount: 99999999,
+    featured: true,
+    tags: ["agent", "builder", "openclaw", "automation", "no-code"],
+    creatorName: "AgentForge",
+    listingTier: "spotlight",
+  },
+  {
     id: "1",
     name: "GPT-4 Code Review",
     slug: "gpt4-code-review",
