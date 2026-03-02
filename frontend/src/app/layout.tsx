@@ -17,9 +17,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Agent Bazaar — Discover Agent Skills",
-  description:
-    "The deal marketplace for agent skills. APIs, CLI tools, and agent skills — all pay-per-use via x402. Humans and agents welcome.",
+  title: "Agent Bazaar — AI Skills Marketplace | x402 Pay-Per-Use",
+  description: "Discover APIs, CLI tools, and agent skills. Pay per use with x402. No subscriptions. Agents shop autonomously.",
+  keywords: "AI agents, x402, agent marketplace, API marketplace, pay per use, USDC, agent skills",
+  openGraph: {
+    title: "Agent Bazaar — AI Skills Marketplace | x402 Pay-Per-Use",
+    description: "Discover APIs, CLI tools, and agent skills. Pay per use with x402. No subscriptions. Agents shop autonomously.",
+    url: "https://agent-bazaar.com",
+    siteName: "Agent Bazaar",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Agent Bazaar — AI Skills Marketplace | x402 Pay-Per-Use",
+    description: "Discover APIs, CLI tools, and agent skills. Pay per use with x402. No subscriptions. Agents shop autonomously.",
+  },
 };
 
 export default function RootLayout({
