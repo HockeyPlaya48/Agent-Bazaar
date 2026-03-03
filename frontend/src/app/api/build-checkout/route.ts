@@ -25,7 +25,7 @@ export async function POST(request: Request) {
               name: "AI Agent Builder",
               description: `Build a custom AI agent: "${description.slice(0, 100)}${description.length > 100 ? "..." : ""}"`,
             },
-            unit_amount: 25, // $0.25 in cents
+            unit_amount: 50, // $0.50 in cents (Stripe minimum)
           },
           quantity: 1,
         },
