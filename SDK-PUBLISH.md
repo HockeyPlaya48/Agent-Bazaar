@@ -2,6 +2,8 @@
 
 Step-by-step instructions for publishing the @agent-bazaar/x402-sdk to npm and creating the GitHub repository.
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## Pre-Publishing Checklist
 
 ✅ **Code Quality**
