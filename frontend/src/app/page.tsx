@@ -39,7 +39,7 @@ export default function HomePage() {
     fetch("/api/capabilities")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.data?.length > 0) {
+        if (data.success && data.data?.length > CAPABILITIES.length) {
           setCapabilities(data.data);
         }
       })
