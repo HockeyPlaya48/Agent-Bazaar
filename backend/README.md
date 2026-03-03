@@ -1,5 +1,7 @@
 # Agent Bazaar Backend
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 FastAPI backend for the Agent Bazaar AI agent marketplace.
 
 ## Setup
