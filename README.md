@@ -1,6 +1,7 @@
-# Agent Bazaar — AI Agent Marketplace
+# Agent Bazaar
+Marketplace for AI Agent Skills & Capabilities | x402 Micropayments
 
-AppSumo-style marketplace for AI agents.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Structure
 
