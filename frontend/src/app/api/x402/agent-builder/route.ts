@@ -96,7 +96,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "description field is required" }, { status: 400 });
   }
 
-  // Generate agent configuration
+  // DEMO MODE: Return preview/teaser only
+  const isDemoMode = paymentHeader === "demo" || paymentHeader === "test";
+  if (isDemoMode) {
+    const agentName = name || "MyAgent";
+    const demoAgent = {
+      name: agentName,
+      description: `Preview: ${description.slice(0, 100)}...`,
+      soul_md: `# SOUL.md — ${agentName}\n\n## Who You Are\nYou are ${agentName}, an AI agent designed to help with: ${description.slice(0, 80)}...\n\n## Personality\n[Full personality, goals, and behavioral guidelines available in paid version]\n\n---\n*🔒 This is a demo preview. Pay $0.50 to get the complete, deployable agent configuration with detailed personality, tools, cron jobs, and Agent Bazaar skill integrations.*\n*→ agent-bazaar.com/build*`,
+      agents_md: `# AGENTS.md — ${agentName}\n\n## Mission\nHelp the user with: ${description.slice(0, 80)}...\n\n## Memory & Workflow\n[Detailed memory instructions, workflow steps, and error handling available in paid version]\n\n---\n*🔒 Demo preview — upgrade for full agent configuration*`,
+      tools_md: `# TOOLS.md — ${agentName}\n\n## Recommended Agent Bazaar Skills\n- [Skill recommendations tailored to your agent available in paid version]\n- [x402 endpoint URLs and integration code available in paid version]\n\n---\n*🔒 Demo preview — the paid version includes specific Agent Bazaar skills with endpoints, pricing, and integration examples*`,
+      cron_jobs: [{ name: "Example Task", schedule: "*** locked ***", task: "Cron schedules available in paid version" }],
+      recommended_skills: [{ name: "Upgrade to see recommendations", slug: "agent-builder", why: "Pay $0.50 to get tailored skill recommendations for your agent" }],
+      setup_instructions: "🔒 Full setup instructions available in paid version.\n\nUpgrade at agent-bazaar.com/build to get:\n✅ Complete SOUL.md with detailed personality\n✅ Full AGENTS.md with workflow & memory\n✅ TOOLS.md with Agent Bazaar skill integrations\n✅ Configured cron job schedules\n✅ Step-by-step deployment guide",
+    };
+
+    return NextResponse.json({
+      success: true,
+      agent: demoAgent,
+      demo: true,
+      upgrade_url: "https://agent-bazaar.com/build",
+      message: "This is a demo preview. Pay $0.50 to get the complete, deployable agent.",
+      metadata: { skill: "ai-agent-builder", version: "1.0.0", engine: "demo-preview", billedAmount: 0 },
+    });
+  }
+
+  // PAID MODE: Full AI-powered generation
   let agent;
   const openaiKey = process.env.OPENAI_API_KEY;
 
