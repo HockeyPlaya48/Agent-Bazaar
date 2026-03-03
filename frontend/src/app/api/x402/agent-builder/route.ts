@@ -46,37 +46,36 @@ export async function POST(request: Request) {
     );
   }
 
-  // Verify payment via our verify endpoint
-  try {
-    const verifyUrl = new URL("/api/x402/verify", request.url);
-    const verifyRes = await fetch(verifyUrl.toString(), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        txHash: paymentHeader,
-        capabilityId: SKILL_CONFIG.capabilityId,
-      }),
-    });
+  // Check for demo/test/stripe tokens BEFORE hitting blockchain verify
+  const isDemoToken = paymentHeader === "demo" || paymentHeader === "test" || paymentHeader === "paid" || paymentHeader.startsWith("stripe_");
+  
+  if (!isDemoToken) {
+    // Only verify on-chain for real tx hashes
+    try {
+      const verifyUrl = new URL("/api/x402/verify", request.url);
+      const verifyRes = await fetch(verifyUrl.toString(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          txHash: paymentHeader,
+          capabilityId: SKILL_CONFIG.capabilityId,
+        }),
+      });
 
-    const verifyData = await verifyRes.json();
+      const verifyData = await verifyRes.json();
 
-    // Allow through if verification succeeds OR if it's a demo/test/stripe-paid token
-    const isDemoToken = paymentHeader === "demo" || paymentHeader === "test" || paymentHeader === "paid" || paymentHeader.startsWith("stripe_");
-    if (!verifyData.verified && !isDemoToken) {
-      return NextResponse.json(
-        {
-          status: 402,
-          error: "Payment verification failed",
-          details: verifyData.error,
-          payment: SKILL_CONFIG,
-        },
-        { status: 402 }
-      );
-    }
-  } catch (error) {
-    // If verification service is down, allow demo tokens through
-    const isDemoToken = paymentHeader === "demo" || paymentHeader === "test" || paymentHeader === "paid" || paymentHeader.startsWith("stripe_");
-    if (!isDemoToken) {
+      if (!verifyData.verified) {
+        return NextResponse.json(
+          {
+            status: 402,
+            error: "Payment verification failed",
+            details: verifyData.error,
+            payment: SKILL_CONFIG,
+          },
+          { status: 402 }
+        );
+      }
+    } catch (error) {
       return NextResponse.json(
         { error: "Payment verification service unavailable" },
         { status: 503 }
