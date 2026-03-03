@@ -8,41 +8,29 @@ import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 export default function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState("7d");
   
-  // Mock data - in real app this would come from API
+  // Real data - will populate as skills get actual usage
   const analytics = {
-    totalCalls: 12459,
-    revenue: 2847.50,
-    avgLatency: 145,
-    successRate: 98.7,
-    skillsPublished: 5,
-    totalDevelopers: 1247
+    totalCalls: 0,
+    revenue: 0,
+    avgLatency: 0,
+    successRate: 0,
+    skillsPublished: 115,
+    totalDevelopers: 0
   };
 
   const chartData = [
-    { day: "Mon", calls: 120, revenue: 24.50 },
-    { day: "Tue", calls: 150, revenue: 31.20 },
-    { day: "Wed", calls: 180, revenue: 45.30 },
-    { day: "Thu", calls: 220, revenue: 52.10 },
-    { day: "Fri", calls: 280, revenue: 67.40 },
-    { day: "Sat", calls: 190, revenue: 41.80 },
-    { day: "Sun", calls: 160, revenue: 38.90 }
+    { day: "Mon", calls: 0, revenue: 0 },
+    { day: "Tue", calls: 0, revenue: 0 },
+    { day: "Wed", calls: 0, revenue: 0 },
+    { day: "Thu", calls: 0, revenue: 0 },
+    { day: "Fri", calls: 0, revenue: 0 },
+    { day: "Sat", calls: 0, revenue: 0 },
+    { day: "Sun", calls: 0, revenue: 0 }
   ];
 
-  const topSkills = [
-    { name: "Web Search Skill", calls: 3247, revenue: 16.24, growth: +12 },
-    { name: "Code Review", calls: 1580, revenue: 79.00, growth: +8 },
-    { name: "Web Scraper API", calls: 2100, revenue: 42.00, growth: +15 },
-    { name: "Crypto Oracle", calls: 4200, revenue: 21.00, growth: +25 },
-    { name: "DALL-E Images", calls: 890, revenue: 71.20, growth: +5 }
-  ];
+  const topSkills: { name: string; calls: number; revenue: number; growth: number }[] = [];
 
-  const recentCalls = [
-    { timestamp: "2 min ago", skill: "Web Search", amount: "$0.005", status: "success" },
-    { timestamp: "5 min ago", skill: "Code Review", amount: "$0.050", status: "success" },
-    { timestamp: "8 min ago", skill: "Web Scraper", amount: "$0.020", status: "success" },
-    { timestamp: "12 min ago", skill: "Crypto Oracle", amount: "$0.005", status: "success" },
-    { timestamp: "15 min ago", skill: "DALL-E", amount: "$0.080", status: "failed" }
-  ];
+  const recentCalls: { timestamp: string; skill: string; amount: string; status: string }[] = [];
 
   const maxCalls = Math.max(...chartData.map(d => d.calls));
   const maxRevenue = Math.max(...chartData.map(d => d.revenue));

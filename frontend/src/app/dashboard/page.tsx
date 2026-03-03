@@ -13,38 +13,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 
-// Mock data for the professional dashboard
+// Real data - will populate from Supabase as skills get actual usage
 const mockEarningsData = [
-  { day: "Mon", amount: 124.50 },
-  { day: "Tue", amount: 89.20 },
-  { day: "Wed", amount: 156.80 },
-  { day: "Thu", amount: 201.40 },
-  { day: "Fri", amount: 178.90 },
-  { day: "Sat", amount: 93.60 },
-  { day: "Sun", amount: 142.30 }
+  { day: "Mon", amount: 0 },
+  { day: "Tue", amount: 0 },
+  { day: "Wed", amount: 0 },
+  { day: "Thu", amount: 0 },
+  { day: "Fri", amount: 0 },
+  { day: "Sat", amount: 0 },
+  { day: "Sun", amount: 0 }
 ];
 
-const mockCallLogs = [
-  { id: 1, timestamp: "2026-02-27 18:32:14", skill: "GPT-4 Code Review", caller: "agent", cost: 0.05, status: "success", latency: "1.2s" },
-  { id: 2, timestamp: "2026-02-27 18:28:09", skill: "Web Scraper API", caller: "human", cost: 0.02, status: "success", latency: "2.8s" },
-  { id: 3, timestamp: "2026-02-27 18:15:43", skill: "GPT-4 Code Review", caller: "agent", cost: 0.05, status: "fail", latency: "timeout" },
-  { id: 4, timestamp: "2026-02-27 18:12:31", skill: "DALL-E Image Generator", caller: "agent", cost: 0.08, status: "success", latency: "3.4s" },
-  { id: 5, timestamp: "2026-02-27 18:06:22", skill: "Web Scraper API", caller: "human", cost: 0.02, status: "success", latency: "1.9s" },
-  { id: 6, timestamp: "2026-02-27 17:58:17", skill: "GPT-4 Code Review", caller: "agent", cost: 0.05, status: "success", latency: "0.9s" },
-  { id: 7, timestamp: "2026-02-27 17:45:33", skill: "DALL-E Image Generator", caller: "human", cost: 0.08, status: "success", latency: "4.1s" },
-  { id: 8, timestamp: "2026-02-27 17:32:11", skill: "Web Scraper API", caller: "agent", cost: 0.02, status: "success", latency: "2.3s" },
-  { id: 9, timestamp: "2026-02-27 17:24:08", skill: "GPT-4 Code Review", caller: "agent", cost: 0.05, status: "success", latency: "1.5s" },
-  { id: 10, timestamp: "2026-02-27 17:15:42", skill: "DALL-E Image Generator", caller: "human", cost: 0.08, status: "success", latency: "3.8s" },
-  { id: 11, timestamp: "2026-02-27 17:08:29", skill: "Web Scraper API", caller: "agent", cost: 0.02, status: "success", latency: "1.7s" },
-  { id: 12, timestamp: "2026-02-27 16:54:16", skill: "GPT-4 Code Review", caller: "human", cost: 0.05, status: "success", latency: "1.1s" },
-];
+const mockCallLogs: { id: number; timestamp: string; skill: string; caller: string; cost: number; status: string; latency: string }[] = [];
 
-const mockPayouts = [
-  { id: 1, date: "2026-02-25", amount: 847.32, status: "paid", txHash: "0x1a2b3c...7f8g9h" },
-  { id: 2, date: "2026-02-18", amount: 623.91, status: "paid", txHash: "0x2b3c4d...8g9h0i" },
-  { id: 3, date: "2026-02-11", amount: 789.45, status: "paid", txHash: "0x3c4d5e...9h0i1j" },
-  { id: 4, date: "2026-02-04", amount: 532.18, status: "pending", txHash: null },
-];
+const mockPayouts: { id: number; date: string; amount: number; status: string; txHash: string | null }[] = [];
 
 const myCapabilities = CAPABILITIES.slice(0, 3);
 
