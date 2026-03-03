@@ -2178,6 +2178,25 @@ export const CAPABILITIES: Capability[] = [
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
+  {
+    id: "115",
+    name: "World Model Simulation",
+    slug: "world-model-simulation",
+    description: "World Model as a Service: Run forward simulations of agent actions in uncertain environments. Input current state + proposed actions; output predicted outcomes, risks, confidence scores, and recommended next steps. Helps agents de-risk decisions before spending real resources.",
+    longDescription: "Built with Claude for reliable long-term planning. Chainable — agents can call multiple times in workflows. Supports custom time horizons and scenario counts.",
+    type: "api" as const,
+    category: "research" as const,
+    pricePerCall: 0.005,
+    x402Endpoint: "https://agent-bazaar.com/api/x402/simulate",
+    icon: "🌍",
+    rating: 4.9,
+    usageCount: 1250,
+    featured: true,
+    tags: ["simulation", "planning", "risk", "world-model", "decision-making"],
+    creatorName: "AgentForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    listingTier: "spotlight" as const,
+  },
 ];
 
 // Alias for backwards compatibility
