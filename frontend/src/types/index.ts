@@ -36,6 +36,7 @@ export interface Capability {
   featured: boolean;
   tags: string[];
   creatorName: string;
+  providerWallet?: string;
   listingTier?: ListingTier; // free (default), featured ($49/mo), spotlight ($149/mo)
 }
 

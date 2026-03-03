@@ -36,6 +36,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["agent", "builder", "openclaw", "automation", "no-code"],
     creatorName: "AgentForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -54,6 +55,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["code-review", "security", "gpt-4", "developer"],
     creatorName: "DevForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -72,6 +74,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["image", "dalle", "generation", "creative"],
     creatorName: "PixelMint",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -90,6 +93,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["scraping", "web", "data", "extraction"],
     creatorName: "CrawlLab",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "4",
@@ -107,6 +111,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["seo", "marketing", "analysis", "content"],
     creatorName: "RankForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -125,6 +130,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["sql", "database", "query", "natural-language"],
     creatorName: "QueryCraft",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "6",
@@ -142,6 +148,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["git", "security", "cli", "audit"],
     creatorName: "SecureDev",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "7",
@@ -159,6 +166,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["csv", "analytics", "data", "visualization"],
     creatorName: "DataPilot",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "8",
@@ -176,6 +184,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["blog", "seo", "writing", "content"],
     creatorName: "ContentForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -194,6 +203,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["crypto", "trading", "prices", "oracle"],
     creatorName: "ChainData",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "10",
@@ -211,6 +221,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["research", "academic", "summary", "papers"],
     creatorName: "ScholarAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "11",
@@ -228,6 +239,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["deploy", "cli", "cloud", "devops"],
     creatorName: "ShipFast",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "12",
@@ -245,6 +257,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["email", "skill", "agent", "automation"],
     creatorName: "ToolSmith",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "13",
@@ -262,6 +275,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["memory", "vector", "rag", "agent", "skill"],
     creatorName: "MemoryAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -280,6 +294,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["search", "web", "skill", "agent", "research"],
     creatorName: "SearchCraft",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -298,6 +313,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["crypto", "cli", "onchain", "agent", "base"],
     creatorName: "Bankr",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -316,6 +332,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["scheduling", "cron", "skill", "agent", "automation"],
     creatorName: "TimeCraft",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "17",
@@ -333,6 +350,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["ethereum", "defi", "oracle", "yield", "tvl"],
     creatorName: "DeFiData",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -351,6 +369,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["mev", "arbitrage", "bot", "flashloan", "defi"],
     creatorName: "MEVLabs",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "19",
@@ -368,6 +387,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["solana", "jupiter", "dex", "trading", "swap"],
     creatorName: "SolTrade",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -386,6 +406,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["options", "strategy", "greeks", "risk", "trading"],
     creatorName: "OptionsAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "21",
@@ -403,6 +424,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["security", "vulnerability", "owasp", "penetration", "audit"],
     creatorName: "SecureScan",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -421,6 +443,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["solidity", "audit", "smart-contract", "mythril", "security"],
     creatorName: "ChainAudit",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -439,6 +462,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["dns", "monitoring", "certificates", "subdomain", "security"],
     creatorName: "DNSGuard",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "24",
@@ -456,6 +480,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["api", "penetration", "testing", "auth", "injection"],
     creatorName: "APISec",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "25",
@@ -473,6 +498,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["playwright", "cypress", "e2e", "testing", "automation"],
     creatorName: "TestCraft",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -491,6 +517,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["load-testing", "performance", "stress", "scalability", "k6"],
     creatorName: "LoadLabs",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -509,6 +536,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["api", "openapi", "contract-testing", "validation", "rest"],
     creatorName: "APITest",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "28",
@@ -526,6 +554,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["mutation-testing", "coverage", "quality", "testing", "javascript"],
     creatorName: "MutantLabs",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "29",
@@ -543,6 +572,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["github-actions", "optimization", "cicd", "performance", "cost"],
     creatorName: "CIOptimizer",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -561,6 +591,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["docker", "security", "vulnerability", "sbom", "container"],
     creatorName: "ContainerGuard",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -579,6 +610,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["pipeline", "cicd", "generator", "github", "gitlab"],
     creatorName: "PipelineCraft",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "32",
@@ -596,6 +628,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["deployment", "rollback", "canary", "blue-green", "monitoring"],
     creatorName: "DeployGuard",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -614,6 +647,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["translation", "multilingual", "context", "sentiment", "localization"],
     creatorName: "LinguaAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -632,6 +666,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["code", "programming", "conversion", "syntax", "migration"],
     creatorName: "CodeBridge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "35",
@@ -649,6 +684,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["localization", "documents", "pdf", "formatting", "cultural"],
     creatorName: "DocTranslate",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "36",
@@ -666,6 +702,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["subtitles", "video", "transcription", "translation", "sync"],
     creatorName: "SubCraft",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "37",
@@ -683,6 +720,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["tts", "voice", "speech", "emotion", "multilingual"],
     creatorName: "VoiceForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -701,6 +739,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["transcription", "stt", "diarization", "timestamps", "accuracy"],
     creatorName: "TranscribeAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -719,6 +758,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["music", "generation", "ai", "creative", "audio"],
     creatorName: "MelodyAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "40",
@@ -736,6 +776,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["sound-effects", "foley", "audio", "ui", "ambient"],
     creatorName: "SoundForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "41",
@@ -753,6 +794,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["stripe", "payments", "subscriptions", "fraud", "retry"],
     creatorName: "PaymentPro",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -771,6 +813,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["crypto", "bitcoin", "ethereum", "payments", "stablecoin"],
     creatorName: "CryptoPay",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -789,6 +832,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["invoicing", "billing", "reminders", "payments", "taxes"],
     creatorName: "InvoiceAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "44",
@@ -806,6 +850,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["expenses", "ocr", "receipts", "taxes", "categorization"],
     creatorName: "ExpenseBot",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "45",
@@ -823,6 +868,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["notifications", "slack", "discord", "sms", "email"],
     creatorName: "NotifyHub",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -841,6 +887,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["alerts", "escalation", "on-call", "pagerduty", "deduplication"],
     creatorName: "AlertForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
   },
   {
@@ -859,6 +906,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["calendar", "sync", "google", "outlook", "scheduling"],
     creatorName: "CalendarHub",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -877,6 +925,7 @@ export const CAPABILITIES: Capability[] = [
     featured: true,
     tags: ["meetings", "scheduling", "ai", "optimization", "automation"],
     creatorName: "MeetingAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
   },
   {
@@ -895,6 +944,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["automation", "workflows", "orchestration", "dependencies", "parallel"],
     creatorName: "TaskForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "50",
@@ -912,6 +962,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["monitoring", "resources", "predictive", "auto-scaling", "health"],
     creatorName: "MonitorLabs",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "51",
@@ -930,6 +981,7 @@ export const CAPABILITIES: Capability[] = [
     listingTier: "free",
     tags: ["email", "transactional", "smtp", "templates"],
     creatorName: "EmailForge",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "52",
@@ -948,6 +1000,7 @@ export const CAPABILITIES: Capability[] = [
     listingTier: "free",
     tags: ["pdf", "ocr", "extraction", "tables", "documents"],
     creatorName: "DocProcess",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "53",
@@ -966,6 +1019,7 @@ export const CAPABILITIES: Capability[] = [
     listingTier: "free",
     tags: ["translation", "multilingual", "localization", "i18n"],
     creatorName: "LinguaTech",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "54",
@@ -985,6 +1039,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["whisper", "transcription", "audio", "speech-to-text"],
     creatorName: "AudioScribe",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "55",
@@ -1004,6 +1059,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["whois", "dns", "domains", "availability"],
     creatorName: "DomainTools",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "56",
@@ -1023,6 +1079,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["seo", "audit", "optimization", "analytics"],
     creatorName: "SEOPro",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "57",
@@ -1042,6 +1099,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["qr-code", "generator", "barcode", "mobile"],
     creatorName: "QRMaster",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "58",
@@ -1061,6 +1119,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["cron", "scheduling", "automation", "monitoring"],
     creatorName: "CronLabs",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "59",
@@ -1080,6 +1139,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["database", "migration", "sql", "schema"],
     creatorName: "MigrationPro",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "60",
@@ -1099,6 +1159,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["load-testing", "performance", "api", "stress"],
     creatorName: "LoadTest",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "61",
@@ -1118,6 +1179,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["social-media", "scheduling", "automation", "engagement"],
     creatorName: "SocialBot",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "62",
@@ -1137,6 +1199,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["leads", "enrichment", "contacts", "crm"],
     creatorName: "LeadGen",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "63",
@@ -1156,6 +1219,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["invoicing", "billing", "pdf", "payments"],
     creatorName: "InvoicePro",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "64",
@@ -1175,6 +1239,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["plagiarism", "originality", "content", "verification"],
     creatorName: "CheckText",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "65",
@@ -1194,6 +1259,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["color", "palette", "design", "accessibility"],
     creatorName: "ColorAI",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "66",
@@ -1213,6 +1279,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["webhooks", "relay", "transformation", "automation"],
     creatorName: "HookRelay",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "67",
@@ -1232,6 +1299,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["logs", "analysis", "debugging", "monitoring"],
     creatorName: "LogSense",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "68",
@@ -1251,6 +1319,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["security", "dependencies", "vulnerabilities", "audit"],
     creatorName: "SecureCode",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "69",
@@ -1270,6 +1339,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["memory", "agents", "vector", "semantic-search"],
     creatorName: "MemoryCore",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "70",
@@ -1289,6 +1359,7 @@ export const CAPABILITIES: Capability[] = [
     
     tags: ["workflow", "orchestration", "automation", "skills"],
     creatorName: "FlowMaster",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
   },
   {
     id: "71",
@@ -1306,6 +1377,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["passwords", "secrets", "security", "cli"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1324,6 +1396,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["apple", "reminders", "productivity", "tasks"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1342,6 +1415,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["notes", "bear", "markdown", "productivity"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1360,6 +1434,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["rss", "monitoring", "feeds", "content"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1378,6 +1453,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["bluos", "audio", "speakers", "multiroom"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1396,6 +1472,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["imessage", "messaging", "bluebubbles", "communication"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1414,6 +1491,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["camera", "rtsp", "onvif", "surveillance"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1432,6 +1510,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["clawhub", "skills", "marketplace", "cli"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1450,6 +1529,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["sleep", "eight-sleep", "temperature", "smart-home"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1468,6 +1548,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["gemini", "ai", "google", "generation"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1486,6 +1567,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["gif", "search", "animation", "media"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1504,6 +1586,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["google", "workspace", "gmail", "productivity"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1522,6 +1605,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["google", "places", "location", "search"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1540,6 +1624,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["email", "imap", "smtp", "cli"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1558,6 +1643,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["imessage", "sms", "macos", "messaging"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1576,6 +1662,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["local", "places", "restaurants", "search"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1594,6 +1681,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["mcp", "protocol", "tools", "integration"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1612,6 +1700,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["usage", "tracking", "costs", "analytics"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1630,6 +1719,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["image", "generation", "gemini", "ai"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1648,6 +1738,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["pdf", "editing", "documents", "ai"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1666,6 +1757,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["notion", "database", "pages", "productivity"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1684,6 +1776,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["obsidian", "notes", "vault", "knowledge"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1702,6 +1795,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["openai", "images", "batch", "generation"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1720,6 +1814,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["whisper", "local", "transcription", "offline"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1738,6 +1833,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["whisper", "api", "transcription", "openai"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1756,6 +1852,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["hue", "lights", "smart-home", "automation"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1774,6 +1871,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["oracle", "ai", "inference", "prompting"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1792,6 +1890,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["foodora", "orders", "delivery", "food"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1810,6 +1909,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["macos", "ui", "automation", "screen"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1828,6 +1928,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["elevenlabs", "tts", "voice", "synthesis"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1846,6 +1947,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["logs", "search", "sessions", "history"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1864,6 +1966,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["sherpa", "tts", "local", "offline"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1882,6 +1985,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["slack", "messaging", "workspace", "automation"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1900,6 +2004,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["audio", "visualization", "spectrograms", "analysis"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1918,6 +2023,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["sonos", "speakers", "multiroom", "audio"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1936,6 +2042,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["spotify", "music", "playback", "terminal"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1954,6 +2061,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["summarize", "url", "podcasts", "extraction"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1972,6 +2080,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["things", "tasks", "macos", "productivity"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -1990,6 +2099,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["tmux", "terminal", "sessions", "automation"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -2008,6 +2118,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["trello", "boards", "cards", "project-management"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -2026,6 +2137,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["video", "frames", "ffmpeg", "extraction"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -2044,6 +2156,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["voice", "calls", "communication", "real-time"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
   {
@@ -2062,6 +2175,7 @@ export const CAPABILITIES: Capability[] = [
     featured: false,
     tags: ["whatsapp", "messaging", "cli", "automation"],
     creatorName: "clawhub-community",
+    providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
   },
 ];
