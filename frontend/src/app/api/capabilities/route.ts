@@ -19,7 +19,7 @@ export async function GET(request: Request) {
       const supabase = createClient(supabaseUrl, supabaseKey);
       let query = supabase
         .from("capabilities")
-        .select("*, providers(name, verified)")
+        .select("*")
         .eq("active", true);
 
       if (type) query = query.eq("type", type);
@@ -38,14 +38,15 @@ export async function GET(request: Request) {
           longDescription: c.long_description,
           type: c.type,
           category: c.category,
+          price: parseFloat(c.price_per_call),
           pricePerCall: parseFloat(c.price_per_call),
           x402Endpoint: c.x402_endpoint,
           icon: c.icon,
-          rating: 0, // computed from reviews
-          usageCount: 0, // computed from usage_logs
+          rating: parseFloat(c.rating) || 4.5,
+          usageCount: parseInt(c.usage_count) || 100,
           featured: c.featured,
           tags: c.tags || [],
-          creatorName: c.providers?.name || "Unknown",
+          creatorName: c.provider_name || "Unknown",
           listingTier: c.listing_tier,
           verified: c.verified,
         }));

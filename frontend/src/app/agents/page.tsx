@@ -23,7 +23,7 @@ export default function BrowseSkills() {
     fetch("/api/capabilities")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.data?.length > CAPABILITIES.length) setAllCapabilities(data.data);
+        if (data.success && data.data?.length >= CAPABILITIES.length) setAllCapabilities(data.data);
       })
       .catch(() => {});
   }, []);

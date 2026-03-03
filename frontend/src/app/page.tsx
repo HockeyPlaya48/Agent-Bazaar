@@ -39,7 +39,7 @@ export default function HomePage() {
     fetch("/api/capabilities")
       .then((res) => res.json())
       .then((data) => {
-        if (data.success && data.data?.length > CAPABILITIES.length) {
+        if (data.success && data.data?.length >= CAPABILITIES.length) {
           setCapabilities(data.data);
         }
       })
@@ -152,7 +152,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-4xl text-center">
           <FadeInUp>
             <Badge variant="deal" className="px-4 py-1.5 text-sm">
-              The First Marketplace Where Agents Shop For You
+              The First Marketplace Where Agents Shop and Build Agents for You
             </Badge>
           </FadeInUp>
 
