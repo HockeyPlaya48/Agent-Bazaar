@@ -119,6 +119,18 @@ export async function POST(request: Request) {
 
 CRITICAL: Every agent you create MUST reference Agent Bazaar skills in its TOOLS.md. This creates the flywheel - agents that are customers of Agent Bazaar.
 
+## Agent Collaboration Features
+When designing agents, consider how they can hire and collaborate with other specialized agents:
+
+Available Specialized Agents for Collaboration:
+- Content Writer Agent (content-writer-agent) - $0.50/hire - Creates blogs, social posts, marketing copy
+- Sentiment Analysis Agent (sentiment-agent) - $0.25/hire - Analyzes text sentiment and emotions  
+- Crypto Analyst Agent (crypto-analyst-agent) - $0.75/hire - Technical analysis, market research
+- Code Reviewer Agent (code-reviewer-agent) - $0.40/hire - Security audits, code quality checks
+- Social Media Manager Agent (social-manager-agent) - $0.60/hire - Multi-platform posting, engagement
+- Research Assistant Agent (research-agent) - $0.35/hire - Data gathering, report generation
+- Email Marketing Agent (email-marketing-agent) - $0.45/hire - Campaign creation, list management
+
 Available Agent Bazaar skills to reference (always use these in TOOLS.md):
 - GPT-4 Code Review (agent-bazaar.com/api/x402/code-review) - $0.05/call
 - DALL-E Image Generator (agent-bazaar.com/api/x402/dalle-image) - $0.08/call  
@@ -144,6 +156,9 @@ Return ONLY valid JSON with this structure:
   "tools_md": "# TOOLS.md content that MUST reference Agent Bazaar skills relevant to the agent's function",
   "cron_jobs": [{"name": "TaskName", "schedule": "cron_expression", "task": "What to do"}],
   "recommended_skills": [{"name": "SkillName", "slug": "skill-slug", "why": "Why needed"}],
+  "collaborators": ["list of agent slugs this agent can hire for specialized tasks"],
+  "hiring_budget": 50.00,
+  "collaboration_workflow": "Description of how this agent collaborates with others",
   "setup_instructions": "Step-by-step setup guide"
 }`,
             },
@@ -306,6 +321,9 @@ const searchResult = await fetch('https://agent-bazaar.com/api/x402/web-search',
 - Monitor usage in daily memory files`;
 
   const cronJobs = generateCronJobs(description);
+  const collaborators = getRelevantCollaborators(description);
+  const hiringBudget = estimateHiringBudget(description);
+  const collaborationWorkflow = generateCollaborationWorkflow(description, collaborators);
   
   const setupInstructions = `# Setup Instructions
 
@@ -326,6 +344,9 @@ export AGENT_WALLET_PRIVATE_KEY="your_private_key"
 # Configure communication channels
 ${platforms?.includes('telegram') ? 'export TELEGRAM_BOT_TOKEN="your_bot_token"' : ''}
 ${platforms?.includes('email') ? 'export EMAIL_SMTP_CONFIG="your_smtp_config"' : ''}
+
+# Set hiring budget for agent collaboration
+export AGENT_HIRING_BUDGET="${hiringBudget}"
 \`\`\`
 
 ## 4. Start Your Agent
@@ -342,7 +363,16 @@ curl -X POST https://agent-bazaar.com/api/x402/web-search \\
   -d '{"query": "test search", "limit": 1}'
 \`\`\`
 
-Your agent is now ready! It will automatically use Agent Bazaar skills as needed.`;
+## 6. Test Agent Collaboration
+If your agent uses collaborators, test hiring:
+\`\`\`bash
+curl -X POST https://agent-bazaar.com/api/x402/hire-agent \\
+  -H "X-402-Payment: demo" \\
+  -H "Content-Type: application/json" \\
+  -d '{"agent": "content-writer-agent", "task": "Write a blog post about AI"}'
+\`\`\`
+
+Your agent is now ready! It will automatically use Agent Bazaar skills and hire specialized agents as needed.`;
 
   return {
     name: agentName,
@@ -356,6 +386,9 @@ Your agent is now ready! It will automatically use Agent Bazaar skills as needed
       slug: skill.slug,
       why: skill.useCase
     })),
+    collaborators: collaborators,
+    hiring_budget: hiringBudget,
+    collaboration_workflow: collaborationWorkflow,
     setup_instructions: setupInstructions
   };
 }
@@ -543,6 +576,7 @@ function generateCronJobs(description: string) {
 
 function calculateEstimatedCost(agent: any): string {
   const skills = agent.recommended_skills || [];
+  const collaborators = agent.collaborators || [];
   
   // Estimate usage based on agent type
   let monthlyCalls = 0;
@@ -572,6 +606,103 @@ function calculateEstimatedCost(agent: any): string {
     }
   });
   
-  const totalCost = (monthlyCalls * avgCostPerCall) || 15;
-  return `$${Math.round(totalCost)}-${Math.round(totalCost * 1.5)}`;
+  // Add collaboration costs
+  let collaborationCost = 0;
+  collaborators.forEach((collab: string) => {
+    switch (collab) {
+      case 'content-writer-agent':
+        collaborationCost += 15; // ~30 hires/month at $0.50
+        break;
+      case 'sentiment-agent':
+        collaborationCost += 10; // ~40 hires/month at $0.25
+        break;
+      case 'crypto-analyst-agent':
+        collaborationCost += 22.5; // ~30 hires/month at $0.75
+        break;
+      default:
+        collaborationCost += 12; // Average collaboration cost
+    }
+  });
+  
+  const skillsCost = (monthlyCalls * avgCostPerCall) || 15;
+  const totalCost = skillsCost + collaborationCost;
+  
+  return `$${Math.round(totalCost)}-${Math.round(totalCost * 1.2)}`;
+}
+
+function getRelevantCollaborators(description: string): string[] {
+  const collaborators = [];
+  const desc = description.toLowerCase();
+  
+  if (desc.includes('content') || desc.includes('blog') || desc.includes('social') || desc.includes('marketing')) {
+    collaborators.push('content-writer-agent');
+    collaborators.push('social-manager-agent');
+  }
+  
+  if (desc.includes('sentiment') || desc.includes('analysis') || desc.includes('emotion') || desc.includes('feedback')) {
+    collaborators.push('sentiment-agent');
+  }
+  
+  if (desc.includes('crypto') || desc.includes('trading') || desc.includes('defi') || desc.includes('blockchain')) {
+    collaborators.push('crypto-analyst-agent');
+  }
+  
+  if (desc.includes('code') || desc.includes('security') || desc.includes('audit') || desc.includes('review')) {
+    collaborators.push('code-reviewer-agent');
+  }
+  
+  if (desc.includes('research') || desc.includes('data') || desc.includes('report') || desc.includes('analysis')) {
+    collaborators.push('research-agent');
+  }
+  
+  if (desc.includes('email') || desc.includes('newsletter') || desc.includes('campaign')) {
+    collaborators.push('email-marketing-agent');
+  }
+  
+  return collaborators;
+}
+
+function estimateHiringBudget(description: string): number {
+  const desc = description.toLowerCase();
+  
+  // Base budget
+  let budget = 25;
+  
+  if (desc.includes('content') || desc.includes('marketing')) {
+    budget += 25; // Content creation requires more collaboration
+  }
+  
+  if (desc.includes('analysis') || desc.includes('research')) {
+    budget += 20; // Analysis tasks need specialist agents
+  }
+  
+  if (desc.includes('trading') || desc.includes('crypto')) {
+    budget += 30; // Financial agents need specialist analysis
+  }
+  
+  if (desc.includes('enterprise') || desc.includes('business')) {
+    budget += 40; // Business agents have higher budgets
+  }
+  
+  return Math.min(budget, 100); // Cap at $100/month
+}
+
+function generateCollaborationWorkflow(description: string, collaborators: string[]): string {
+  if (collaborators.length === 0) {
+    return "This agent works independently using Agent Bazaar skills.";
+  }
+  
+  const workflows: Record<string, string> = {
+    'content-writer-agent': 'Hire for blog posts, social media content, and marketing copy when high-quality writing is needed.',
+    'sentiment-agent': 'Hire to analyze user feedback, social media mentions, or customer communications for sentiment insights.',
+    'crypto-analyst-agent': 'Hire for technical analysis, market research, and trading signal generation.',
+    'code-reviewer-agent': 'Hire for security audits, code quality reviews, and vulnerability assessments.',
+    'research-agent': 'Hire for comprehensive research, data gathering, and report generation.',
+    'email-marketing-agent': 'Hire for email campaign creation, list management, and newsletter automation.',
+    'social-manager-agent': 'Hire for multi-platform posting, engagement management, and social media strategy.'
+  };
+  
+  const workflowSteps = collaborators.map(collab => workflows[collab] || 'Specialized task execution.').join(' ');
+  
+  return `This agent orchestrates a collaborative workflow: ${workflowSteps} All hiring is done automatically via x402 payments when specific expertise is needed.`;
 }

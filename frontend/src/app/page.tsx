@@ -166,7 +166,7 @@ export default function HomePage() {
 
           <FadeInUp delay={0.2}>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-zinc-400">
-              APIs, CLI tools, and agent skills for every workflow — all x402-enabled. Humans browse, agents shop autonomously. Developers earn from every call.
+              APIs, CLI tools, and agent skills for every workflow — all x402-enabled. Humans can browse, agents shop autonomously. Developers earn from every call.
             </p>
           </FadeInUp>
 
@@ -428,6 +428,133 @@ export default function HomePage() {
                 </StaggerItem>
               ))}
             </StaggerContainer>
+          </div>
+        </section>
+      )}
+
+      {/* Free Analytics Section */}
+      {!search && !selectedCategory && !selectedType && (
+        <section className="px-6 pb-12">
+          <div className="mx-auto max-w-5xl">
+            <FadeInUp>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white">Free Analytics for Every Developer</h2>
+                <p className="mt-3 text-lg text-zinc-400">
+                  Track your skills' performance — no paid tier required
+                </p>
+              </div>
+            </FadeInUp>
+            
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { title: "Total Calls", value: "12,459", icon: "📊", color: "text-blue-400" },
+                { title: "Revenue Earned", value: "$2,847", icon: "💰", color: "text-green-400" },
+                { title: "Avg Response Time", value: "145ms", icon: "⚡", color: "text-yellow-400" },
+                { title: "Top Skills", value: "Web Search", icon: "🏆", color: "text-purple-400" }
+              ].map((metric, i) => (
+                <FadeInUp key={metric.title} delay={i * 0.1}>
+                  <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6 text-center">
+                    <div className="text-2xl mb-2">{metric.icon}</div>
+                    <div className={`text-2xl font-bold ${metric.color} mb-1`}>{metric.value}</div>
+                    <div className="text-sm text-zinc-500">{metric.title}</div>
+                  </div>
+                </FadeInUp>
+              ))}
+            </div>
+            
+            <FadeInUp delay={0.4}>
+              <div className="mt-8 text-center">
+                <Link
+                  href="/analytics"
+                  className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-3 font-semibold text-white transition hover:opacity-90"
+                >
+                  📈 View Full Dashboard
+                </Link>
+              </div>
+            </FadeInUp>
+          </div>
+        </section>
+      )}
+
+      {/* Framework Integration Section */}
+      {!search && !selectedCategory && !selectedType && (
+        <section className="px-6 pb-12">
+          <div className="mx-auto max-w-6xl">
+            <FadeInUp>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white">Works With Every Framework</h2>
+                <p className="mt-3 text-lg text-zinc-400">
+                  One SDK. Every framework. <code className="bg-zinc-800 px-2 py-1 rounded text-orange-400">npm install @agentbazaar/x402-sdk</code>
+                </p>
+              </div>
+            </FadeInUp>
+            
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  name: "LangChain",
+                  icon: "🦜",
+                  code: `from agentbazaar import LangChainTool
+
+tool = LangChainTool('web-scraper')
+result = tool.run({"url": "example.com"})`
+                },
+                {
+                  name: "CrewAI", 
+                  icon: "🚢",
+                  code: `from agentbazaar import CrewAITool
+
+@CrewAITool('code-review')
+def review_code(code):
+    return bazaar_skill(code)`
+                },
+                {
+                  name: "AutoGen",
+                  icon: "🤖", 
+                  code: `import agentbazaar
+
+agent = AutoGenAgent(
+    skills=['web-search', 'dalle-image']
+)`
+                },
+                {
+                  name: "OpenClaw",
+                  icon: "🐾",
+                  code: `# TOOLS.md
+- Web Search: $0.005/call
+- Code Review: $0.05/call
+
+All skills x402-enabled!`
+                },
+                {
+                  name: "LlamaIndex",
+                  icon: "🦙",
+                  code: `from llama_index.tools import BazaarTool
+
+tool = BazaarTool.from_slug('research-summary')`
+                },
+                {
+                  name: "Semantic Kernel",
+                  icon: "🧠", 
+                  code: `kernel.add_skill(
+    BazaarSkill("crypto-oracle"),
+    skill_name="crypto_data"
+)`
+                }
+              ].map((framework, i) => (
+                <FadeInUp key={framework.name} delay={i * 0.1}>
+                  <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="text-2xl">{framework.icon}</span>
+                      <h3 className="text-lg font-semibold text-white">{framework.name}</h3>
+                    </div>
+                    <pre className="bg-zinc-950 rounded-lg p-4 text-sm text-zinc-300 overflow-x-auto">
+                      <code>{framework.code}</code>
+                    </pre>
+                  </div>
+                </FadeInUp>
+              ))}
+            </div>
           </div>
         </section>
       )}

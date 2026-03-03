@@ -1,0 +1,45 @@
+{
+  "name": "agentbazaar",
+  "version": "0.1.0",
+  "description": "Official CLI for Agent Bazaar - discover, install, and manage AI skills",
+  "bin": {
+    "agentbazaar": "./bin/cli.js"
+  },
+  "main": "dist/index.js",
+  "files": ["bin", "dist", "README.md"],
+  "keywords": ["cli", "agent", "bazaar", "x402", "ai", "skills", "marketplace"],
+  "license": "MIT",
+  "author": "Agent Bazaar",
+  "homepage": "https://agent-bazaar.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agent-bazaar/cli.git"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x bin/cli.js",
+    "dev": "ts-node src/cli.ts",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "chalk": "^4.1.2",
+    "inquirer": "^9.2.0",
+    "ora": "^6.3.0",
+    "node-fetch": "^3.3.2",
+    "fs-extra": "^11.1.0",
+    "yaml": "^2.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0",
+    "@types/inquirer": "^9.0.0",
+    "@types/fs-extra": "^11.0.0",
+    "ts-node": "^10.9.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

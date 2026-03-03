@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/agents", label: "Browse Skills", featured: false },
   { href: "/bundles", label: "Skill Packs", featured: false },
   { href: "/atlas", label: "Agent Shopping", featured: false },
+  { href: "/analytics", label: "Analytics", featured: false },
   { href: "/setup", label: "Setup", featured: false },
   { href: "/dashboard", label: "Dashboard", featured: false },
   { href: "/demo", label: "Demo", featured: false },

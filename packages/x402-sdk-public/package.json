@@ -1,0 +1,47 @@
+{
+  "name": "@agentbazaar/x402-sdk",
+  "version": "0.1.0",
+  "description": "Open source SDK for x402 protocol - pay-per-use for APIs, CLI tools, and agent skills",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md"],
+  "keywords": ["x402", "agent", "payment", "web3", "sdk", "bazaar", "langchain", "crewai", "autogen", "openclaw"],
+  "license": "MIT",
+  "author": "Agent Bazaar",
+  "homepage": "https://agent-bazaar.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agent-bazaar/x402-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/agent-bazaar/x402-sdk/issues"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0"
+  },
+  "peerDependencies": {
+    "langchain": ">=0.0.150",
+    "@langchain/core": ">=0.0.1"
+  },
+  "peerDependenciesMeta": {
+    "langchain": {
+      "optional": true
+    },
+    "@langchain/core": {
+      "optional": true
+    }
+  }
+}
