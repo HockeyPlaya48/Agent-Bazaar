@@ -8,7 +8,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 
 const config = getDefaultConfig({
   appName: "Agent Bazaar",
-  projectId: "agent-bazaar-walletconnect", // WalletConnect project ID (get from cloud.walletconnect.com)
+  projectId: "8747c7f0d9d7c31b56e266a0dbfcee67",
   chains: [base],
   ssr: true,
 });
