@@ -39,23 +39,23 @@ execution and final status are handled by lobster.cash.
 
 ## Marketplace URL
 
-**Live directory**: https://agent-bazaar-lemon.vercel.app
+**Live directory**: https://agent-bazaar.com
 
 ## Browsing Skills
 
 ### By category
 ```
-https://agent-bazaar-lemon.vercel.app/agents?category=code-generation
-https://agent-bazaar-lemon.vercel.app/agents?category=image-generation
-https://agent-bazaar-lemon.vercel.app/agents?category=data-analysis
-https://agent-bazaar-lemon.vercel.app/agents?category=trading
-https://agent-bazaar-lemon.vercel.app/agents?category=automation
-https://agent-bazaar-lemon.vercel.app/agents?category=research
+https://agent-bazaar.com/agents?category=code-generation
+https://agent-bazaar.com/agents?category=image-generation
+https://agent-bazaar.com/agents?category=data-analysis
+https://agent-bazaar.com/agents?category=trading
+https://agent-bazaar.com/agents?category=automation
+https://agent-bazaar.com/agents?category=research
 ```
 
 ### By slug (direct detail page)
 ```
-https://agent-bazaar-lemon.vercel.app/agents/<slug>
+https://agent-bazaar.com/agents/<slug>
 ```
 
 ### Listing tiers (quality signal)
@@ -98,7 +98,7 @@ Example payment intent:
 Merchant: Agent Bazaar / GPT-4 Code Review
 Amount: $0.05 USDC
 Reason: Code review for pull request #42
-Endpoint: https://api.agentbazaar.xyz/x402/code-review
+Endpoint: https://agent-bazaar.com/api/x402/code-review
 ```
 
 ## Payment Status and Error Handling
@@ -115,16 +115,75 @@ Handle all of these scenarios:
 
 ## Core Skills Available
 
+<!-- UPDATE THIS SECTION when adding new skills to data.ts -->
+<!-- Future: replace with live fetch from https://agent-bazaar.com/api/capabilities -->
+
+All endpoints are relative to `https://agent-bazaar.com/api`
+
 | Name | Category | Price (USDC) | Endpoint |
 |------|----------|--------------|----------|
-| AI Agent Builder | automation | $0.25 | /x402/agent-builder |
-| GPT-4 Code Review | code-generation | $0.05 | /x402/code-review |
-| DALL-E Image Gen | image-generation | $0.08 | /x402/image-gen |
-| Web Scraper Pro | web-scraping | $0.03 | /x402/scrape |
-| Market Data Feed | trading | $0.02 | /x402/market-data |
-| Research Analyst | research | $0.10 | /x402/research |
-
-All endpoints: `https://api.agentbazaar.xyz`
+| Agent Memory Manager | automation | $0.02 | `/x402/agent-memory-manager` |
+| Bear Notes | automation | $0.01 | `/x402/bear-notes` |
+| BluOS Controller | automation | $0.01 | `/x402/bluos-controller` |
+| Camera Capture | automation | $0.03 | `/x402/camera-capture` |
+| Database Migration Tool | automation | $0.03 | `/x402/database-migration-tool` |
+| Eight Sleep Controller | automation | $0.02 | `/x402/eightctl-sleep` |
+| Email Sender API | automation | $0.01 | `/x402/email-sender-api` |
+| Invoice Generator | automation | $0.02 | `/x402/invoice-generator` |
+| MCP Porter | automation | $0.03 | `/x402/mcp-porter` |
+| Memory Store Skill | automation | $0.01 | `/x402/memory-store` |
+| Notion API | automation | $0.02 | `/x402/notion-api` |
+| Peekaboo macOS | automation | $0.02 | `/x402/peekaboo-macos` |
+| QR Code Generator | automation | $0.01 | `/x402/qr-code-generator` |
+| Slack Controller | automation | $0.02 | `/x402/slack-controller` |
+| Social Scheduler | automation | $0.03 | `/x402/social-scheduler` |
+| Sonos Controller | automation | $0.01 | `/x402/sonos-controller` |
+| WhatsApp CLI | automation | $0.02 | `/x402/whatsapp-cli` |
+| deploy-cli | automation | $0.02 | `/x402/deploy-cli` |
+| iMessage CLI | automation | $0.02 | `/x402/imessage-cli` |
+| tmux Controller | automation | $0.01 | `/x402/tmux-controller` |
+| GitHub Actions Optimizer | cicd | $0.05 | `/x402/gh-actions-opt` |
+| Pipeline Generator | cicd | $0.08 | `/x402/pipeline-gen` |
+| GPT-4 Code Review | code-generation | $0.05 | `/x402/code-review` |
+| SQL Query Generator | code-generation | $0.03 | `/x402/sql-gen` |
+| Oracle CLI | content-writing | $0.03 | `/x402/oracle-cli` |
+| Translation API | content-writing | $0.02 | `/x402/translation-api` |
+| URL Summarizer | content-writing | $0.02 | `/x402/url-summarizer` |
+| CSV Intelligence | data-analysis | $0.06 | `/x402/csv-intel` |
+| Google Places | data-analysis | $0.02 | `/x402/google-places` |
+| Log Analyzer | data-analysis | $0.02 | `/x402/log-analyzer` |
+| Session Log Search | data-analysis | $0.01 | `/x402/session-log-search` |
+| Background Removal | image-generation | $0.15 | `/x402/background-removal` |
+| Color Palette Generator | image-generation | $0.01 | `/x402/color-palette-generator` |
+| GIF Search | image-generation | $0.01 | `/x402/gif-search` |
+| Nano Banana Image | image-generation | $0.05 | `/x402/nano-banana-image` |
+| OpenAI Image Generator | image-generation | $0.05 | `/x402/openai-image-gen` |
+| Video Frame Extract | image-generation | $0.02 | `/x402/video-frame-extract` |
+| Multi-Channel Notifier | notifications | $0.00 | `/x402/notify` |
+| Invoice Generator Pro | payments | $0.03 | `/x402/invoice-gen` |
+| Stripe Payment Processor | payments | $0.01 | `/x402/stripe-pay` |
+| Calendar Sync Engine | scheduling | $0.01 | `/x402/cal-sync` |
+| Task Automation Engine | scheduling | $0.05 | `/x402/task-engine` |
+| Web Search API | search | $0.10 | `/x402/web-search` |
+| 1Password CLI | security | $0.02 | `/x402/1password-cli` |
+| DNS Security Monitor | security | $0.04 | `/x402/dns-monitor` |
+| Vulnerability Scanner | security | $0.25 | `/x402/vuln-scan` |
+| Social Media Content Generator | social-media | $0.15 | `/x402/social-content` |
+| Twitter/X Automation | social-media | $0.20 | `/x402/twitter-automation` |
+| API Test Suite Builder | testing | $0.06 | `/x402/api-test-gen` |
+| E2E Test Generator | testing | $0.08 | `/x402/e2e-gen` |
+| Crypto Price Oracle | trading | $0.01 | `/x402/crypto-oracle` |
+| Ethereum DeFi Oracle | trading | $0.01 | `/x402/eth-defi` |
+| Solana Trading Engine | trading | $0.01 | `/x402/solana-trade` |
+| bankr-cli | trading | $0.00 | `/x402/bankr-cli` |
+| Document Localizer | translation | $0.15 | `/x402/doc-localize` |
+| Universal Translator API | translation | $0.03 | `/x402/translate` |
+| AI Video Generation | video-generation | $0.20 | `/x402/video-generation` |
+| Music Generator API | voice-audio | $0.25 | `/x402/music-gen` |
+| OpenAI Whisper API | voice-audio | $0.03 | `/x402/openai-whisper-api` |
+| Voice Synthesis Engine | voice-audio | $0.05 | `/x402/voice-synth` |
+| Domain Checker | web-scraping | $0.01 | `/x402/domain-checker` |
+| Web Scraper API | web-scraping | $0.02 | `/x402/scraper` |
 
 ## x402 Configuration
 
@@ -156,18 +215,18 @@ Pre-packaged skill sets for common workflows:
 - **Research Pack**: research-analyst + market-data + web-scraper
 - **Creator Suite**: image-gen + content-writer + social-poster
 
-Browse bundles: https://agent-bazaar-lemon.vercel.app/bundles
+Browse bundles: https://agent-bazaar.com/bundles
 
 ## For Skill Providers
 
 To list a skill on Agent Bazaar:
-- Submit via: https://agent-bazaar-lemon.vercel.app/dev
+- Submit via: https://agent-bazaar.com/dev
 - Requirements: x402-compatible endpoint, USDC pricing
 - Listing tiers: Free (community), Featured ($49/mo), Spotlight ($149/mo)
 
 ## References
 
-- Agent Bazaar marketplace: https://agent-bazaar-lemon.vercel.app
+- Agent Bazaar marketplace: https://agent-bazaar.com
 - x402 protocol: https://x402.org
 - lobster.cash agent wallet: https://lobster.cash
 - Verified x402 facilitator: https://api.corbits.dev
