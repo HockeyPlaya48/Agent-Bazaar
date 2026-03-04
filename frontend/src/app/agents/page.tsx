@@ -17,6 +17,7 @@ export default function BrowseSkills() {
   const [ratingFilter, setRatingFilter] = useState<string>("all");
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sortBy, setSortBy] = useState<string>("popular");
+  const [modeFilter, setModeFilter] = useState<string>("all");
   const [allCapabilities, setAllCapabilities] = useState<Capability[]>(CAPABILITIES);
 
   useEffect(() => {
@@ -60,6 +61,14 @@ export default function BrowseSkills() {
       filtered = filtered.filter((a) => a.rating >= minRating);
     }
 
+    // Mode filter
+    if (modeFilter !== "all") {
+      filtered = filtered.filter((a) => {
+        const modes = a.mode ? (Array.isArray(a.mode) ? a.mode : [a.mode]) : ["structured"];
+        return modes.includes(modeFilter);
+      });
+    }
+
     // Verified only filter
     if (verifiedOnly) {
       filtered = filtered.filter((a) => {
@@ -83,7 +92,7 @@ export default function BrowseSkills() {
     }
 
     return filtered;
-  }, [selectedCategory, selectedType, priceRange, ratingFilter, verifiedOnly, sortBy, allCapabilities]);
+  }, [selectedCategory, selectedType, priceRange, ratingFilter, verifiedOnly, modeFilter, sortBy, allCapabilities]);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -116,6 +125,29 @@ export default function BrowseSkills() {
                   }`}
                 >
                   {type.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-zinc-500">Mode:</span>
+            <div className="flex gap-1">
+              {[
+                { key: "all", label: "All" },
+                { key: "natural", label: "🗣 Natural Language" },
+                { key: "structured", label: "⚙️ Structured" },
+              ].map(({ key, label }) => (
+                <button
+                  key={key}
+                  onClick={() => setModeFilter(modeFilter === key ? "all" : key)}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition ${
+                    modeFilter === key
+                      ? "bg-emerald-500 text-white"
+                      : "bg-zinc-800 text-zinc-300 hover:bg-zinc-700"
+                  }`}
+                >
+                  {label}
                 </button>
               ))}
             </div>

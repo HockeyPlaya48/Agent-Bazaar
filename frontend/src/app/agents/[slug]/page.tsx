@@ -13,6 +13,7 @@ import { StarRating } from "@/components/ui/star-rating";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FadeInUp, FadeIn, StaggerContainer, StaggerItem } from "@/components/motion";
 import { PayUsdcButton } from "@/components/pay-usdc-button";
+import { CAPABILITIES } from "@/lib/data";
 
 export default function SkillDetailPage() {
   const params = useParams();
@@ -102,6 +103,24 @@ export default function SkillDetailPage() {
                   <Badge>{typeLabel}</Badge>
                 </div>
                 <p className="mt-1 text-sm text-zinc-400">by {skill.creator_name}</p>
+                {/* Mode badges */}
+                {(() => {
+                  const cap = CAPABILITIES.find(c => c.slug === skill.slug);
+                  const modes = cap?.mode ? (Array.isArray(cap.mode) ? cap.mode : [cap.mode]) : ["structured"];
+                  return (
+                    <div className="mt-2 flex gap-1.5">
+                      {modes.map((m: string) => (
+                        <span key={m} className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${
+                          m === "natural"
+                            ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                            : "bg-zinc-500/10 text-zinc-400 border-zinc-500/20"
+                        }`}>
+                          {m === "natural" ? "🗣 Natural Language" : "⚙️ Structured"}
+                        </span>
+                      ))}
+                    </div>
+                  );
+                })()}
                 <div className="mt-2">
                   <StarRating rating={skill.rating} showValue size="md" />
                 </div>
@@ -125,12 +144,22 @@ export default function SkillDetailPage() {
             <div className="mt-8">
               <h2 className="text-lg font-semibold">How to use</h2>
               <div className="mt-3 space-y-3">
-                {[
-                  `Type: ${typeLabel} — call via the x402 endpoint below`,
-                  "Make an x402-enabled HTTP call — agents pay automatically",
-                  "Returns structured JSON response on every call",
-                  "No subscription needed — pay only for what you use",
-                ].map((step, i) => (
+                {(() => {
+                  const cap = CAPABILITIES.find(c => c.slug === skill.slug);
+                  const modes = cap?.mode ? (Array.isArray(cap.mode) ? cap.mode : [cap.mode]) : ["structured"];
+                  const isNatural = modes.includes("natural");
+                  return [
+                    `Type: ${typeLabel} — call via the x402 endpoint below`,
+                    "Make an x402-enabled HTTP call — agents pay automatically",
+                    isNatural
+                      ? "Accepts natural language input — describe what you want, the agent figures out the rest"
+                      : "Returns structured JSON response on every call",
+                    modes.length > 1
+                      ? "Supports both structured JSON and natural language input"
+                      : null,
+                    "No subscription needed — pay only for what you use",
+                  ].filter(Boolean);
+                })().map((step, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-400">
                       <Check size={14} />

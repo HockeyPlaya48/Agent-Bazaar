@@ -23,6 +23,8 @@ export type CapabilityCategory =
 
 export type ListingTier = "free" | "featured" | "spotlight";
 
+export type SkillMode = "structured" | "natural";
+
 export interface Capability {
   id: string;
   name: string;
@@ -41,6 +43,7 @@ export interface Capability {
   creatorName: string;
   providerWallet?: string;
   listingTier?: ListingTier; // free (default), featured ($49/mo), spotlight ($149/mo)
+  mode?: SkillMode | SkillMode[]; // "structured" (traditional x402), "natural" (NL API), or both
 }
 
 export interface Review {

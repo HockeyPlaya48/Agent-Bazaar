@@ -38,6 +38,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: "natural",
   },
   {
     id: "1",
@@ -57,6 +58,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: ["structured", "natural"],
   },
   {
     id: "2",
@@ -76,6 +78,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: ["structured", "natural"],
   },
   {
     id: "3",
@@ -94,6 +97,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["scraping", "web", "data", "extraction"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "natural",
   },
   {
     id: "4",
@@ -113,6 +117,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "natural",
   },
   {
     id: "5",
@@ -131,6 +136,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["sql", "database", "query", "natural-language"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: ["structured", "natural"],
   },
   {
     id: "6",
@@ -149,6 +155,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["git", "security", "cli", "audit"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "7",
@@ -167,6 +174,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["csv", "analytics", "data", "visualization"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: ["structured", "natural"],
   },
   {
     id: "8",
@@ -186,6 +194,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "natural",
   },
   {
     id: "9",
@@ -204,6 +213,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["crypto", "trading", "prices", "oracle"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "10",
@@ -222,6 +232,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["research", "academic", "summary", "papers"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "natural",
   },
   {
     id: "11",
@@ -240,6 +251,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["deploy", "cli", "cloud", "devops"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "12",
@@ -258,6 +270,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["email", "skill", "agent", "automation"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "natural",
   },
   {
     id: "13",
@@ -277,6 +290,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: "natural",
   },
   {
     id: "14",
@@ -296,6 +310,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "natural",
   },
   {
     id: "15",
@@ -315,6 +330,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: "natural",
   },
   {
     id: "16",
@@ -333,6 +349,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["scheduling", "cron", "skill", "agent", "automation"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "natural",
   },
   {
     id: "17",
@@ -352,6 +369,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "18",
@@ -370,6 +388,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["mev", "arbitrage", "bot", "flashloan", "defi"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "19",
@@ -389,6 +408,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "20",
@@ -407,6 +427,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["options", "strategy", "greeks", "risk", "trading"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "21",
@@ -426,6 +447,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: ["structured", "natural"],
   },
   {
     id: "22",
@@ -445,6 +467,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: ["structured", "natural"],
   },
   {
     id: "23",
@@ -463,6 +486,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["dns", "monitoring", "certificates", "subdomain", "security"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "24",
@@ -481,6 +505,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["api", "penetration", "testing", "auth", "injection"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "25",
@@ -500,6 +525,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "26",
@@ -519,6 +545,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "27",
@@ -537,6 +564,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["api", "openapi", "contract-testing", "validation", "rest"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "28",
@@ -555,6 +583,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["mutation-testing", "coverage", "quality", "testing", "javascript"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "29",
@@ -574,6 +603,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "30",
@@ -593,6 +623,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "31",
@@ -611,6 +642,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["pipeline", "cicd", "generator", "github", "gitlab"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "32",
@@ -630,6 +662,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: "structured",
   },
   {
     id: "33",
@@ -649,6 +682,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: ["structured", "natural"],
   },
   {
     id: "34",
@@ -667,6 +701,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["code", "programming", "conversion", "syntax", "migration"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: ["structured", "natural"],
   },
   {
     id: "35",
@@ -685,6 +720,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["localization", "documents", "pdf", "formatting", "cultural"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: ["structured", "natural"],
   },
   {
     id: "36",
@@ -703,6 +739,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["subtitles", "video", "transcription", "translation", "sync"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: ["structured", "natural"],
   },
   {
     id: "37",
@@ -722,6 +759,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: ["structured", "natural"],
   },
   {
     id: "38",
@@ -741,6 +779,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: ["structured", "natural"],
   },
   {
     id: "39",
@@ -759,6 +798,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["music", "generation", "ai", "creative", "audio"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "40",
@@ -777,6 +817,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["sound-effects", "foley", "audio", "ui", "ambient"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "41",
@@ -796,6 +837,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: "structured",
   },
   {
     id: "42",
@@ -815,6 +857,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "43",
@@ -833,6 +876,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["invoicing", "billing", "reminders", "payments", "taxes"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "44",
@@ -851,6 +895,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["expenses", "ocr", "receipts", "taxes", "categorization"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "45",
@@ -870,6 +915,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "46",
@@ -889,6 +935,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight",
+    mode: "structured",
   },
   {
     id: "47",
@@ -908,6 +955,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "48",
@@ -927,6 +975,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "49",
@@ -945,6 +994,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["automation", "workflows", "orchestration", "dependencies", "parallel"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "50",
@@ -963,6 +1013,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["monitoring", "resources", "predictive", "auto-scaling", "health"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "51",
@@ -982,6 +1033,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["email", "transactional", "smtp", "templates"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "52",
@@ -1001,6 +1053,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["pdf", "ocr", "extraction", "tables", "documents"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "53",
@@ -1020,6 +1073,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["translation", "multilingual", "localization", "i18n"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "54",
@@ -1040,6 +1094,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["whisper", "transcription", "audio", "speech-to-text"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "55",
@@ -1060,6 +1115,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["whois", "dns", "domains", "availability"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "56",
@@ -1080,6 +1136,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["seo", "audit", "optimization", "analytics"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "57",
@@ -1100,6 +1157,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["qr-code", "generator", "barcode", "mobile"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "58",
@@ -1120,6 +1178,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["cron", "scheduling", "automation", "monitoring"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "59",
@@ -1140,6 +1199,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["database", "migration", "sql", "schema"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "60",
@@ -1160,6 +1220,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["load-testing", "performance", "api", "stress"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "61",
@@ -1180,6 +1241,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["social-media", "scheduling", "automation", "engagement"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "62",
@@ -1200,6 +1262,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["leads", "enrichment", "contacts", "crm"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "63",
@@ -1220,6 +1283,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["invoicing", "billing", "pdf", "payments"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "64",
@@ -1240,6 +1304,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["plagiarism", "originality", "content", "verification"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "65",
@@ -1260,6 +1325,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["color", "palette", "design", "accessibility"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "66",
@@ -1280,6 +1346,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["webhooks", "relay", "transformation", "automation"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "67",
@@ -1300,6 +1367,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["logs", "analysis", "debugging", "monitoring"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "68",
@@ -1320,6 +1388,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["security", "dependencies", "vulnerabilities", "audit"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "69",
@@ -1340,6 +1409,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["memory", "agents", "vector", "semantic-search"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "70",
@@ -1360,6 +1430,7 @@ export const CAPABILITIES: Capability[] = [
     tags: ["workflow", "orchestration", "automation", "skills"],
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    mode: "structured",
   },
   {
     id: "71",
@@ -1379,6 +1450,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "72",
@@ -1398,6 +1470,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "73",
@@ -1417,6 +1490,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "74",
@@ -1436,6 +1510,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "75",
@@ -1455,6 +1530,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "76",
@@ -1474,6 +1550,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "77",
@@ -1493,6 +1570,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "78",
@@ -1512,6 +1590,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "79",
@@ -1531,6 +1610,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "80",
@@ -1550,6 +1630,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "81",
@@ -1569,6 +1650,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "82",
@@ -1588,6 +1670,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "83",
@@ -1607,6 +1690,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "84",
@@ -1626,6 +1710,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "85",
@@ -1645,6 +1730,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "86",
@@ -1664,6 +1750,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "87",
@@ -1683,6 +1770,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "88",
@@ -1702,6 +1790,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "89",
@@ -1721,6 +1810,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "90",
@@ -1740,6 +1830,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "91",
@@ -1759,6 +1850,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "92",
@@ -1778,6 +1870,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "93",
@@ -1797,6 +1890,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "94",
@@ -1816,6 +1910,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "95",
@@ -1835,6 +1930,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "96",
@@ -1854,6 +1950,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "97",
@@ -1873,6 +1970,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "98",
@@ -1892,6 +1990,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "99",
@@ -1911,6 +2010,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "100",
@@ -1930,6 +2030,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "101",
@@ -1949,6 +2050,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "102",
@@ -1968,6 +2070,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "103",
@@ -1987,6 +2090,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "104",
@@ -2006,6 +2110,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "105",
@@ -2025,6 +2130,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "106",
@@ -2044,6 +2150,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "107",
@@ -2063,6 +2170,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "108",
@@ -2082,6 +2190,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "109",
@@ -2101,6 +2210,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "110",
@@ -2120,6 +2230,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "111",
@@ -2139,6 +2250,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "112",
@@ -2158,6 +2270,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "113",
@@ -2177,6 +2290,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "clawhub-community",
     providerWallet: "0xAa41DE518042eB5801081fA6580cFb7326162fe8",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "115",
@@ -2196,6 +2310,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "Agent Bazaar",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "spotlight" as const,
+    mode: "structured",
   },
   {
     id: "ai-video-generation",
@@ -2215,6 +2330,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "inference.sh (tul-sh)",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
   {
     id: "twitter-automation",
@@ -2234,6 +2350,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "inference.sh (tul-sh)",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "natural",
   },
   {
     id: "background-removal",
@@ -2253,6 +2370,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "inference.sh (tul-sh)",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "free",
+    mode: "structured",
   },
   {
     id: "social-content-generator",
@@ -2272,6 +2390,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "inference.sh (tul-sh)",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "natural",
   },
   {
     id: "web-search-api",
@@ -2291,6 +2410,7 @@ export const CAPABILITIES: Capability[] = [
     creatorName: "inference.sh (tul-sh)",
     providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
     listingTier: "featured",
+    mode: "structured",
   },
 ];
 
