@@ -1,0 +1,13 @@
+{
+  "name": "keyword-extractor-skill",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "x402-enabled keyword extraction skill for Agent Bazaar",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
