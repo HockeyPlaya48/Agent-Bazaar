@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-bazaar": {
+      "source": "HockeyPlaya48/Agent-Bazaar",
+      "sourceType": "github",
+      "computedHash": "5e172cd5ae5876ca0ef208fe09e147cc1d60f4143f621fff419cfaf2df284aa6"
+    }
+  }
+}

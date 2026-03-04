@@ -16,7 +16,10 @@ export type CapabilityCategory =
   | "voice-audio"
   | "payments"
   | "notifications"
-  | "scheduling";
+  | "scheduling"
+  | "video-generation"
+  | "social-media"
+  | "search";
 
 export type ListingTier = "free" | "featured" | "spotlight";
 
