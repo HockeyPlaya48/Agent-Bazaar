@@ -1,12 +1,12 @@
-import { X402_WALLET_ADDRESS } from "@/lib/x402-config";
+import { X402_WALLET_ADDRESS, X402_PAY_TO, X402_PAYMENT_NETWORKS } from "@/lib/x402-config";
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 // x402 payment config for this skill
 const SKILL_CONFIG = {
   priceUsd: 0.05,
-  payTo: X402_WALLET_ADDRESS,
-  networks: ["base"],
+  payTo: X402_PAY_TO,
+  networks: X402_PAYMENT_NETWORKS,
   tokens: ["USDC"],
   capabilityId: "gpt4-code-review",
   description: "AI-powered code review — security analysis, bug detection, style suggestions",
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
           capabilityId: SKILL_CONFIG.capabilityId,
         },
         howToPay: {
-          step1: `Send $${SKILL_CONFIG.priceUsd} USDC to ${SKILL_CONFIG.payTo} on Base`,
+          step1: `Send $${SKILL_CONFIG.priceUsd} USDC to your preferred network address`,
           step2: "Include the transaction hash in the X-402-Payment header",
           step3: "Resend your request — the skill will execute automatically",
         },
