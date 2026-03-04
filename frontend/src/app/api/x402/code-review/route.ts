@@ -1,10 +1,11 @@
+import { X402_WALLET_ADDRESS } from "@/lib/x402-config";
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 // x402 payment config for this skill
 const SKILL_CONFIG = {
   priceUsd: 0.05,
-  payTo: process.env.X402_WALLET_ADDRESS || "0x0000000000000000000000000000000000000000",
+  payTo: X402_WALLET_ADDRESS,
   networks: ["base"],
   tokens: ["USDC"],
   capabilityId: "gpt4-code-review",

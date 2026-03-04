@@ -1,9 +1,10 @@
+import { X402_WALLET_ADDRESS } from "@/lib/x402-config";
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 const SKILL_CONFIG = {
   priceUsd: 0.06,
-  payTo: process.env.X402_WALLET_ADDRESS || "0x0000000000000000000000000000000000000000",
+  payTo: X402_WALLET_ADDRESS,
   networks: ["base"], tokens: ["USDC"],
   capabilityId: "bankr-cli",
   description: "On-chain financial agent toolkit — portfolio tracking, DeFi positions, automated rebalancing",
