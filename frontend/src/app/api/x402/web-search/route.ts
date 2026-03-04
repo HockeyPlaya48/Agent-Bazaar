@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
 const SKILL_CONFIG = {
-  priceUsd: 0.03,
+  priceUsd: 0.10,
   payTo: process.env.X402_WALLET_ADDRESS || "0x0000000000000000000000000000000000000000",
   networks: ["base"],
   tokens: ["USDC"],
