@@ -2412,6 +2412,26 @@ export const CAPABILITIES: Capability[] = [
     listingTier: "featured",
     mode: "structured",
   },
+  {
+    id: "141",
+    name: "Polymarket Intelligence",
+    slug: "polymarket-intelligence",
+    description: "AI-powered prediction market analysis — discover markets, analyze odds, get betting recommendations, and track trending markets on Polymarket.",
+    longDescription: "Natural language interface to prediction markets. Ask anything — 'find interesting election markets', 'what are the odds on the Fed rate decision', 'which markets are mispriced right now'. Returns structured analysis with odds, volume, value assessments, and risk ratings. Supports discovery, analysis, recommendations, and trending market tracking.",
+    type: "api",
+    category: "trading",
+    pricePerCall: 0.05,
+    x402Endpoint: "https://agent-bazaar.com/api/x402/polymarket",
+    icon: "🔮",
+    rating: 0,
+    usageCount: 0,
+    featured: true,
+    tags: ["polymarket", "predictions", "betting", "odds", "markets"],
+    creatorName: "Agent Bazaar",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    listingTier: "featured",
+    mode: "natural",
+  },
 ];
 
 // Alias for backwards compatibility
