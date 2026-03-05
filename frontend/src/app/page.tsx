@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { CapabilityCard } from "@/components/capability-card";
 import { SectionHeader } from "@/components/section-header";
 import { CategoryFilter } from "@/components/category-filter";
-import { LiveTicker } from "@/components/live-ticker";
 import { FadeInUp, StaggerContainer, StaggerItem } from "@/components/motion";
 
 export default function HomePage() {
@@ -32,19 +31,7 @@ export default function HomePage() {
     budgetUtilization?: string;
   } | null>(null);
 
-  // Fetch from Supabase via API, fall back to static data
-  const [capabilities, setCapabilities] = useState<Capability[]>(CAPABILITIES);
-  
-  useEffect(() => {
-    fetch("/api/capabilities")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.data?.length >= CAPABILITIES.length) {
-          setCapabilities(data.data);
-        }
-      })
-      .catch(() => {}); // silent fallback to static
-  }, []);
+  const capabilities = CAPABILITIES;
 
   const handleAgentShop = async () => {
     if (!shopQuery.trim()) return;
@@ -203,7 +190,6 @@ export default function HomePage() {
       </section>
 
       {/* Live Ticker */}
-      <LiveTicker />
 
       {/* How It Works */}
       <section className="px-6 pb-16">

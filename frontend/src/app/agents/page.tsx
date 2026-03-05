@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { ArrowUpDown, ShieldCheck, Filter, X } from "lucide-react";
 import { CAPABILITIES, CATEGORIES } from "@/lib/data";
 import { Capability } from "@/types";
@@ -18,16 +18,7 @@ export default function BrowseSkills() {
   const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [sortBy, setSortBy] = useState<string>("popular");
   const [modeFilter, setModeFilter] = useState<string>("all");
-  const [allCapabilities, setAllCapabilities] = useState<Capability[]>(CAPABILITIES);
-
-  useEffect(() => {
-    fetch("/api/capabilities")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && data.data?.length >= CAPABILITIES.length) setAllCapabilities(data.data);
-      })
-      .catch(() => {});
-  }, []);
+  const allCapabilities = CAPABILITIES;
 
   const skills = useMemo(() => {
     let filtered = [...allCapabilities];
