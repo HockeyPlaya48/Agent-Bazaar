@@ -101,6 +101,11 @@ export default function SkillDetailPage() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="text-2xl font-bold">{skill.name}</h1>
                   <Badge>{typeLabel}</Badge>
+                  {skill.x402_endpoint && (
+                    <span className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-xs font-bold text-amber-400">
+                      x402
+                    </span>
+                  )}
                 </div>
                 <p className="mt-1 text-sm text-zinc-400">by {skill.creator_name}</p>
                 {/* Mode badges */}

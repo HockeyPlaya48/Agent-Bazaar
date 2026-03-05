@@ -47,6 +47,11 @@ export function CapabilityCard({ capability }: { capability: Capability }) {
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </span>
           )}
+          {capability.x402Endpoint && (
+            <span className="inline-flex items-center rounded-full border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-bold text-amber-400">
+              x402
+            </span>
+          )}
           <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${t.className}`}>
             {t.label}
           </span>

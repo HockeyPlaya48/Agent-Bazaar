@@ -28,7 +28,7 @@ const mockCallLogs: { id: number; timestamp: string; skill: string; caller: stri
 
 const mockPayouts: { id: number; date: string; amount: number; status: string; txHash: string | null }[] = [];
 
-const myCapabilities = CAPABILITIES.slice(0, 3);
+const myCapabilities = CAPABILITIES;
 
 export default function DashboardPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -48,13 +48,13 @@ export default function DashboardPage() {
   const avgRating = myCapabilities.reduce((sum, c) => sum + c.rating, 0) / myCapabilities.length;
   
   const todayCalls = {
-    "24h": 1240,
-    "7d": 8680,
-    "30d": 37200
+    "24h": totalCalls,
+    "7d": totalCalls,
+    "30d": totalCalls
   };
 
-  const conversionRate = 12.3; // Mock conversion rate
-  const humanVsAgent = { human: 35, agent: 65 }; // Mock split
+  const conversionRate = totalCalls > 0 ? 0 : 0; // Real data only
+  const humanVsAgent = { human: 0, agent: 0 }; // Real data only
 
   // Simple inline SVG bar chart
   const maxEarning = Math.max(...mockEarningsData.map(d => d.amount));
@@ -110,7 +110,7 @@ export default function DashboardPage() {
               <TrendingUp size={14} className="text-green-400" />
             </div>
             <p className="mt-2 text-2xl font-bold">${totalRevenue.toLocaleString()}</p>
-            <p className="text-xs text-green-400">+12.5% vs last month</p>
+            <p className="text-xs text-zinc-500">Lifetime</p>
           </Card>
         </StaggerItem>
         
