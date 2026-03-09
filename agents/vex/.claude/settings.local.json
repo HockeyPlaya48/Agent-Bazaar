@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/tylerkenney/Desktop -maxdepth 1 -type d -name \"*agent*\" -o -maxdepth 1 -type d -name \"*Puck*\" -o -maxdepth 1 -type d -name \"*Memory*\" -o -maxdepth 1 -type d -name \"*IDENT*\" 2>/dev/null | sort)",
+      "WebFetch(domain:www.fiverr.com)"
+    ]
+  }
+}

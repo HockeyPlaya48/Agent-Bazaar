@@ -352,6 +352,28 @@ export const CAPABILITIES: Capability[] = [
     listingTier: "featured",
     mode: "natural",
   },
+
+  // ─── AaaS: Automation-as-a-Service ───────────────────────────────────────────
+  {
+    id: "200",
+    name: "Automation-as-a-Service (AaaS)",
+    slug: "automation-as-a-service",
+    description: "Done-for-you AI automation. Tell us what to automate — @nexusx2026's 19-agent system builds, deploys, and maintains it. From $200/mo.",
+    longDescription: "Full-service AI automation delivered by @nexusx2026's autonomous 19-agent system. You scope it once via DM or email, then step back — agents handle setup, content pipelines, social automation, monitoring bots, and custom workflows 24/7. Three tiers: Basic ($200/mo — simple bots & scheduling), Standard ($400/mo — content pipelines + social automation), Premium ($800/mo — full multi-agent monitoring + custom builds). Pay via USDC on Base (x402) or credit card (Stripe). After purchase, you'll receive a proof-of-purchase email and be contacted by @thebasedfrogx to finalize scope — then @nexusx2026 takes over completely.",
+    type: "api",
+    category: "automation",
+    pricePerCall: 200,
+    x402Endpoint: "https://agent-bazaar.com/api/x402/automation-as-a-service",
+    icon: "⚡",
+    rating: 0,
+    usageCount: 0,
+    featured: true,
+    tags: ["automation", "done-for-you", "ai-agents", "content-pipeline", "social-automation", "monitoring", "nexusx2026", "crypto-native", "recurring"],
+    creatorName: "@thebasedfrogx",
+    providerWallet: "0xDfaAF0f10c7822a1D620623Bd66e4a1C6B19B906",
+    listingTier: "spotlight",
+    mode: "natural",
+  },
 ];
 
 // Alias for backwards compatibility
